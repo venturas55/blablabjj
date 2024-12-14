@@ -12,33 +12,29 @@ export class CalendarioController {
     static async getAll(req, res) {
         let input = "";
         const clases = await CalendarioModel.getAll3m(input);
-        for(let i = 0; i < clases.length; i++) {
+        for (let i = 0; i < clases.length; i++) {
             clases[i].asistentes = [];
             var asistentes = await AsistenciaModel.getByClaseId({ id: clases[i].clase_id });
-            clases[i].asistentes=asistentes;
+            clases[i].asistentes = asistentes;
 
         };
-     /*    console.log(clases[2].clase_id );
-        var asistentes = await AsistenciaModel.getByClaseId({ id: clases[2].clase_id });
-        clases[2].asistentes=asistentes;
-        console.log(clases[2]); */
-        console.log(clases[2].asistentes);
+
         /* // Ordenar las clases por fecha
 
-        const clasesOrdenadas = clases.sort((a, b) => new Date(a.fecha_hora) - new Date(b.fecha_hora));
+      const clasesOrdenadas = clases.sort((a, b) => new Date(a.fecha_hora) - new Date(b.fecha_hora));
 
-        // Agrupar las clases por día de la semana (Lunes=1, ..., Domingo=7)
-        const clasesPorDia = [[], [], [], [], [], [], []]; // Array para los 7 días
-        clasesOrdenadas.forEach((clase) => {
-            const diaSemana = moment(clase.fecha_hora).isoWeekday(); // Lunes=1, Domingo=7
-            clasesPorDia[diaSemana - 1].push(clase);
-        });
+      // Agrupar las clases por día de la semana (Lunes=1, ..., Domingo=7)
+      const clasesPorDia = [[], [], [], [], [], [], []]; // Array para los 7 días
+      clasesOrdenadas.forEach((clase) => {
+          const diaSemana = moment(clase.fecha_hora).isoWeekday(); // Lunes=1, Domingo=7
+          clasesPorDia[diaSemana - 1].push(clase);
+      });
 
-        // Opcional: Asegurar que cada día también esté ordenado (redundante si ya está ordenado antes del agrupamiento)
-        clasesPorDia.forEach((dia) => {
-            dia.sort((a, b) => new Date(b.fecha_hora) - new Date(a.fecha_hora)); // Orden ascendente por hora
-        });
- */
+      // Opcional: Asegurar que cada día también esté ordenado (redundante si ya está ordenado antes del agrupamiento)
+      clasesPorDia.forEach((dia) => {
+          dia.sort((a, b) => new Date(b.fecha_hora) - new Date(a.fecha_hora)); // Orden ascendente por hora
+      });
+*/
 
         //======= PARA EL CALENDARIOS =================================
 

@@ -165,7 +165,6 @@ CREATE TABLE pagos (
     FOREIGN KEY (cliente_id) REFERENCES usuarios(id) 
   )ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'pagos';
 
-INSERT INTO actividades (nombre,descripcion) VALUES ('BJJ', 'JiuJitsu Brasileño con kimono'),('NoGi','JiujitsuBrasileño SIN kimono'),('MMA','Artes marciales mixtas. Obligatorio uso de protecciones');
 INSERT INTO
   `usuarios` (
     `id`,
