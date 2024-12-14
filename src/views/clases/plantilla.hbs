@@ -8,14 +8,22 @@
                     <h3> {{item.nombre_actividad}} </h3>
                     <p>{{item.descripcion_actividad}}</p>
 
-                    <div class="form-group">Fecha: {{formatearSp item.fecha_hora}} a las {{formatearHoras item.fecha_hora}} creado por {{item.nombre_creador }}</div>
+                    <div class="form-group">Fecha: {{formatearSp item.fecha_hora}} a las {{formatearHoras
+                        item.fecha_hora}} creado por {{item.nombre_creador }}</div>
                     <div class="form-group">Duracion:{{item.duracion}} min </div>
                     <div class="form-group"> Instructor: {{item.nombre_instructor }}</div>
 
                     <h2>Asistentes</h2>
                     <div>
                         {{#each asistentes}}
-                        {{this.nombre_usuario}}
+                        <a href="/usuarios/list/{{this.usuario_id}}">
+                        {{#if this.pictureURL_usuario}}
+                        <img src="/img/profiles/{{this.pictureURL_usuario}}" class="avatar avatar-xs m-2"
+                            alt="avatar {{this.pictureURL_usuario}}'" />
+                        {{else}}
+                        <img src="/img/profiles/default.jpg" class="avatar avatar-xs m-2" alt="default avatar" />
+                        {{/if}}
+                        </a>
                         {{/each}}
                     </div>
 

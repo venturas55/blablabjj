@@ -15,7 +15,6 @@ export class UsuarioController {
 
     }
     static async getById(req, res) {
-        console.log("por aqui");
         const { id } = req.params;
         const [usuario] = await UsuarioModel.getById({ id });
         console.log(usuario);

@@ -56,7 +56,7 @@ export class CalendarioController {
         //======= FIN PARA EL CALENDARIOS =================================
 
 
-        res.render("calendario/list", { layout: 'withcalendar', clases: clases, mes: currentDate.format('MMMM'), anio: currentDate.format('YYYY'), dias, });
+        res.render("calendario/list", { layout: 'withcalendar', clases, mes: currentDate.format('MMMM'), anio: currentDate.format('YYYY'), dias, });
     }
 
 

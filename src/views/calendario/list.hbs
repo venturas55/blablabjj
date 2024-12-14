@@ -52,7 +52,12 @@
                   <a href="/clases/delete/{{clase_id}}" class="text-warning"><i class="fa-solid fa-trash"></i>Del</a>
                   <p>{{formatearSp fecha_hora}}</p>
                   {{#each this.asistentes}}
-                  <p>{{this.nombre_usuario}}</p>
+                  {{#if this.pictureURL_usuario}}
+                  <img src="/img/profiles/{{this.pictureURL_usuario}}" class="avatar avatar-xs m-2"
+                    alt="avatar {{this.pictureURL_usuario}}'" />
+                  {{else}}
+                  <img src="/img/profiles/default.jpg" class="avatar avatar-xs m-2" alt="default avatar" />
+                  {{/if}}
                   {{/each}}
                 </div>
               </div>

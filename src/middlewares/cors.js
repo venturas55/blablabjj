@@ -7,8 +7,6 @@ const ACCEPTED_ORIGINS = [
     'https://localhost:4000',
     'http://localhost:7001',
     'https://localhost:7001',
-    'http://valenciaport.com',
-    'https://valenciaport.com',
     'http://adriandeharo.es',
     'https://adriandeharo.es',
     'http://adriandeharo.es:7001',

@@ -5,7 +5,7 @@
                 <div class="card-body">
 
                     <h3>Bienvenid@ <strong> {{user.usuario}} </strong> !!</h3>
-                    {{>avatar}}
+                    {{>avatar  size="m" url=user.pictureUrl}}
 
                     <form action="/profile/upload/{{user.id}}" method="POST" enctype="multipart/form-data">
                        <input type="hidden" name="id" value="{{user.id}}" />
