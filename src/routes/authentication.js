@@ -38,28 +38,3 @@ authRouter.get('/logout',funciones.isAuthenticated ,(req,res)=>{
         res.redirect('/');
       });
 })
-
-//GESTION DEL profile
-
-authRouter.get('/profile',funciones.isAuthenticated ,(req,res)=>{
-    res.render('profile');
-});
-
-authRouter.get('/profile/edit',funciones.isAuthenticated ,(req,res)=>{
-    res.render('profileEdit');
-});
-authRouter.post('/profile/edit/',funciones.isAuthenticated ,async (req,res)=>{
-     const newUser = {
-        usuario:    req.body.usuario,
-        contrasena: req.body.contrasena,
-        email:      req.body.email,
-        full_name:  req.body.fullname,
-        privilegio: "san",
-    }; 
-    //newUser.contrasena = await funciones.encryptPass(password);
-    console.log("guardando en la BBDD");
-    //console.log(user);
-    res.render('profile');
-});
-
-//TODO: Añadir posibilidad de cambio de contraseña del usuario

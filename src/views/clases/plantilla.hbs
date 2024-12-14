@@ -16,7 +16,7 @@
                     <h2>Asistentes</h2>
                     <div>
                         {{#each asistentes}}
-                        <a href="/usuarios/list/{{this.usuario_id}}">
+                        <a href="/usuarios/get/{{this.usuario_id}}">
                         {{#if this.pictureURL_usuario}}
                         <img src="/img/profiles/{{this.pictureURL_usuario}}" class="avatar avatar-xs m-2"
                             alt="avatar {{this.pictureURL_usuario}}'" />

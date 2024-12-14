@@ -9,13 +9,13 @@ import { validateUsuario, validatePartialUsuario } from '../schemas/validaciones
 export class UsuarioController {
 
     static async getAll(req, res) {
-        const { genre } = req.query
         const usuarios = await UsuarioModel.getAll();
         res.render("usuarios/list", { usuarios });
 
     }
     static async getById(req, res) {
         const { id } = req.params;
+        console.log(id);
         const [usuario] = await UsuarioModel.getById({ id });
         console.log(usuario);
         res.render("usuarios/plantilla", { usuario });
@@ -60,13 +60,15 @@ export class UsuarioController {
     }
 
     static async update(req, res) {
-          const result = validatePartialUsuario(req.body);
-        
-     /*     if (!result.success) {
-             return res.status(400).json({ error: JSON.parse(result.error.message) })
-         }  */
-
+        console.log("update");
         const { id } = req.params;
+        console.log(id);
+        console.log(req.body);
+
+        const result = validatePartialUsuario(req.body);
+        if (!result.success) {
+            return res.status(400).json({ error: JSON.parse(result.error.message) })
+        }
         try {
             const {
                 nombre,
@@ -80,12 +82,12 @@ export class UsuarioController {
                 grado,
                 fecha_nacimiento,
                 nif,
-                pictureURL
+
             } = req.body;
 
-            if (typeof req.file !== 'undefined') {
-                pictureURL = req.file.filename;
-            }
+            /*        if (typeof req.file !== 'undefined') {
+                       pictureURL = req.file.filename;
+                   } */
             const newItem = {
                 id,
                 nombre,
@@ -99,15 +101,14 @@ export class UsuarioController {
                 grado,
                 fecha_nacimiento,
                 nif,
-                pictureURL
             };
             console.log(newItem);
             const result = await UsuarioModel.update({ input: newItem })
             if (result === false) {
                 return res.status(404).json({ message: 'usuario not found' })
             }
-            //req.flash("success", "usuarios modificada correctamente");
-            res.redirect("/usuarios/list");
+            req.flash("success", "usuario modificado correctamente");
+            res.redirect("/usuarios/get/"+id);
         } catch (error) {
             console.error(error.code);
             //req.flash("error", "Hubo algun error");

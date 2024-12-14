@@ -33,10 +33,11 @@
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-bs-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            {{>avatar size="xs" url=user.pictureUrl}}
+           {{!--  {{>avatar size="xs" url=user.pictureURL}} --}}
+               <img src="/img/profiles/{{user.pictureURL}}" class="avatar avatar-xs m-2" alt="avatar {{user.pictureURL}}'" />
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown1">
-            <a class="dropdown-item" href="/profile">Perfil</a>
+            <a class="dropdown-item" href="/usuarios/get/{{user.id}}">Perfil</a>
             <hr class="dropdown-divider">
             <a class="dropdown-item" href="/actividades/add">Crear actividad</a>
             <a class="dropdown-item" href="/anuncios/add">Publicar Clases</a>
@@ -57,7 +58,7 @@
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            {{>avatar  size="s" url=user.pictureUrl}}
+            {{>avatar  size="s" url=user.pictureURL}}
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown2">
             <a class="dropdown-item" href="/signin">Iniciar Sesion</a>

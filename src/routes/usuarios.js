@@ -8,6 +8,8 @@ import * as path from 'path';
 import fs from 'fs-extra';
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 import { UsuarioController } from '../controllers/usuarios.js'
+import { UsuarioModel } from '../models/usuarioMysql.js'
+import { ExtraModel } from '../models/extraMysql.js'
 
 export const usuariosRouter = Router();
 
@@ -34,7 +36,7 @@ const storage = multer.diskStorage({
 
 const uploadFoto = multer({
   storage,
-  limits: { fileSize: 5000000, },
+  limits: { fileSize: 10000000, },
   fileFilter: (req, file, cb) => {
     const filetypes = /jpeg|jpg|png|bmp|gif/;
     const mimetype = filetypes.test(file.mimetype);
@@ -50,8 +52,12 @@ const uploadFoto = multer({
 //GESTION DEL CRUD
 
 //READ
-usuariosRouter.get("/list", UsuarioController.getAll);
-usuariosRouter.get("/list/:id", UsuarioController.getById);
+
+usuariosRouter.get("/list", UsuarioController.getAll); // Muestra un listado de todos los usuarios
+usuariosRouter.get("/profile", funciones.isAuthenticated, (req, res) => {
+  res.render('profile/list');
+});// Muestra usuario logado
+usuariosRouter.get("/get/:id", UsuarioController.getById);// Muestra un usuario indicando id
 
 //CREATE
 usuariosRouter.get("/add", funciones.isAuthenticated, (req, res) => {
@@ -60,10 +66,19 @@ usuariosRouter.get("/add", funciones.isAuthenticated, (req, res) => {
 usuariosRouter.post("/add", funciones.isAuthenticated, uploadFoto, UsuarioController.create);
 //DELETE
 usuariosRouter.get("/delete/:id", funciones.isAuthenticated, UsuarioController.delete);
+
+
 //UPDATE
-usuariosRouter.get("/edit/:id", funciones.isAuthenticated, async (req, res) => {
+/* usuariosRouter.get("/edit", funciones.isAuthenticated, async (req, res) => {
+  const { id } = req.user.id;
+  const paises = await ExtraModel.getAllPaises();
+  res.render("profile/edit", { item: id,paises });
+}); */
+usuariosRouter.get("/edit/:id", funciones.isAuthenticated,funciones.isMaster, async (req, res) => {
   const { id } = req.params;
-  const item = await db.query("SELECT * FROM usuarios WHERE id=?", [id,]);
-  res.render("usuarios/edit", { item: item[0] });
+  const item = await UsuarioModel.getById({ id });
+  const paises = await ExtraModel.getAllPaises();
+  res.render("profile/edit", { item: item[0],paises });
 });
-usuariosRouter.post("/edit/:id", funciones.isAuthenticated, uploadFoto,  UsuarioController.update);
+/* usuariosRouter.post("/edit", funciones.isAuthenticated,  UsuarioController.update); */
+usuariosRouter.post("/edit/:id", funciones.isAuthenticated,  UsuarioController.update);

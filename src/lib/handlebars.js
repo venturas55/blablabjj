@@ -48,11 +48,20 @@ helpers.formatearHoras = (timestamp) => {
   }
 }
 
-helpers.fsh = (string) => {
+/* helpers.fsh = (string) => {
   if (string) {
     return string.slice(0, 5);
   }
+} */
+
+helpers.esAdmin = (usuario) => {
+  return (usuario.privilegio == "admin");
 }
+
+helpers.esProfe = (usuario) => {
+  return (usuario.privilegio == "maestro");
+}
+
 
 helpers.when = (operand_1, operator, operand_2, options) => {
   var operators = {

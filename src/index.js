@@ -26,7 +26,6 @@ import { apiRouter } from './routes/api.js';
 import { authRouter } from './routes/authentication.js';
 import { fotosRouter } from './routes/fotos.js';
 
-
 //Initialization
 const app = express();
 app.disable('x-powered-by'); //Deshabilitar el hjeader X-powered-by: Express
@@ -73,6 +72,7 @@ app.use(express.static(__dirname + '/public'));
 app.use('/css', express.static(path.join(__dirname + '../node_modules/bootstrap/dist/css')))
 app.use('/js', express.static(path.join(__dirname + '../node_modules/bootstrap/dist/js')))
 app.use('/js', express.static(path.join(__dirname + '../node_modules/jquery/dist')))
+/* app.use('/css', express.static(path.join(__dirname + '../node_modules/flag-icons/css/flag-icons.min.css'))) */
 
 //Routes
 app.use(indexRouter);

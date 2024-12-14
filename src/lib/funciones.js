@@ -88,6 +88,20 @@ helpers.isNotAdmin = (req, res, next) => {
     return res.redirect('/noperm');
 }
 
+helpers.isMaster = (req, res, next) => {
+    if (req.user.privilegio == "master") {
+        return next();
+    }
+    return res.redirect('/noperm');
+}
+
+helpers.isNotMaster = (req, res, next) => {
+    if (!req.user.privilegio == "master") {
+        return next();
+    }
+    return res.redirect('/noperm');
+}
+
 helpers.insertarLog = async(usuario, accion, observacion) => {
     const log = {
         usuario,

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cinturón BJJ Dinámico</title>
+  <style>
+    /* Estilos generales */
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+
+    .belt-container {
+      margin: 20px auto;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .belt {
+      position: relative;
+      width: 300px;
+      height: 40px;
+      line-height: 40px;
+      color: white;
+      font-weight: bold;
+      text-transform: uppercase;
+      text-align: center;
+      border: 2px solid #333;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+
+    /* Banda final (negra por defecto) */
+    .final-band {
+      position: absolute;
+      bottom: 0;
+      right: 10px;
+      width: 70px; /* Banda ocupa todo el ancho */
+      height: 40px; /* Alto de la banda final */
+      background-color: #000; /* Negra por defecto */
+    }
+
+    /* Grados (rayas blancas) */
+    .belt .stripe {
+      position: absolute;
+      top: 0;
+      right: 5px;
+      height: 40px;
+      width: 5px;
+      background-color: #fff;
+      z-index: 2;
+    }
+    .belt .stripe:nth-child(1) { right: 20px; }
+    .belt .stripe:nth-child(2) { right: 30px; }
+    .belt .stripe:nth-child(3) { right: 40px; }
+    .belt .stripe:nth-child(4) { right: 50px; }
+
+    /* Banda roja para cinturón negro */
+    .belt.black .final-band {
+      background-color: #b00000; /* Rojo para cinturón negro */
+    }
+
+    /* Colores de los cinturones */
+    .white { background-color: #fefefe; color: #333; } /* Blanco */
+    .grey { background-color: #a9a9a9; } /* Gris */
+    .yellow { background-color: #ffdd00; color: #333; } /* Amarillo */
+    .orange { background-color: #ff8800; } /* Naranja */
+    .green { background-color: #008000; } /* Verde */
+    .blue { background-color: #0000ff; } /* Azul */
+    .purple { background-color: #800080; } /* Morado */
+    .brown { background-color: #8b4513; } /* Marrón */
+    .black { background-color: #000000; } /* Negro */
+  </style>
+</head>
+<body>
+
+  <!-- Cinturones Básicos -->
+  <div class="belt white">Blanco
+    <div class="stripe"></div>
+    <div class="stripe"></div>
+    <div class="stripe"></div>
+    <div class="final-band"></div>
+  </div>
+  <div class="belt grey">Gris
+    <div class="stripe"></div>
+    <div class="stripe"></div>
+    <div class="stripe"></div>
+    <div class="stripe"></div>
+  </div>
+  <div class="belt yellow">Amarillo
+    <div class="stripe"></div>
+    <div class="stripe"></div>
+    <div class="stripe"></div>
+    <div class="stripe"></div>
+  </div>
+  <div class="belt orange">Naranja
+    <div class="stripe"></div>
+    <div class="stripe"></div>
+    <div class="stripe"></div>
+    <div class="stripe"></div>
+  </div>
+  <div class="belt green">Verde
+    <div class="stripe"></div>
+    <div class="stripe"></div>
+    <div class="stripe"></div>
+    <div class="stripe"></div>
+  </div>
+  <div class="belt blue">Azul
+    <div class="stripe"></div>
+    <div class="stripe"></div>
+    <div class="stripe"></div>
+    <div class="stripe"></div>
+  </div>
+  <div class="belt purple">Morado
+    <div class="stripe"></div>
+    <div class="stripe"></div>
+    <div class="stripe"></div>
+    <div class="stripe"></div>
+  </div>
+  <div class="belt brown">Marrón
+    <div class="stripe"></div>
+    <div class="stripe"></div>
+    <div class="stripe"></div>
+    <div class="stripe"></div>
+  </div>
+  <div class="belt black">Negro
+    <div class="stripe"></div>
+    <div class="stripe"></div>
+    <div class="stripe"></div>
+    <div class="stripe"></div>
+  </div>
+  <h1>Cinturón BJJ Dinámico</h1>
+
+  <div id="belt-container" class="belt-container"></div>
+
+  <script>
+    // Variables para el color del cinturón y el número de grados
+    const color = 'blue';  // Cambia el color aquí, como 'green', 'blue', 'black', etc.
+    const grados = 3;       // Número de grados (rayas) a mostrar en el cinturón
+
+    // Crear el elemento del cinturón
+    function crearCinturon(color, grados) {
+      const beltContainer = document.getElementById('belt-container');
+      
+      // Crear el div del cinturón
+      const belt = document.createElement('div');
+      belt.classList.add('belt', color); // Añadir la clase del color al cinturón
+
+      // Añadir las rayas de grados al cinturón
+      for (let i = 0; i < grados; i++) {
+        const stripe = document.createElement('div');
+        stripe.classList.add('stripe');
+        belt.appendChild(stripe);
+      }
+
+      // Crear la banda final y añadirla al cinturón
+      const finalBand = document.createElement('div');
+      finalBand.classList.add('final-band');
+      belt.appendChild(finalBand);
+
+      // Si el cinturón es negro, cambiar la banda final a roja
+      if (color === 'black') {
+        finalBand.style.backgroundColor = '#b00000'; // Rojo para cinturón negro
+      }
+
+      // Añadir el cinturón al contenedor
+      beltContainer.appendChild(belt);
+    }
+
+    // Llamada para crear el cinturón con el color y grados especificados
+    crearCinturon(color, grados);
+  </script>
+</body>
+</html>
