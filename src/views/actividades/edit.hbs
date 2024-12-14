@@ -1,0 +1,46 @@
+<div class="container p-2">
+    <h1>Cambios en la actividad {{item.actividad_id}} - {{item.nombre}}</h1>
+
+    <div class="row">
+
+        <div class="col-md-6 mx-auto">
+
+            <div class="card">
+                <div class="card-body">
+                    <form action="/actividades/edit/{{item.actividad_id}}" method="POST">
+                        <div class="form-group"><input class="form-control" type="text" name="nombre"
+                                placeholder="Nombre" value="{{item.nombre}}" autofocus /> </div>
+                        <div class="form-group"><input class="form-control" type="text" name="descripcion"
+                                placeholder="descripcion" value="{{item.descripcion}}" />
+                        </div>
+                        <input type="hidden" name="pictureURL" placeholder="pictureURL" value="{{item.pictureURL}}" />
+{{!--                         <img id="frame1" class="card-img-top avatar avatar-xl" alt="preview foto objeto"
+                            src="/img/iconos/{{item.pictureURL}}" /> --}}
+                        <span>Icono</span>
+                        <div class="input-group mb-3">
+                            <img id="frame1" class="card-img-top avatar avatar-xl" alt="preview foto objeto"
+                                src="/img/iconos/{{item.pictureURL}}" />
+                            <input type="file" name="imagen" class="form-control" id="inputGroupFile01"
+                                onchange="preview1()">
+                        </div>
+
+                        <button class="btn btn-primary btn-block">Guardar</button>
+                    </form>
+                     <a class="btn btn-warning btn-block" href="javascript:void(0)" onclick="history.back();">Volver</a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+ </div>
+ 
+    <script>
+        function preview1() {
+            frame1.src = URL.createObjectURL(event.target.files[0]);
+        }
+        function clearImage1() {
+            document.getElementById('formFile1').value = null;
+            frame1.src = "";
+        }
+
+    </script>

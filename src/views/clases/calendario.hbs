@@ -1,0 +1,159 @@
+<div class="container pb-2 mb-5">
+	<div class="row">
+		<div class="col-md-12 text-center">
+			<div id="calendario">
+				<section class="ftco-section">
+					<div class="container">
+						<div class="row justify-content-center">
+							<div class="col-md-6 text-center mb-5">
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="content w-100">
+									<div class="calendar-container">
+										<div class="calendar">
+											<div class="year-header">
+												<span class="left-button fa fa-chevron-left" id="prev"> </span>
+												<span class="year" id="label"></span>
+												<span class="right-button fa fa-chevron-right" id="next"> </span>
+											</div>
+											<table class="months-table w-100">
+												<tbody>
+													<tr class="months-row">
+														<td class="month">Jan</td>
+														<td class="month">Feb</td>
+														<td class="month">Mar</td>
+														<td class="month">Apr</td>
+														<td class="month">May</td>
+														<td class="month">Jun</td>
+														<td class="month">Jul</td>
+														<td class="month">Aug</td>
+														<td class="month">Sep</td>
+														<td class="month">Oct</td>
+														<td class="month">Nov</td>
+														<td class="month">Dec</td>
+													</tr>
+												</tbody>
+											</table>
+
+											<table class="days-table w-100">
+												<td class="day">Mon</td>
+												<td class="day">Tue</td>
+												<td class="day">Wed</td>
+												<td class="day">Thu</td>
+												<td class="day">Fri</td>
+												<td class="day">Sat</td>
+												<td class="day">Sun</td>
+
+											</table>
+											<div class="frame">
+												<table class="dates-table w-100">
+													<tbody class="tbody">
+													</tbody>
+												</table>
+											</div>
+											<button class="button" id="add-button">Add Event</button>
+										</div>
+									</div>
+									<div class="events-container">
+									</div>
+									<div class="dialog" id="dialog">
+										<h2 class="dialog-header"> Add New Event </h2>
+										<form class="form" id="form">
+											<div class="form-container" align="center">
+												<label class="form-label" id="valueFromMyButton" for="name">Event
+													name</label>
+												<input class="input" type="text" id="name" maxlength="36">
+												<label class="form-label" id="valueFromMyButton" for="count">Number of
+													people to invite</label>
+												<input class="input" type="number" id="count" min="0" max="1000000"
+													maxlength="7">
+												<input type="button" value="Cancel" class="button" id="cancel-button">
+												<input type="button" value="OK" class="button button-white"
+													id="ok-button">
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+			</div>
+		</div>
+
+
+	</div>
+	<div class="row">
+		<div class="col-md-12 text-center">
+			{{#if anuncios}}
+			{{#each anuncios}}
+			<a href="/anuncios/list/{{anuncio_id}}">
+				<div class="fichaAnuncio w-75">
+					<div class="">
+						<p>Creado el {{ formatearSp created_at}} a las {{formatearHoras created_at}} id:{{anuncio_id}}
+						</p>
+						<p>{{usuario}}</p>
+						<img class="avatar avatar-s" src="/img/profiles/{{pictureURLusuario}}" alt="user foto">
+					</div>
+					<div class="">
+						<img class="miniatura" src="/img/iconos/{{pictureURLactividad}}" alt="act foto">
+						<p>{{nombre}} </p>
+						<p>{{salario_propuesto}} <i class="fa fa-solid fa-euro-sign"></i> </p>
+					</div>
+					<div class="">
+						<p> <i class="fa fa-calendar"></i> El {{ formatearSp fecha_hora}} a las {{ formatearHoras
+							fecha_hora}} </p>
+						<p>duración de <i class="fa fa-solid fa-clock"></i> {{duracion}} min</p>
+
+						{{#if numero_de_solicitudes}}
+						<p>Num Sol: {{numero_de_solicitudes}}</p>
+
+						{{/if}}
+						<form action="/anuncios/{{anuncio_id}}">
+							<button type="button" class="btn btn-primary" onclick="">Ver solicitudes</button>
+						</form>
+					</div>
+				</div>
+			</a>
+			{{/each}}
+			{{else}}
+			<div class="col-md-4-mx-auto">
+				<div class="card card-body text-center">
+					<p>No hay anuncios guardados <a href="/anuncios/add"> Crea uno!</a></p>
+				</div>
+			</div>
+			{{/if}}
+			<a class="btn btn-warning btn-block mb-4" href="javascript:void(0)" onclick="history.back();">Volver</a>
+		</div>
+	</div>
+
+	<!-- Button trigger modal -->
+	<div class="text-center">
+		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+			AÑADIR CLASE
+		</button>
+	</div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+
+				<h1 class="modal-title fs-5" id="exampleModalLabel">CREACION DE CLASE SEMANAL</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				{{>crearClase}}
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary">Save changes</button>
+			</div>
+		</div>
+	</div>
+</div>

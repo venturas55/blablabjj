@@ -1,0 +1,61 @@
+<div class="container p-2">
+    <h1>Cambios en la clase {{item.clase_id}} - {{item.nombre}} - {{item.descripcion}}</h1>
+
+    <div class="row">
+
+        <div class="col-md-6 mx-auto">
+
+            <div class="card">
+                <div class="card-body">
+                    <form action="/clases/edit/{{item.clase_id}}" method="POST">
+
+                        <input type="hidden" name="creador_id" placeholder="" value="{{user.id}}" />
+
+                        <div class="form-group">
+                            <label for="actividad_id">Actividad </label>
+                            <div class="input-group mb-3">
+                                <select class="custom-select form-select form-select-sm" name="actividad_id"
+                                    id="input_actividad_id" aria-label=".form-select-sm example">
+                                    <option value=""> Selecciona</option>
+
+                                    {{#each actividades}}
+                                    <option value="{{this.actividad_id}}" {{#when this.actividad_id 'eq' ../item.actividad_id}}
+                                        selected {{/when}}>
+                                        {{this.actividad_id}} {{this.nombre}}  </option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">Duracion:<input class="form-control" type="tex" name="duracion"
+                                value="{{item.duracion}}" value="60" autofocus /> </div>
+
+                        <div class="form-group">Fecha:<input class="form-control" type="datetime-local"
+                                value="{{datetimelocal item.fecha_hora}}" name="fecha_hora" /> </div>
+
+                        <div class="form-group">
+                            <label for="instructor_id">Instructor </label>
+                            <div class="input-group mb-3">
+                                <select class="custom-select form-select form-select-sm" name="instructor_id"
+                                    id="input_instructor_id" aria-label=".form-select-sm example">
+                                    {{#each usuarios}}
+                                    <option value="{{this.id}}" {{#when this.id 'eq' ../item.instructor_id }} selected
+                                        {{/when}}>
+                                        {{this.nombre}} </option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                        </div>
+
+
+
+
+                        <button class="btn btn-primary btn-block">Guardar</button>
+                    </form>
+                    <a class="btn btn-warning btn-block" href="javascript:void(0)" onclick="history.back();">Volver</a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

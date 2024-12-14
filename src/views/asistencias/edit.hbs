@@ -1,0 +1,45 @@
+<div class="container p-4">
+    <div class="row">
+        <div class="col-md-4 mx-auto">
+            <div class="card">
+                <div class="text-center">
+                    <h1>Cambios en la clase de {{item.anuncio_id}}</h1>
+                </div>
+                <div class="card-body">
+                    <form action="/anuncios/edit/{{item.anuncio_id}}" method="POST">
+                               <div class="mb-4">
+                            <label for="duracion">Tipo actividad <i class="fa fa-solid fa-dumbbell"></i></label>
+                            <select class="custom-select form-select form-select-sm" name="actividad_ofrecida_id"
+                                id="actividad_ofrecida_id" aria-label=".form-select-sm example">
+                                <option value=""> Selecciona</option>
+                                {{#each actividades}}
+                                <option value="{{this.actividad_id}}" {{#when this.actividad_id 'eq'
+                                    ../item.actividad_ofrecida_id }} selected {{/when}}> {{this.nombre}} </option>
+                                {{/each}}
+                            </select>
+
+                        </div>
+                        <div class="mb-4"><label for="fecha_hora"> Fecha y Hora <i class="fa fa-calendar"></i> </label><input
+                                value="{{datetimelocal item.fecha_hora}}" class="form-control" type="datetime-local"
+                                name="fecha_hora" placeholder="fecha_hora" autofocus />
+                        </div>
+
+                        <div class="mb-4"><label for="duracion">Duracion <i class="fa fa-solid fa-clock"></i></label><input value="{{item.duracion}}"
+                                class="form-control" type="text" name="duracion" placeholder="duracion" />
+                        </div>
+                        <div class="mb-4"><label for="salario_propuesto">Salario propuesto <i class="fa fa-solid fa-euro-sign"></i></label><input
+                                value="{{item.salario_propuesto}}" class="form-control" type="text"
+                                name="salario_propuesto" placeholder="salario_propuesto" />
+                        </div>
+                                     <div class="text-center">
+                            <button class="btn btn-success btn-block mb-3">Guardar</button>
+                        </div>
+                    </form>
+                    <div class="text-center">
+                        <a class="btn btn-warning btn-block" href="javascript:void(0)"
+                            onclick="history.back();">Volver</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

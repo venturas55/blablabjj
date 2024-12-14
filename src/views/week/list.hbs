@@ -1,0 +1,102 @@
+{{!-- <div class="container pb-2 mb-5">
+	<div class="row">
+		<div class="col-12 text-center">
+			<div id="week">
+				<div class="day">Lunes</div>
+				<div class="day">Martes</div>
+				<div class="day">Miercoles</div>
+				<div class="day">Jueves</div>
+				<div class="day">Viernes</div>
+				<div class="day">Sabado</div>
+				<div class="day">Domingo</div>
+				{{#each clases}}
+				<div class="clase">
+					<div>{{this.dia}} {{this.nombre_actividad}} </div>
+					<div>{{this.hora}} {{this.duracion}}min </div>
+					<div>{{this.nombre_instructor}}</div>
+				</div>
+				{{/each}}
+
+
+			</div>
+		</div>
+	</div>
+</div> --}}
+
+<div class="text-center">
+	<a href="/week/add"> <button class="btn btn-warning">NUEVA CLASE WEEK</button></a>
+	<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+		UN MODAL
+	</button>
+
+	<form action="/week/clone" method="post">
+		<button class="btn btn-danger">CLONAR SEMANA</button>
+	</form>
+
+	<a href="/week/edit"> <button class="btn btn-warning">MODIFICACION SEMANA BASE</button></a>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+
+				<h1 class="modal-title fs-5" id="exampleModalLabel">CREACION DE CLASE SEMANAL</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				{{>crearClase}}
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary">Save changes</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div>
+	<div class="container pb-2 mb-5">
+		<div class="table-responsive">
+			<table class="table table-bordered table-dark">
+				<thead class="thead-light">
+					<tr>
+						<th>Lunes</th>
+						<th>Martes</th>
+						<th>Miércoles</th>
+						<th>Jueves</th>
+						<th>Viernes</th>
+						<th>Sábado</th>
+						<th>Domingo</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						{{#each clases}}
+						<td>
+							{{#each this}}
+							<div class="card mb-2">
+								<div class="card-body">
+									<h5 class="card-title"> {{nombre_actividad}}</h5>
+									<p class="card-text">{{fsh hora}}
+									<p> {{duracion}}min</p>
+									</p>
+									<a href="/week/editClass/{{clase_id}}" class="text-warning"><i
+											class="fa-solid fa-pen"></i>Edit</a>
+									<a href="/week/delete/{{clase_id}}" class="text-warning"><i
+											class="fa-solid fa-trash"></i>Del</a>
+								</div>
+							</div>
+							{{else}}
+							<p>No hay clases</p>
+							{{/each}}
+						</td>
+						{{/each}}
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

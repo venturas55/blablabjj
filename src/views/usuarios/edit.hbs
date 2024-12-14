@@ -1,0 +1,164 @@
+
+
+<div class="container p-2">
+    <h1>Cambios en el usuario {{item.id}} - {{item.nombre}}</h1>
+
+    <div class="row">
+
+        <div class="col-md-6 mx-auto">
+
+            <div class="card">
+                <div class="card-body">
+                    <form action="/usuarios/edit/{{item.id}}" method="POST">
+                        <div class="form-group"> Nombre: <input class="form-control" type="text" name="nombre"
+                                placeholder="Nombre" value="{{item.nombre}}" autofocus /> </div>
+                        <div class="form-group">Apellido: <input class="form-control" type="text" name="apellidos"
+                                placeholder="apellidos" value="{{item.apellidos}}" />
+                        </div>
+
+                        <div class="form-group"> eMail:<input class="form-control" type="email" name="email"
+                                placeholder="email" value="{{item.email}}" />
+                        </div>
+
+                        <div class="form-group">prefijo<input class="form-control" type="text" name="pais_telefono"
+                                placeholder="pais_telefono" value="{{item.pais_telefono}}" />
+                        </div>
+
+                        <div class="form-group">telefono:<input class="form-control" type="text" name="telefono"
+                                placeholder="telefono" value="{{item.telefono}}" />
+                        </div>
+                        <div class="dropdown">
+                            <div class="dropdown-selected">Selecciona tu país</div>
+                            <div class="dropdown-list" id="dropdown-list"></div>
+                        </div>
+                        <div class="form-group">Cinturon:<input class="form-control" type="text" name="cinturon"
+                                placeholder="cinturon" value="{{item.cinturon}}" />
+                        </div>
+
+                        <div class="form-group">Grado:<input class="form-control" type="text" name="grado"
+                                placeholder="grado" value="{{item.grado}}" />
+                        </div>
+
+                        <div class="form-group">Fecha Nacimiento: <input class="form-control" type="date"
+                                name="fecha_nacimiento" placeholder="fecha_nacimiento"
+                                value="{{formatearEn item.fecha_nacimiento}}" />
+                        </div>
+
+
+                        <div class="form-group">Nacionalidad: <input class="form-control" type="text"
+                                name="nacionalidad" placeholder="nacionalidad" value="{{item.nacionalidad}}" />
+                        </div>
+
+                        <label for="pais">Selecciona tu país:</label>
+                        <select id="pais" name="pais" required>
+                            <option value="">--Seleccionar--</option>
+                        </select>
+
+                        <div class="form-group">Peso: <input class="form-control" type="number" name="peso"
+                                placeholder="peso" value="{{item.peso}}" />
+                        </div>
+
+                        <div class="form-group">NIF: <input class="form-control" type="text" name="nif"
+                                placeholder="nif" value="{{item.nif}}" />
+                        </div>
+
+
+
+
+
+
+                        <input type="hidden" name="pictureURL" placeholder="pictureURL" value="{{item.pictureURL}}" />
+                        {{!-- <img id="frame1" class="card-img-top avatar avatar-xl" alt="preview foto objeto"
+                            src="/img/iconos/{{item.pictureURL}}" /> --}}
+
+                        <div class="input-group mb-3">
+                            <img id="frame1" class="card-img-top avatar avatar-xl" alt="preview foto objeto"
+                                src="/img/iconos/{{item.pictureURL}}" />
+                            <input type="file" name="imagen" class="form-control" id="inputGroupFile01"
+                                onchange="preview1()">
+                        </div>
+
+                        <button class="btn btn-primary btn-block">Guardar</button>
+                    </form>
+                    <a class="btn btn-warning btn-block" href="javascript:void(0)" onclick="history.back();">Volver</a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function preview1() {
+        frame1.src = URL.createObjectURL(event.target.files[0]);
+    }
+    function clearImage1() {
+        document.getElementById('formFile1').value = null;
+        frame1.src = "";
+    }
+    // Cargar países desde el servidor
+    fetch('/api/paises')
+        .then(response => response.json())
+        .then(data => {
+            const select = document.getElementById('pais');
+            data.forEach(pais => {
+                const option = document.createElement('option');
+                option.value = pais.id;
+                option.innerHTML = `
+            <img src="http://purecatamphetamine.github.io/country-flag-icons/3x2/${pais.codigo_iso}.svg" class="flag" alt="Bandera de ${pais.nombre}">
+            ${pais.nombre}
+          `;
+                select.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error('Error al cargar los países:', error);
+        });
+
+    //-------------
+    // Simular datos obtenidos del servidor
+
+
+
+
+    // Crear elementos en la lista desplegable
+    fetch('/api/paises')
+        .then(response => response.json())
+        .then(data => {
+            // Referencias de elementos
+            const dropdown = document.querySelector('.dropdown');
+            const dropdownSelected = document.querySelector('.dropdown-selected');
+            const dropdownList = document.getElementById('dropdown-list');
+            data.forEach(pais => {
+                const item = document.createElement('div');
+                item.classList.add('dropdown-item');
+                item.setAttribute('data-value', pais.id); // Guardar el código ISO
+                item.innerHTML = `
+                <img src="http://purecatamphetamine.github.io/country-flag-icons/3x2/${pais.codigo_iso}.svg" class="flag" alt="Bandera de ${pais.nombre}">
+                ${pais.nombre}
+                 `;
+                dropdownList.appendChild(item);
+
+                // Evento de selección
+                item.addEventListener('click', () => {
+                    dropdownSelected.textContent = pais.nombre; // Mostrar país seleccionado
+                    dropdownList.style.display = 'none'; // Ocultar la lista
+                });
+            });
+        });
+    // Mostrar/ocultar la lista al hacer clic
+      const dropdown = document.querySelector('.dropdown');
+     const dropdownList = document.getElementById('dropdown-list');
+    const dropdownSelected = document.querySelector('.dropdown-selected');
+    dropdownSelected.addEventListener('click', () => {
+        const isOpen = dropdownList.style.display === 'block';
+        dropdownList.style.display = isOpen ? 'none' : 'block';
+    });
+
+    // Cerrar lista si se hace clic fuera del dropdown
+    document.addEventListener('click', event => {
+        if (!dropdown.contains(event.target)) {
+            dropdownList.style.display = 'none';
+        }
+    });
+</script>

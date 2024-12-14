@@ -1,0 +1,56 @@
+<div class="row m-5">
+    <div class=" col-md-3 col-sm-3 col-xs-12">
+        <h1>Fotos</h1>
+        {{#if imagen}}
+        <div class="miCarrusel">
+            {{#each imagen}}
+            <img src="/img/imagenes/{{../item.columnaA}}/{{this}}" alt="/img/imagenes/{{../item.columnaA}}/{{this}}">
+            {{/each}}
+        </div>
+        <form action="/items1/upload/{{item.columnaA}}" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="columnaA" value="{{item.columnaA}}">
+
+            <div class="input-group mb-3">
+                <div class="custom-file">
+                    <input type="file" name="imagen" class="custom-file-input" id="inputGroupFile02">
+                    <label class="custom-file-label" for="inputGroupFile02">Choose file</label>
+                </div>
+                <div class="input-group-append">
+                    <button type="submit" class="input-group-text">Upload</button>
+                </div>
+            </div>
+
+        </form>
+        <a href="/items1/fotos/{{item.columnaA}}" class="btn btn-primary btn-block"> GALERIA DE FOTOS</a>
+        {{/if}}
+    </div>
+
+    <div class="col-md-8 col-sm-9 col-xs-12">
+        <h1> Anuncio creado {{timeago anuncio.created_at}} </h1>
+        <p>{{anuncio.anuncio_id}}</p>
+        <div>
+            <p>{{anuncio.usuario}}</p>
+            <img class="avatar avatar-s" src="/img/profiles/{{anuncio.pictureURLusuario}}" alt="">
+        </div>
+        <div>
+            <p>{{anuncio.nombre}} </p>
+            <img class="miniatura" src="/img/iconos/{{anuncio.pictureURLactividad}}" alt="">
+        </div>
+        <p>{{anuncio.salario_propuesto}} € </p>
+        <div>
+            <p>{{ formatearSp anuncio.fecha_hora}} </p>
+            <p>{{ formatearHoras anuncio.fecha_hora}} </p>
+            <p> <ins>◷</ins>{{anuncio.duracion}} min</p>
+        </div>
+        <a class="btn btn-primary btn-xs" href="/anuncios/edit/{{anuncio.anuncio_id}}"> MODIFICAR</a>
+        <a class="btn btn-danger btn-xs" href="/anuncios/delete/{{anuncio.anuncio_id}}"> ELIMINAR </a>
+        <form action="/solicitudes/add/{{anuncio.anuncio_id}}" method="POST">
+            <button class="btn btn-secondary btn-xs" href="/anuncios/apply/{{anuncio.anuncio_id}}"> APLICAR </button>
+        </form>
+        <a class="btn btn-warning " href="javascript:void(0)" onclick="history.back();">Volver</a>
+
+    </div>
+
+</div>
+
+</div>

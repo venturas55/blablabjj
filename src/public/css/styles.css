@@ -1,0 +1,215 @@
+body {
+  background: #bec2be;
+  font-family: sans-serif;
+}
+
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+#formularioBusqueda {
+  padding: 5px;
+  height: 60px;
+  border: 2px solid black;
+  border-radius: 5px;
+  margin: 0 10px;
+}
+
+select {
+  text-align-last: center;
+}
+
+.avatar {
+  border: 1px solid rgba(197, 196, 196);
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.avatar-xs {
+  height: 32px;
+  width: 32px;
+}
+
+.avatar-s {
+  height: 64px;
+  width: 64px;
+}
+
+.avatar-m {
+  height: 96px;
+  width: 96px;
+}
+
+.avatar-l {
+  height: 128px;
+  width: 128px;
+}
+
+.avatar-xl {
+  height: 256px;
+  width: 256px;
+}
+
+.miniatura {
+  border: 1px solid var(--amarillo);
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
+  height: 32px;
+  width: 32px;
+}
+
+.fichaAnuncio {
+  /*  width: 500px; */
+  height: 200px;
+  display: flex;
+  flex-flow: row nowrap;
+  background: white;
+  margin: auto;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: -1px 15px 30px -12px black;
+  margin: 25px auto;
+  padding: 15px;
+  text-decoration: none;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.fa {
+  color: rgb(191, 0, 255);
+}
+
+a * {
+  text-decoration: none !important;
+  color: black;
+}
+
+.footer {
+  margin: 0px;
+  padding: 0px;
+  height: 40px;
+  color: white;
+}
+
+.footer div {
+  margin: 0px 10px;
+}
+
+.footer p {
+  margin: 0px;
+}
+
+.footer a {
+  margin: 5px;
+  height: 40px;
+  color: white;
+}
+
+.copyleft {
+  display: inline-block;
+  transform: rotate(180deg);
+}
+
+.flag {
+  width: 20px;
+  height: 15px;
+  object-fit: cover;
+}
+
+
+#week {
+  width: 100%;
+  display: grid !important;
+  grid-template-columns: repeat(7, minmax(15%, 1fr));
+
+}
+
+.hidden {
+  display: none;
+}
+.visible {
+  display: block;
+}
+
+.day {
+  place-self: center stretch;
+  width: 90%;
+  height: 60px;
+  background: #908d8d;
+  /* margin: 5px; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: black;
+  border-radius: 5%;
+  border: 1px solid black;
+
+}
+
+.clase {
+  width: 90%;
+  height: 60px;
+  background: #f2e2e2;
+  margin: 5px 0px;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 10px;
+  /*  font-weight: bold; */
+  color: black;
+  border-radius: 5%;
+  border: 1px solid black;
+}
+
+
+/* ========== calendario styles  ========= */
+
+.calendar {
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  margin: auto;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+.calendar-day,
+.calendar-cell {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+.calendar-cell {
+  cursor: pointer;
+}
+
+.calendar-cell:hover {
+  background-color: #f0f0f0;
+}
+
+
+/* ============ fin calendario styles ========= */
+
+
+
+
+@media (min-width: 992px) {}

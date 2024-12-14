@@ -1,0 +1,45 @@
+<div class="container p-2 mb-5">
+  <div class="row text-center m-4">
+    <div class="col-12 text-center">
+      <a href="/actividades/add" class="m-4"> <button class="btn btn-warning">NUEVA ACTIVIDAD</button></a>
+      <a class="btn btn-warning btn-block" href="javascript:void(0)" onclick="history.back();">Volver</a>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      {{#if actividades}}
+      <table class="mt-4 table table-dark table-striped">
+        <tr>
+          <th>Nombre</th>
+          <th>Descripcion</th>
+          <th>Imagen</th>
+          <th>Accion</th>
+
+        </tr>
+        {{#each actividades}}
+        <tr>
+          <td>{{actividad_id}} - {{nombre}}</td>
+          <td> - {{descripcion}} </td>
+          <td> <img src="/img/iconos/{{this.pictureURL}}" class="miniatura m-2" alt="avatar {{this.pictureURL}}'" />
+          </td>
+          <td>
+            <a href="/actividades/edit/{{this.actividad_id}}" class="text-warning"><i
+                class="fa-solid fa-pen"></i>Edit</a>
+            <a href="/actividades/delete/{{this.actividad_id}}" class="text-warning"><i
+                class="fa-solid fa-trash"></i>Del</a>
+          </td>
+        </tr>
+
+        {{/each}}
+      </table>
+      {{else}}
+      <div class="col-md-4-mx-auto">
+        <div class="card card-body text-center">
+          <tr>No hay actividades guardados <a href="/actividades/add"> Crea una!</a></tr>
+        </div>
+      </div>
+      {{/if}}
+    </div>
+  </div>
+</div>

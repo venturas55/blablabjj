@@ -1,0 +1,60 @@
+<div class="container p-2 mb-5">
+  <div class="row text-center m-4">
+    <div class="col-12 text-center">
+      <a href="/clases/add" class="m-4"> <button class="btn btn-warning">NUEVA CLASE</button></a>
+      <a href="/week/list"> <button class="btn btn-warning">GESTIONAR SEMANA</button></a>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 text-center">
+      {{#if clases}}
+      <table class="table table-dark table-striped">
+        <tr>
+          <th>Id</th>
+          <th>Actividad</th>
+          <th>Creador</th>
+          <th>Instructor</th>
+          <th>Dia</th>
+          <th>Hora</th>
+          <th>Duracion</th>
+
+          <th>Accion</th>
+
+        </tr>
+        {{#each clases}}
+        <tr>
+          <td>{{this.clase_id}}</td>
+          <td>{{this.actividad_id}} - {{this.nombre_actividad}} </td>
+          <td>{{this.creador_id}} {{this.nombre_creador}} {{this.apellidos_creador}} </td>
+          <td>{{this.instructor_id}} {{this.nombre_instructor}} {{this.apellidos_instructor}} </td>
+          <td>{{formatearSp this.fecha_hora}} </td>
+          <td>{{formatearHoras this.fecha_hora}}</td>
+          <td>{{this.duracion}}</td>
+          <td>
+            <a href="/clases/edit/{{this.clase_id}}" class="text-warning"><i class="fa-solid fa-pen"></i>Edit</a>
+            <a href="/clases/delete/{{this.clase_id}}" class="text-warning"><i class="fa-solid fa-trash"></i>Del</a>
+            <form action="/asistencias/add/{{this.clase_id}}" method="post">
+              <a onclick="this.parentNode.submit();" class="text-warning"><i class="fa-solid fa-user-plus"></i>Join </a>
+            </form>
+            {{!-- <a href="/asistencias/add/{{this.clase_id}}" class="text-warning"></a> --}}
+          </td>
+        </tr>
+
+        {{/each}}
+      </table>
+      {{else}}
+      <div class="col-md-4-mx-auto">
+        <div class="card card-body text-center">
+
+          <tr>No hay clases guardadas <a href="/clases/add"> Crea una!</a></tr>
+
+
+        </div>
+      </div>
+      {{/if}}
+
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,79 @@
+<div class="container pb-2 mb-5">
+	<div class="row">
+		<div class="col-md-12 text-center">
+			{{#if asistencias}}
+			 <table class="mt-4 table table-dark table-striped">
+				<tr>
+					<th>Id</th>
+					<th>Actividad</th>
+					<th>Creador</th>
+					<th>Instructor</th>
+					<th>Asistente</th>
+					<th>Dia</th>
+					<th>Hora</th>
+					<th>Duracion</th>
+
+					<th>Accion</th>
+
+				</tr>
+				{{#each asistencias}}
+				<tr>
+					<td>{{this.asistencia_id}}</td>
+					<td>{{this.actividad_id}} - {{this.nombre_actividad}} </td>
+					<td>{{this.creador_id}} {{this.nombre_creador}} {{this.apellidos_creador}} </td>
+					<td>{{this.instructor_id}} {{this.nombre_instructor}} {{this.apellidos_instructor}} </td>
+					<td>{{this.usuario_id}} {{this.nombre_usuario}} {{this.apellidos_usuario}} </td>
+					<td>{{formatearSp this.fecha_hora}} </td>
+					<td>{{formatearHoras this.fecha_hora}}</td>
+					<td>{{this.duracion}}</td>
+					<td>
+				{{!-- 		<a href="/asistencias/edit/{{this.asistencia_id}}" class="text-warning"><i
+								class="fa-solid fa-pen"></i>Edit</a> --}}
+						<a href="/asistencias/delete/{{this.asistencia_id}}" class="text-warning"><i
+								class="fa-solid fa-trash"></i>Del</a>
+			{{!-- 			<form action="/asistencias/remove/{{this.asistencia_id}}" method="post">
+							<a onclick="this.parentNode.submit();" class="text-warning"><i
+									class="fa-solid fa-user-plus"></i>Exit </a>
+						</form> --}}
+						{{!-- <a href="/asistencias/add/{{this.clase_id}}" class="text-warning"></a> --}}
+					</td>
+				</tr>
+
+				{{/each}}
+			</table>
+			{{/if}}
+
+		</div>
+	</div>
+
+</div>
+
+
+<!-- Button trigger modal -->
+<div class="text-center">
+	<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+		AÑADIR CLASE
+	</button>
+</div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+
+				<h1 class="modal-title fs-5" id="exampleModalLabel">CREACION DE CLASE SEMANAL</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				{{>crearClase}}
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary">Save changes</button>
+			</div>
+		</div>
+	</div>
+</div>
