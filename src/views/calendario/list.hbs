@@ -37,48 +37,25 @@
       </div>
 
 
-      <h3>Clases de la Semana</h3>
+      <h3>Clase del Dia</h3>
       <div id="clases-semana">
-
-        {{!-- Aquí se renderizarán las clases dinámicamente --}}
         <div class="row text-center m-4">
           <div class="table-responsive">
-            <table class="table table-dark table-bordered">
-              <thead class="thead-light">
-                <tr>
-                  <th>Lunes</th>
-                  <th>Martes</th>
-                  <th>Miércoles</th>
-                  <th>Jueves</th>
-                  <th>Viernes</th>
-                  <th>Sábado</th>
-                  <th>Domingo</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  {{#each clases}}
-                  <td>
-                    {{#each this}}
-                    <div class="card mb-2 dia{{getDay fecha_hora}}" >
-                      <div class="card-body">
-                        <h5 class="card-title">{{nombre_actividad}}</h5>
-                        <p class="card-text">{{formatearHoras fecha_hora}}</p>
-                        <p> {{duracion}}min</p>
-                        <a href="/clases/edit/{{clase_id}}" class="text-warning"><i class="fa-solid fa-pen"></i>Edit</a>
-                        <a href="/clases/delete/{{clase_id}}" class="text-warning"><i
-                            class="fa-solid fa-trash"></i>Del</a>
-                            <p>{{formatearSp fecha_hora}}</p>
-                      </div>
-                    </div>
-                    {{else}}
-                    <p>No hay clases</p>
-                    {{/each}}
-                  </td>
-                  {{/each}}
-                </tr>
-              </tbody>
-            </table>
+            {{#each clases}}
+            <div class="card mb-2 dia{{getDay fecha_hora}}">
+              <div class="card-body">
+                <h5 class="card-title">{{clase_id}} {{nombre_actividad}}</h5>
+                <p class="card-text">{{formatearHoras fecha_hora}}</p>
+                <p> {{duracion}}min</p>
+                <a href="/clases/edit/{{clase_id}}" class="text-warning"><i class="fa-solid fa-pen"></i>Edit</a>
+                <a href="/clases/delete/{{clase_id}}" class="text-warning"><i class="fa-solid fa-trash"></i>Del</a>
+                <p>{{formatearSp fecha_hora}}</p>
+                {{#each this.asistentes}}
+                  <p>{{this.nombre_usuario}}</p>
+                {{/each}}
+              </div>
+            </div>
+            {{/each}}
           </div>
         </div>
       </div>

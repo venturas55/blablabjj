@@ -1,4 +1,5 @@
 import { CalendarioModel } from '../models/calendarioMysql.js';
+import { AsistenciaModel } from '../models/asistenciaMysql.js';
 import * as url from 'url';
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 import { createRequire } from 'node:module';
@@ -11,7 +12,18 @@ export class CalendarioController {
     static async getAll(req, res) {
         let input = "";
         const clases = await CalendarioModel.getAll3m(input);
-        // Ordenar las clases por fecha
+        for(let i = 0; i < clases.length; i++) {
+            clases[i].asistentes = [];
+            var asistentes = await AsistenciaModel.getByClaseId({ id: clases[i].clase_id });
+            clases[i].asistentes=asistentes;
+
+        };
+     /*    console.log(clases[2].clase_id );
+        var asistentes = await AsistenciaModel.getByClaseId({ id: clases[2].clase_id });
+        clases[2].asistentes=asistentes;
+        console.log(clases[2]); */
+        console.log(clases[2].asistentes);
+        /* // Ordenar las clases por fecha
 
         const clasesOrdenadas = clases.sort((a, b) => new Date(a.fecha_hora) - new Date(b.fecha_hora));
 
@@ -26,7 +38,7 @@ export class CalendarioController {
         clasesPorDia.forEach((dia) => {
             dia.sort((a, b) => new Date(b.fecha_hora) - new Date(a.fecha_hora)); // Orden ascendente por hora
         });
-
+ */
 
         //======= PARA EL CALENDARIOS =================================
 
@@ -46,7 +58,7 @@ export class CalendarioController {
         //======= FIN PARA EL CALENDARIOS =================================
 
 
-        res.render("calendario/list", { layout: 'withcalendar', clases: clasesPorDia, mes: currentDate.format('MMMM'), anio: currentDate.format('YYYY'), dias, });
+        res.render("calendario/list", { layout: 'withcalendar', clases: clases, mes: currentDate.format('MMMM'), anio: currentDate.format('YYYY'), dias, });
     }
 
 

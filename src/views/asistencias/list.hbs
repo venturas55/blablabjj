@@ -4,7 +4,8 @@
 			{{#if asistencias}}
 			 <table class="mt-4 table table-dark table-striped">
 				<tr>
-					<th>Id</th>
+					<th>Id asistencia</th>
+					<th>Clase</th>
 					<th>Actividad</th>
 					<th>Creador</th>
 					<th>Instructor</th>
@@ -19,6 +20,7 @@
 				{{#each asistencias}}
 				<tr>
 					<td>{{this.asistencia_id}}</td>
+					<td>{{this.clase_id}}</td>
 					<td>{{this.actividad_id}} - {{this.nombre_actividad}} </td>
 					<td>{{this.creador_id}} {{this.nombre_creador}} {{this.apellidos_creador}} </td>
 					<td>{{this.instructor_id}} {{this.nombre_instructor}} {{this.apellidos_instructor}} </td>

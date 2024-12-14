@@ -10,13 +10,17 @@ export const readJSON = (path) => require(path)
 export class AsistenciaModel {
   static async getAll({input}) {
     let asistencias = await db.query(AsistenciasQuery);
-    console.log(asistencias);
     return asistencias;
   }
 
   static async getById({ id }) {
-    const actividad = await db.query("SELECT * FROM asistencias where asistencia_id=?", id);
-    return actividad;
+    const asistencias = await db.query(AsistenciasQuery + " where a.asistencia_id=?", id);
+    return asistencias;
+  }
+
+  static async getByClaseId({ id }) {
+    const asistencias = await db.query(AsistenciasQuery + "  where a.clase_id=?", id);
+    return asistencias;
   }
 
   static async create({ input }) {

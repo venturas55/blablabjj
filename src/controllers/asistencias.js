@@ -17,7 +17,6 @@ export class AsistenciaController {
     static async getById(req, res) {
         const { clase_id } = req.params
         const [item] = await AsistenciaModel.getById({ id: clase_id });
-        console.log(item);
         res.render("anuncios/plantilla", { item });
     }
     static async create(req, res) {

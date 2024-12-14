@@ -1,5 +1,5 @@
-# blablagym
-PFC for DAW
+# blablaBJJ
+
 
 ==================
           NUEVA INSTALACION
@@ -64,19 +64,19 @@ Para instalar MariaDB en Linux, puedes seguir estos pasos generales:
 
 Instalación del proyecto/app (Comun para Linux/Windows)
 ¡Ahora deberías tener tanto Node.js y npm como MariaDB instalados en tu sistema Windows/Linux!  Ahora solo faltaría instalar el proyecto en sí. Para ello, primeramente, elige la ruta de trabajo y descárgate el proyecto de github mediante:
-git clone https://github.com/venturas55/blablagym
-esto descargará el proyecto en una carpeta llamada ‘blablagym’.
-Ahora podremos hacer uso del archivo ubicado en la ruta ‘./blablagym/database/blablaGYM.sql’ que nos ayudará a crear la estructura de la base de datos, creando todas las tablas necesarias. Para ello accederemos por consola a MariaDB mediante:
+git clone https://github.com/venturas55/blablabjj
+esto descargará el proyecto en una carpeta llamada ‘blablabjj’.
+Ahora podremos hacer uso del archivo ubicado en la ruta ‘./blablabjj/database/blablabjj.sql’ que nos ayudará a crear la estructura de la base de datos, creando todas las tablas necesarias. Para ello accederemos por consola a MariaDB mediante:
 mysql -u db_user -p
 Al ejecutar dicho comando, el sistema nos solicitará la contraseña de acceso del usuario ‘db_user’. Una vez en la consola de MariaDB se puede proceder a crear todas las tablas mediante:
-source C:\...ruta...\blablagym\database\sannuevo.sql
+source C:\...ruta...\blablabjj\database\sannuevo.sql
 Si se deseara poblar la base de datos con datos de prueba se podría ejecutar 
-source C:\...ruta...\blablagym\database\poblarDDBB.sql
+source C:\...ruta...\blablabjj\database\poblarDDBB.sql
 Una vez creada la base de datos habría que crear el archivo ‘.env’ que servirá para configurar la conexión con la base de datos. El contenido del ‘,env’ será:
                         DB_HOST=localhost
                         DB_USER=db_user
                         DB_PASS=db_pass
-                        DB_NAME=blablagym
+                        DB_NAME=blablabjj
 
 Donde ‘db_user’ y ‘db_pass’ serán las credenciales de acceso a tu base de datos MariaDB. El nombre de la base de datos en caso de usar el archivo ubicado en la ruta ./pfcdaw/database/sannuevo.sql sería sanpfcdaw.
 
@@ -86,8 +86,8 @@ Donde ‘db_user’ y ‘db_pass’ serán las credenciales de acceso a tu base 
          RESUMEN NUEVA INSTALACION PUNTOS CLAVE
 ============================================================
 1.- INSTALACION NODEJS/EXPRESS SERVER:
-    git clone https://github.com/venturas55/blablagym
-    cd blablagym
+    git clone https://github.com/venturas55/blablabjj
+    cd blablabjj
     crear .env con datos con las variables 
                                             DB_HOST=localhost
                                             DB_USER=usuario
@@ -98,15 +98,15 @@ Donde ‘db_user’ y ‘db_pass’ serán las credenciales de acceso a tu base 
 2.- INSTALACION BASE DE DATOS
 Para crear la estructura de tablas con un usuario
 mysql -u root -p 
-source \blablagym\database\blablagym.sql
-source \blablagym\database\blablagym.sql
-source /home/ubuntu/blablagym/database/blablagym.sql
+source \blablabjj\database\blablabjj.sql
+source \blablabjj\database\blablabjj.sql
+source /home/ubuntu/blablabjj/database/blablabjj.sql
 
 
 Para poblarla de datos:
-source \blablagym\database\poblarDDBB.sql
-source \blablagym\database\poblarDDBB.sql
-source /home/ubuntu/blablagym/database/blablagym.sql
+source \blablabjj\database\poblarDDBB.sql
+source \blablabjj\database\poblarDDBB.sql
+source /home/ubuntu/blablabjj/database/blablabjj.sql
 
 
 
