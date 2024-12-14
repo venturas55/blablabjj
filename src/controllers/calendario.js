@@ -12,6 +12,8 @@ export class CalendarioController {
     static async getAll(req, res) {
         let input = "";
         const clases = await CalendarioModel.getAll3m(input);
+
+        //Se añade la info de los asistentes de cada clase
         for (let i = 0; i < clases.length; i++) {
             clases[i].asistentes = [];
             var asistentes = await AsistenciaModel.getByClaseId({ id: clases[i].clase_id });

@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const nextMonthButton = document.getElementById("nextMonth");
 
     let currentDate = new Date(); // Fecha actual
+    //document.getElementById("diaseleccionado").innerHTML = "Dia " + currentDate.toLocaleString() ; 
 
     // Función para renderizar el calendario
     function renderCalendar(date) {
@@ -50,7 +51,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             currentDay.setDate(currentDay.getDate() + 1);
         }
-
         attachEventListeners(); // Añadir eventos a los nuevos días
     }
 
@@ -82,6 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Simular carga de clases para la semana
     function loadClassesForDay(selectedDate) {
+        console.log(selectedDate);
         var clases = selectedDate.split("/");
         var clase = "dia" + clases[0] + clases[1] + clases[2];
 
@@ -92,17 +93,18 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         const cardVisibles = document.querySelectorAll(`.${clase}`);
-        // Aplicar 'display: none' a cada elemento
+        // Aplicar 'display: block' a los elementos clickados en el dia
         cardVisibles.forEach((element) => {
             element.style.display = "block";
         });
 
-
-
-
-
+        document.getElementById("diaseleccionado").innerHTML = "Dia " + selectedDate;
     }
+
 
     // Inicializar calendario
     renderCalendar(currentDate);
+
+    // Inicializar clases del día
+    loadClassesForDay(currentDate.toLocaleDateString()); 
 });
