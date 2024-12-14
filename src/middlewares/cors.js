@@ -3,8 +3,11 @@ import cors from 'cors';
 const ACCEPTED_ORIGINS = [
     'http://localhost:8080',
     'http://localhost:4000',
-    'https://localhost:5000',
+    'https://localhost:7001',
     'https://valenciaport.com',
+    'https://adriandeharo.es',
+    'http://adriandeharo.es',
+    'http://adriandeharo.es:7001',
 ];
 
 
