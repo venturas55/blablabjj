@@ -13,6 +13,7 @@ export const clasesRouter = Router();
 clasesRouter.get("/list", ClaseController.getAll);
 clasesRouter.get("/list/:id", ClaseController.getById);
 clasesRouter.get("/week", ClaseController.getWeek);
+clasesRouter.get("/ver/:id", ClaseController.getClase);
 
 //CREATE
 clasesRouter.get("/add", funciones.isAuthenticated, async (req, res) => {

@@ -25,15 +25,9 @@ export class AsistenciaController {
             clase_id,
             usuario_id: req.user.id,
         };
-        console.log("Va");
-        console.log(item);
-
-        //const solicitudes = await AsistenciaModel.getAll({ monitor_id: item.monitor_id });
-
-
         const a = await AsistenciaModel.create({ input: item });
         req.flash("success", "Solicitud realizada correctamente");
-        res.redirect("/asistencias/list"); //te redirige una vez insertado el item
+       // res.redirect("/asistencias/list"); //te redirige una vez insertado el item
 
     }
     static async delete(req, res) {

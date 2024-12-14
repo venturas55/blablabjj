@@ -1,14 +1,37 @@
-<div class="row m-5">
-      <h2>usuario</h2>
+<div class="container p-2">
+    <h1>Cambios en la clase {{item.clase_id}} - {{item.nombre_actividad}} </h1>
+    <div class="row">
 
-    <div class="col-md-8 col-sm-9 col-xs-12">
-     <p>{{usuario.id}}</p>
+        <div class="col-12 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <h3> {{item.nombre_actividad}} </h3>
+                    <p>{{item.descripcion_actividad}}</p>
 
-     <p>{{usuario.nombre}}</p>
-     <p>{{usuario.apellido}}</p>
-     <p>Cinturon:  {{usuario.cinturon}}-{{usuario.grado}}</p>
+                    <div class="form-group">Fecha: {{formatearSp item.fecha_hora}} a las {{formatearHoras item.fecha_hora}} creado por {{item.nombre_creador }}</div>
+                    <div class="form-group">Duracion:{{item.duracion}} min </div>
+                    <div class="form-group"> Instructor: {{item.nombre_instructor }}</div>
+
+                    <h2>Asistentes</h2>
+                    <div>
+                        {{#each asistentes}}
+                        {{this.nombre_usuario}}
+                        {{/each}}
+                    </div>
+
+
+                    <div class="card-footer">
+                        <form action="/asistencias/add/{{item.clase_id}}" method="post">
+                            <a onclick="this.parentNode.submit();" class="text-warning"><i
+                                    class="fa-solid fa-user-plus"></i>Join </a>
+                        </form>
+                        <a class="btn btn-warning btn-block" href="javascript:void(0)"
+                            onclick="history.back();">Volver</a>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
     </div>
-
-</div>
-   <a class="btn btn-warning btn-block" href="javascript:void(0)" onclick="history.back();">Volver</a>
 </div>

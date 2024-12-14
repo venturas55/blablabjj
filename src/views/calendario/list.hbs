@@ -42,19 +42,21 @@
         <div class="row text-center m-4">
           <div class="table-responsive">
             {{#each clases}}
-            <div class="card mb-2 dia{{getDay fecha_hora}}">
-              <div class="card-body">
-                <h5 class="card-title">{{clase_id}} {{nombre_actividad}}</h5>
-                <p class="card-text">{{formatearHoras fecha_hora}}</p>
-                <p> {{duracion}}min</p>
-                <a href="/clases/edit/{{clase_id}}" class="text-warning"><i class="fa-solid fa-pen"></i>Edit</a>
-                <a href="/clases/delete/{{clase_id}}" class="text-warning"><i class="fa-solid fa-trash"></i>Del</a>
-                <p>{{formatearSp fecha_hora}}</p>
-                {{#each this.asistentes}}
+            <a href="/clases/ver/{{clase_id}}">
+              <div class="card mb-2 dia{{getDay fecha_hora}}">
+                <div class="card-body">
+                  <h5 class="card-title">{{clase_id}} {{nombre_actividad}}</h5>
+                  <p class="card-text">{{formatearHoras fecha_hora}}</p>
+                  <p> {{duracion}}min</p>
+                  <a href="/clases/edit/{{clase_id}}" class="text-warning"><i class="fa-solid fa-pen"></i>Edit</a>
+                  <a href="/clases/delete/{{clase_id}}" class="text-warning"><i class="fa-solid fa-trash"></i>Del</a>
+                  <p>{{formatearSp fecha_hora}}</p>
+                  {{#each this.asistentes}}
                   <p>{{this.nombre_usuario}}</p>
-                {{/each}}
+                  {{/each}}
+                </div>
               </div>
-            </div>
+            </a>
             {{/each}}
           </div>
         </div>
