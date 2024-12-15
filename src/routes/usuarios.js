@@ -69,16 +69,17 @@ usuariosRouter.get("/delete/:id", funciones.isAuthenticated, UsuarioController.d
 
 
 //UPDATE
-/* usuariosRouter.get("/edit", funciones.isAuthenticated, async (req, res) => {
-  const { id } = req.user.id;
+usuariosRouter.get("/edit", funciones.isAuthenticated, async (req, res) => {
+  const { id } = req.user;
+  const item = await UsuarioModel.getById( { id });
   const paises = await ExtraModel.getAllPaises();
-  res.render("profile/edit", { item: id,paises });
-}); */
-usuariosRouter.get("/edit/:id", funciones.isAuthenticated,funciones.isMaster, async (req, res) => {
+  res.render("profile/edit", { item: item[0],paises });
+});
+usuariosRouter.get("/edit/:id", funciones.isAuthenticated, funciones.isMaster,async (req, res) => {
   const { id } = req.params;
   const item = await UsuarioModel.getById({ id });
   const paises = await ExtraModel.getAllPaises();
   res.render("profile/edit", { item: item[0],paises });
 });
-/* usuariosRouter.post("/edit", funciones.isAuthenticated,  UsuarioController.update); */
-usuariosRouter.post("/edit/:id", funciones.isAuthenticated,  UsuarioController.update);
+
+usuariosRouter.post("/edit/:id", funciones.isAuthenticated, UsuarioController.update);

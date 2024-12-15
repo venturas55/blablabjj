@@ -111,10 +111,10 @@ export class WeekController {
     }
 
     static async cloneWeek(req, res) {
-        //const del = await ClaseModel.delete3m({ input: "item" });
+        const del = await ClaseModel.delete3m();
         const nuevaACt = await WeekModel.cloneWeek({ input: "item" });
-        req.flash("success", "Clases insertada correctamente");
-        res.redirect("/clases/list"); //te redirige una vez insertado el item
+        req.flash("success", "Clases insertadas correctamente ");
+        res.redirect("/week/list"); //te redirige una vez insertado el item
     }
 
     static async delete(req, res) {

@@ -101,6 +101,27 @@ helpers.isNotMaster = (req, res, next) => {
     }
     return res.redirect('/noperm');
 }
+helpers.hasPermission = async (req, res, next) => {
+    //BIEN LEE POR PARAMS O POR BODY
+    var logged_user_id = req.params.id;
+    if (id_partida == null)
+        id_partida = req.body.id_partida;
+    const partida = (await db.query("select * from partidas where id = ?", [id_partida]))[0];
+    //console.log(partida);
+    //si es admin
+    if (req.user && req.user.privilegio == "admin") {
+        return next();
+    }
+    //Si es el creador de la partida
+    if (partida.id_creador == req.user.id)
+        return next();
+    //si opera sobre el mismo.
+    if (req.params.id_jugador && req.params.id_jugador == req.user.id)
+        return next();
+
+    var error = "No tienes permisos";
+    return res.render('error', { error });
+}
 
 helpers.insertarLog = async(usuario, accion, observacion) => {
     const log = {

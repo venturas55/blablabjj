@@ -78,24 +78,16 @@ membresiasRouter.post('/create-checkout-session', async (req, res) => {
 });
 
 membresiasRouter.get('/success', async (req, res) => {
-    //console.log(">" + req.query.session_id + " " + req.user.id);
     const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
-    //console.log(JSON.stringify(session));
     const facturacion = { usuario_id: req.user.id, session_id: req.query.session_id, customer_id: session.customer, titular: session.customer_details.name, correo: session.customer_details.email, subscription: session.subscription }
-    //console.log((facturacion));
 
     const [q] = await ExtraModel.getFacturacionByUserId(req.user.id);
     if (q) {
-        //console.log("Actualizando " + q.id + ": " + q.session_id + " a  " + facturacion.session_id);
-        //console.log(facturacion);
         const r = await ExtraModel.updateFacturacion(facturacion, q.id);
         console.log(r);
     } else {
         await ExtraModel.createFacturacion(facturacion);
-        //console.log("Creando " + facturacion.session_id);
     }
-
-
     res.render("membresia/success");
 });
 
@@ -104,37 +96,20 @@ membresiasRouter.get('/cancel', async (req, res) => {
 });
 
 membresiasRouter.post('/create-portal-session', async (req, res) => {
-    // For demonstration purposes, we're using the Checkout session to retrieve the customer ID.
-    // Typically this is stored alongside the authenticated user in your database.
     const [q] = await ExtraModel.getFacturacionByUserId(req.user.id);
-    //console.log(q);
     const checkoutSession = await stripe.checkout.sessions.retrieve(q.session_id);
-    //console.log("checkoutSession");
-    //console.log(checkoutSession);
 
     const portalSession = await stripe.billingPortal.sessions.create({
         customer: checkoutSession.customer,
         return_url: `${process.env.BASE_URL}/usuarios/get/${q.usuario_id}`,
     });
-    //console.log("portalSession");
-    //console.log(portalSession);
-
     res.redirect(303, portalSession.url);
 
 });
 
-membresiasRouter.get('/clientes/:cliente_id', funciones.isAuthenticated, async (req, res) => {
-    const portalSession = await stripe.billingPortal.sessions.create({
-        customer: req.params.cliente_id,
-        return_url: 'http://localhost:7001/usuarios/get/' + req.params.cliente_id
-    });
-    //console.log(portalSession);
-    res.redirect(portalSession.url);
-});
-
 // This is your Stripe CLI webhook secret for testing your endpoint locally.
-
 membresiasRouter.post('/webhook', express.raw({ type: 'application/json' }), (req, res) => {
+    console.log("webhook post de nodejs");
     const sig = req.headers['stripe-signature'];
 
     let event;

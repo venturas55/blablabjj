@@ -41,7 +41,7 @@ clasesRouter.get("/addClassWeek", funciones.isAuthenticated, async (req, res) =>
   }
 });
 
-clasesRouter.post("/addClassWeek", funciones.isAuthenticated, ClaseController.addClassWeek);
+/* clasesRouter.post("/addClassWeek", funciones.isAuthenticated, ClaseController.addClassWeek); */
 clasesRouter.post("/add", funciones.isAuthenticated, ClaseController.create);
 
 /* clasesRouter.post("/week", funciones.isAuthenticated, ClaseController.createWeek);

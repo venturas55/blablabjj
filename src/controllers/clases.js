@@ -71,7 +71,7 @@ export class ClaseController {
 
     }
 
-    static async addClassWeek(req, res) {
+  /*   static async addClassWeek(req, res) {
         const result = validateClase(req.body);
 
         if (!result.success) {
@@ -101,9 +101,9 @@ export class ClaseController {
         req.flash("success", "Clase insertada correctamente");
         res.redirect("/clases/week"); //te redirige una vez insertado el item
 
-    }
+    } */
 
-    static async duplicateWeek(req, res) {
+/*     static async duplicateWeek(req, res) {
         const result = validateClase(req.body);
 
         if (!result.success) {
@@ -130,9 +130,9 @@ export class ClaseController {
         req.flash("success", "Clase insertada correctamente");
         res.redirect("/clases/list"); //te redirige una vez insertado el item
 
-    }
+    } */
 
-    static async cloneWeek(req, res) {
+  /*   static async cloneWeek(req, res) {
         const result = validateClase(req.body);
 
         if (!result.success) {
@@ -159,7 +159,7 @@ export class ClaseController {
         req.flash("success", "Clase insertada correctamente");
         res.redirect("/clases/list"); //te redirige una vez insertado el item
 
-    }
+    } */
 
     static async delete(req, res) {
         const { id } = req.params
