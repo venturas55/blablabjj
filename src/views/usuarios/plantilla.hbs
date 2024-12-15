@@ -23,7 +23,7 @@
                         </div>
                     </form>
 
-                    <h4> {{usuario.usuario}} <span> </span> <span class="fi fi-es">{{usuario.nacionalidad}}</span> </h4>
+                    <h4> {{usuario.usuario}}  <span> </span> <span class="fi fi-{{minusculas usuario.codigo_iso}}"></span> </h4>
                     <p>{{usuario.nombre}} {{usuario.apellidos}}</p>
                     <p>telefono:+{{usuario.pais_telefono}} {{usuario.telefono}} </p>
                     <p>Cinturon: <span id="cinturon">{{usuario.cinturon}}</span> <span

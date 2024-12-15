@@ -6,6 +6,10 @@ helpers.timeago = (timestamp) => {
   return format(timestamp);
 }
 
+helpers.minusculas = (string) => {
+  return string.toLowerCase();
+}
+
 //Este es el formateo necesario para encajar una fecha en un input de type="date"
 helpers.formatearEn = (timestamp) => {
   if (timestamp) {
