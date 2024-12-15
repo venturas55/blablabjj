@@ -39,6 +39,7 @@
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "sessions": "^0.0.2-7",
+    "stripe": "^17.4.0",
     "timeago.js": "^4.0.2",
     "uuid": "^9.0.1",
     "zod": "3.22.4"

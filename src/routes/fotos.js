@@ -67,7 +67,7 @@ fotosRouter.post('/profile/upload/:id', funciones.isAuthenticated, uploadFoto, a
     await db.query("UPDATE usuarios set  ? WHERE id=?", [usuario, id]);
     funciones.insertarLog(req.user.usuario, "UPDATE fotografia perfil", "");
     req.flash("success", "Foto de perfil actualizada con exito");
-    res.redirect("/profile");
+    res.redirect("/usuarios/get/"+id);
 });
 fotosRouter.get("/profile/borrarfoto/:id/:url", funciones.isAuthenticated, async (req, res) => {
     //console.log(req.params);

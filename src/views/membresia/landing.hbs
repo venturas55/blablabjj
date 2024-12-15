@@ -1,0 +1,97 @@
+<div class="container p-1 mb-5">
+    <div class="row text-center">
+        <div class="col-12">
+            <h1>Selecciona Membresía</h1>
+            {{user.id}} {{user.nombre}} {{user.apellidos}}
+
+            <div class="card mx-auto my-2" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">BJJ femeninos</h5>
+                    <p class="card-text">Acceso a todas las clases de BJJ para mujeres. 40.50€</p>
+                    <form method="POST" name="subscriptionform" action="/membresia/create-checkout-session">
+                        <input type="hidden" name="plan" value="bjjfemenino">
+                        <input type="hidden" name="usuario" value="{{user.id}}">
+                        <button class="btn btn-primary">BUY NOW</button>
+                    </form>
+                </div>
+            </div>
+{{!--             <div class="card mx-auto my-2" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">Niños 3-5 años</h5>
+                    <p class="card-text">Pago automatico mensual. 42.50€</p>
+                    <form method="POST" name="subscriptionform" action="/membresia/create-checkout-session">
+                        <input type="hidden" name="amount" value="42.5">
+                        <input type="hidden" name="usuario" value="{{user.id}}">
+                        <button class="btn btn-primary">BUY NOW</button>
+                    </form>
+                </div>
+            </div> 
+            <div class="card mx-auto my-2" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">Niños 6-9 años</h5>
+                    <p class="card-text">Pago automatico mensual. 48.40€</p>
+                    <form method="POST" name="subscriptionform" action="/membresia/create-checkout-session">
+                        <input type="hidden" name="amount" value="48.4">
+                        <input type="hidden" name="usuario" value="{{user.id}}">
+                        <button class="btn btn-primary">BUY NOW</button>
+                    </form>
+                </div>
+            </div>
+            <div class="card mx-auto my-2" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">Niños 9-13 años</h5>
+                    <p class="card-text">Pago automatico mensual. 54.50€</p>
+                    <form method="POST" name="subscriptionform" action="/payment/create-checkout-session">
+                        <input type="hidden" name="amount" value="54.5">
+                        <input type="hidden" name="usuario" value="{{user.id}}">
+                        <button class="btn btn-primary">BUY NOW</button>
+                    </form>
+                </div>
+            </div>
+            <div class="card mx-auto my-2" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">MMA</h5>
+                    <p class="card-text">Acceso a las clases de MMA. 55€</p>
+                    <form method="POST" name="subscriptionform" action="/payment/create-checkout-session">
+                        <input type="hidden" name="amount" value="55">
+                        <input type="hidden" name="usuario" value="{{user.id}}">
+                        <button class="btn btn-primary">BUY NOW</button>
+                    </form>
+                </div>
+            </div>
+            <div class="card mx-auto my-2" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">NOGI</h5>
+                    <p class="card-text">Acceso a las clases de NOGI. 60€</p>
+                    <form method="POST" name="subscriptionform" action="/payment/create-checkout-session">
+                        <input type="hidden" name="amount" value="60">
+                        <input type="hidden" name="usuario" value="{{user.id}}">
+                        <button class="btn btn-primary">BUY NOW</button>
+                    </form>
+                </div>
+            </div>--}}
+            <div class="card mx-auto my-2" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">BJJ ADULTOS</h5>
+                    <p class="card-text">Acceso a las clases de BJJ y de NOGI. 72.60€</p>
+                    <form method="POST" name="subscriptionform" action="/membresia/create-checkout-session">
+                        <input type="hidden" name="plan" value="bjjadultos">
+                        <input type="hidden" name="usuario" value="{{user.id}}">
+                        <button class="btn btn-primary">BUY NOW</button>
+                    </form>
+                </div>
+            </div>
+        {{!--     <div class="card mx-auto my-2" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">ILIMITADO</h5>
+                    <p class="card-text">Todas las modalidades con clases ilimitadas. 85€</p>
+                    <form method="POST" name="subscriptionform" action="/payment/create-checkout-session">
+                        <input type="hidden" name="amount" value="85">
+                        <input type="hidden" name="usuario" value="{{user.id}}">
+                        <button class="btn btn-primary">BUY NOW</button>
+                    </form>
+                </div>
+            </div> --}}
+        </div>
+    </div>
+</div>

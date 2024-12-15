@@ -302,23 +302,23 @@ h1 {
 }
 
 .belt .stripe:nth-child(1) {
-  right: 10px;
-}
-
-.belt .stripe:nth-child(2) {
   right: 20px;
 }
 
-.belt .stripe:nth-child(3) {
+.belt .stripe:nth-child(2) {
   right: 30px;
 }
 
-.belt .stripe:nth-child(4) {
+.belt .stripe:nth-child(3) {
   right: 40px;
 }
 
-.belt .stripe:nth-child(5) {
+.belt .stripe:nth-child(4) {
   right: 50px;
+}
+
+.belt .stripe:nth-child(5) {
+  right: 60px;
 }
 
 /* Colores de los cinturones */

@@ -1,6 +1,6 @@
 <div class="container p-2 mb-5">
-{{user.nombre}}
-{{!--   {{#if  esMaster}} --}}
+  {{user.nombre}}
+  {{!-- {{#if esMaster}} --}}
   <div class="row text-center m-4">
     <div class="col-12 text-center">
       <a href="/clases/add"> <button class="btn btn-warning">NUEVA CLASE</button></a>
@@ -55,12 +55,14 @@
                   <a href="/clases/delete/{{clase_id}}" class="text-warning"><i class="fa-solid fa-trash"></i>Del</a>
                   <p>{{formatearSp fecha_hora}}</p>
                   {{#each this.asistentes}}
-                  {{#if this.pictureURL_usuario}}
-                  <img src="/img/profiles/{{this.pictureURL_usuario}}" class="avatar avatar-xs m-2"
-                    alt="avatar {{this.pictureURL_usuario}}'" />
-                  {{else}}
-                  <img src="/img/profiles/default.jpg" class="avatar avatar-xs m-2" alt="default avatar" />
-                  {{/if}}
+                  <a href="/usuarios/get/{{this.usuario_id}}">
+                    {{#if this.pictureURL_usuario}}
+                    <img src="/img/profiles/{{this.pictureURL_usuario}}" class="avatar avatar-xs m-2"
+                      alt="avaatar {{this.pictureURL_usuario}}'" />
+                    {{else}}
+                    <img src="/img/profiles/default.jpg" class="avatar avatar-xs m-2" alt="default avatar" />
+                    {{/if}}
+                  </a>
                   {{/each}}
                 </div>
               </div>

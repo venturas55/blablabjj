@@ -11,24 +11,25 @@
       {{#if usuarios}}
       <table class="mt-4 table table-dark table-striped">
         <tr>
+          <th>Imagen</th>
           <th>Nombre</th>
           <th>Apellido</th>
           <th>Nacionalidad</th>
           <th>Nacimiento</th>
           <th>Instructor</th>
-          <th>Imagen</th>
           <th>Accion</th>
 
         </tr>
         {{#each usuarios}}
         <tr>
-          <td>{{id}} - {{nombre}}</td>
-          <td> {{apellidos}} </td>
+               <td> 
+            {{>avatar size="xs" url=this.pictureURL}}
+          </td>
+          <td>{{nombre}}</td>
+          <td>{{apellidos}} </td>
           <td>{{nacionalidad}}</td>
           <td>{{formatearSp fecha_nacimiento}}</td>
           <td>{{instructor}}</td>
-          <td> <img src="/img/iconos/{{this.pictureURL}}" class="miniatura m-2" alt="avatar {{this.pictureURL}}'" />
-          </td>
           <td>
             <a href="/usuarios/edit/{{this.id}}" class="text-warning"><i class="fa-solid fa-pen"></i>Edit</a>
             <a href="/usuarios/delete/{{this.id}}" class="text-warning"><i class="fa-solid fa-trash"></i>Del</a>
