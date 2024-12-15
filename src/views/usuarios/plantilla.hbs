@@ -28,7 +28,8 @@
                     <p>telefono:+{{usuario.pais_telefono}} {{usuario.telefono}} </p>
                     <p>Cinturon: <span id="cinturon">{{usuario.cinturon}}</span> <span
                             id="grados">{{usuario.grado}}</span> </p>
-                    <div id="belt-container"> </div>
+                    {{>cinturon cinturon=usuario.cinturon grado=this.grado}}
+
                     <p>Nacimiento {{formatearSp usuario.fecha_nacimiento}} Peso: {{usuario.peso}}Kg</p>
                     <p>Correo: {{usuario.email}} </p>
 
@@ -43,53 +44,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    var colores = document.getElementById("cinturon").innerHTML.split("-");
-    var color = colores[0];
-    var aux = colores[1];
-    var grados = document.getElementById("grados").innerHTML;
-    console.log(grados);
-    grados = grados.split('I').length - 1;
-
-    function crearCinturon(color, grados, coloraux) {
-        console.log("Dibujando cinturon: " + color + " " + grados + " " + coloraux);
-
-        const beltContainer = document.getElementById('belt-container');
-
-        // Crear el div del cinturón
-        const belt = document.createElement('div');
-        belt.classList.add('belt', color); // Añadir la clase del color al cinturón
-        if (coloraux) {
-            const alongband = document.createElement('div');
-            if (coloraux == 'blanco') {
-                alongband.classList.add('along-band-blanco');
-            } else {
-                alongband.classList.add('along-band-negro');
-            }
-            belt.appendChild(alongband);
-
-        }
-
-        // Añadir las rayas de grados al cinturón
-        for (let i = 0; i < grados; i++) {
-            const stripe = document.createElement('div');
-            stripe.classList.add('stripe');
-            belt.appendChild(stripe);
-        }
-
-        //Añadir la banda final
-        const finalband = document.createElement('div');
-        finalband.classList.add('final-band');
-        belt.appendChild(finalband);
-
-        // Si el cinturón es negro, aplicar la banda roja
-        if (color === 'negro') {
-            finalband.classList.add('final-band-red');
-        }
-        // Añadir el cinturón al contenedor
-        beltContainer.appendChild(belt);
-    }
-    crearCinturon(color, grados,aux);
-
-</script>
