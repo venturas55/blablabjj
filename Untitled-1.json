@@ -1,0 +1,99 @@
+{
+    "id": "cs_test_a1pDgF9xy5ohztX8COU1fYxjsuGTRBBkhWer9hNqdOBhJP3YrHfYuSL3sq",
+    "object": "checkout.session",
+    "adaptive_pricing": null,
+    "after_expiration": null,
+    "allow_promotion_codes": null,
+    "amount_subtotal": 4250,
+    "amount_total": 4250,
+    "automatic_tax": {
+        "enabled": false,
+        "liability": null,
+        "status": null
+    },
+    "billing_address_collection": "auto",
+    "cancel_url": "http://localhost:7001/membresia/cancel",
+    "client_reference_id": null,
+    "client_secret": null,
+    "consent": null,
+    "consent_collection": null,
+    "created": 1734271615,
+    "currency": "eur",
+    "currency_conversion": null,
+    "custom_fields": [],
+    "custom_text": {
+        "after_submit": null,
+        "shipping_address": null,
+        "submit": null,
+        "terms_of_service_acceptance": null
+    },
+    "customer": "cus_RP6gjk9zSSsmPN",
+    "customer_creation": "always",
+    "customer_details": {
+        "address": {
+            "city": null,
+            "country": "ES",
+            "line1": null,
+            "line2": null,
+            "postal_code": null,
+            "state": null
+        },
+        "email": "uncorreito@email.es",
+        "name": "Guillermhe",
+        "phone": null,
+        "tax_exempt": "none",
+        "tax_ids": []
+    },
+    "customer_email": null,
+    "expires_at": 1734358014,
+    "invoice": "in_1QWITLKIeHEOMKlDwykQAt9J",
+    "invoice_creation": null,
+    "livemode": false,
+    "locale": null,
+    "metadata": {},
+    "mode": "subscription",
+    "payment_intent": null,
+    "payment_link": null,
+    "payment_method_collection": "always",
+    "payment_method_configuration_details": {
+        "id": "pmc_1QW5y9KIeHEOMKlDA2inbtCb",
+        "parent": null
+    },
+    "payment_method_options": {
+        "card": {
+            "request_three_d_secure": "automatic"
+        }
+    },
+    "payment_method_types": [
+        "card",
+        "link"
+    ],
+    "payment_status": "paid",
+    "phone_number_collection": {
+        "enabled": false
+    },
+    "recovered_from": null,
+    "saved_payment_method_options": {
+        "allow_redisplay_filters": [
+            "always"
+        ],
+        "payment_method_remove": null,
+        "payment_method_save": null
+    },
+    "setup_intent": null,
+    "shipping_address_collection": null,
+    "shipping_cost": null,
+    "shipping_details": null,
+    "shipping_options": [],
+    "status": "complete",
+    "submit_type": null,
+    "subscription": "sub_1QWITLKIeHEOMKlDouJBPDNa",
+    "success_url": "http://localhost:7001/membresia/success?session_id={CHECKOUT_SESSION_ID}",
+    "total_details": {
+        "amount_discount": 0,
+        "amount_shipping": 0,
+        "amount_tax": 0
+    },
+    "ui_mode": "hosted",
+    "url": null
+}

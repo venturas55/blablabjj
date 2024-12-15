@@ -11,7 +11,7 @@ authRouter.get('/signup',funciones.isNotAuthenticated,(req,res)=>{
 });
 
 authRouter.post('/signup', passport.authenticate('local.signup',{
-        successRedirect: '/profile',
+        successRedirect: '/',
         failureRedirect: '/signup',
         passReqToCallback: true,
         failureFlash: true
@@ -23,9 +23,10 @@ authRouter.get('/signin',funciones.isNotAuthenticated,(req,res)=>{
 });
 
 authRouter.post('/signin',(req,res,next)=>{
-    console.log("voy auth");
+    console.log((req));
     passport.authenticate('local.signin',{
-       successRedirect: '/profile',
+
+       successRedirect: '/',
        failureRedirect: '/signin',
        failureFlash:true
 

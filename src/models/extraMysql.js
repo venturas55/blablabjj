@@ -10,13 +10,30 @@ export class ExtraModel {
     return paises;
   }
 
-  static async factcreateFacturacion({ input }) {
+  static async createFacturacion( input ) {
     try {
       const a = await db.query("INSERT INTO facturacion set ?", [input]);
       return a;
     } catch (error) {
-      console.error(error.code);
+      console.error(error.code + ": " + error.message);
+      console.error(error);
       return false;
     }
   }
+
+  static async updateFacturacion( input,id ) {
+    try {
+      const a = await db.query("UPDATE facturacion set ? WHERE id = ?", [input, id,]);
+      return a;
+    } catch (error) {
+      console.error(error.code + ": " + error.message);
+      console.error(error);
+      return false;
+    }
+  }
+
+    static async getFacturacionByUserId( id ) {
+      const cliente = await db.query("SELECT * FROM facturacion where usuario_id=?", id);
+      return cliente;
+    }
 }
