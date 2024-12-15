@@ -1,6 +1,6 @@
 import funciones from "../lib/funciones.js";
-import db from "../database.js"; //db hace referencia a la BBDD
 import { Router } from 'express';
+import express from 'express';
 import dotenv from 'dotenv';
 dotenv.config();
 import { ExtraModel } from '../models/extraMysql.js';
@@ -86,13 +86,13 @@ membresiasRouter.get('/success', async (req, res) => {
 
     const [q] = await ExtraModel.getFacturacionByUserId(req.user.id);
     if (q) {
-        console.log("Actualizando " + q.id + ": " + q.session_id + " a  " + facturacion.session_id);
-        console.log(facturacion);
-        const r=await ExtraModel.updateFacturacion(facturacion, q.id);
+        //console.log("Actualizando " + q.id + ": " + q.session_id + " a  " + facturacion.session_id);
+        //console.log(facturacion);
+        const r = await ExtraModel.updateFacturacion(facturacion, q.id);
         console.log(r);
     } else {
         await ExtraModel.createFacturacion(facturacion);
-        console.log("Creando " + facturacion.session_id);
+        //console.log("Creando " + facturacion.session_id);
     }
 
 
@@ -128,8 +128,59 @@ membresiasRouter.get('/clientes/:cliente_id', funciones.isAuthenticated, async (
         customer: req.params.cliente_id,
         return_url: 'http://localhost:7001/usuarios/get/' + req.params.cliente_id
     });
-    console.log(portalSession);
+    //console.log(portalSession);
     res.redirect(portalSession.url);
+});
+
+// This is your Stripe CLI webhook secret for testing your endpoint locally.
+
+membresiasRouter.post('/webhook', express.raw({ type: 'application/json' }), (req, res) => {
+    const sig = req.headers['stripe-signature'];
+
+    let event;
+    try {
+        event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET_KEY);
+    } catch (err) {
+        return res.status(400).send(`Webhook Error: ${err.message}`);
+
+    }
+    console.log(event);
+    // Handle the event
+    switch (event.type) {
+        case 'account.updated':
+            const accountUpdated = event.data.object;
+            // Then define and call a function to handle the event account.updated
+            break;
+        case 'checkout.session.completed':
+            console.log("Nueva subscription empezada")
+            const checkoutSessionCompleted = event.data.object;
+            console.log(checkoutSessionCompleted);
+            // Then define and call a function to handle the event checkout.session.completed
+            break;
+        case 'customer.subscription.updated':
+            console.log('customer.subscription.updated');
+            const customerSubscriptionUpdated = event.data.object;
+            console.log(customerSubscriptionUpdated)
+            // Then define and call a function to handle the event customer.subscription.updated
+            break;
+        case 'invoice.paid':
+            console.log('Invoice correctamente pagada');
+            const invoicePaid = event.data.object;
+            console.log(invoicePaid);
+            // Then define and call a function to handle the event invoice.paid
+            break;
+
+        case 'invoice.payment_failed':
+            console.log("Pago fallido por falta de fondos o problemas de tarjeta")
+            const invoicePaymentFailed = event.data.object;
+            console.log(invoicePaymentFailed);
+            // Then define and call a function to handle the event invoice.payment_failed
+            break;
+
+        default:
+            console.log(`Unhandled event type ${event.type}`);
+    }
+    res.send();
 });
 
 
