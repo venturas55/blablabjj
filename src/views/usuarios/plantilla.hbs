@@ -23,12 +23,14 @@
                         </div>
                     </form>
 
-                    <h4> {{usuario.usuario}}  <span> </span> <span class="fi fi-{{minusculas usuario.codigo_iso}}"></span> </h4>
+                    <h4> {{usuario.usuario}} <span
+                            class="fi fi-{{minusculas usuario.codigo_iso}}"></span> </h4>
                     <p>{{usuario.nombre}} {{usuario.apellidos}}</p>
+                  
+                    {{>cinturon cinturon=usuario.cinturon grado=usuario.grado id=usuario.id}}
+
                     <p>telefono:+{{usuario.pais_telefono}} {{usuario.telefono}} </p>
-                    <p>Cinturon: <span id="cinturon">{{usuario.cinturon}}</span> <span
-                            id="grados">{{usuario.grado}}</span> </p>
-                    {{>cinturon cinturon=usuario.cinturon grado=this.grado}}
+
 
                     <p>Nacimiento {{formatearSp usuario.fecha_nacimiento}} Peso: {{usuario.peso}}Kg</p>
                     <p>Correo: {{usuario.email}} </p>
@@ -37,7 +39,7 @@
                     <p>Id: {{usuario.id}} </p>
                     <p>Privilegio: {{usuario.privilegio}} </p>
                     <a href="/usuarios/edit" class="btn btn-warning m-4"> Editar el Perfil </a>
-              
+
                     <a href="/" class="btn btn-primary m-4"> Volver a Inicio</a>
                 </div>
             </div>

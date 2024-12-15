@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Simular carga de clases para la semana
     function loadClassesForDay(selectedDate) {
-        console.log(selectedDate);
+        //console.log(selectedDate);
         var clases = selectedDate.split("/");
         var clase = "dia" + clases[0] + clases[1] + clases[2];
 
