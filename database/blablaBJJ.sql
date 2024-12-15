@@ -145,12 +145,14 @@ CREATE TABLE historico (
     FOREIGN KEY (usuario_valorado) REFERENCES usuarios(id)
 )ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'historico';
 
-CREATE TABLE datos_bancarios (
+CREATE TABLE facturacion (
     id INT AUTO_INCREMENT PRIMARY KEY,     -- Identificador único
     usuario_id INT NOT NULL,               -- Usuario asociado
-    tarjeta_hash VARCHAR(255) NOT NULL,    -- Hash del número de tarjeta (encriptado)
-    titular VARCHAR(100) NOT NULL,         -- Nombre del titular de la tarjeta
-    fecha_vencimiento DATE NOT NULL,       -- Fecha de vencimiento
+    session_id VARCHAR(255),
+    portal_session_id VARCHAR(255),
+    tarjeta_hash VARCHAR(255),    -- Hash del número de tarjeta (encriptado)
+    titular VARCHAR(100) ,         -- Nombre del titular de la tarjeta
+    fecha_vencimiento DATE,       -- Fecha de vencimiento
     estado ENUM('activa', 'inactiva') DEFAULT 'activa',
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) 
 )ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'datos bancarios';

@@ -10,4 +10,13 @@ export class ExtraModel {
     return paises;
   }
 
+  static async factcreateFacturacion({ input }) {
+    try {
+      const a = await db.query("INSERT INTO facturacion set ?", [input]);
+      return a;
+    } catch (error) {
+      console.error(error.code);
+      return false;
+    }
+  }
 }

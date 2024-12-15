@@ -3,6 +3,7 @@ import db from "../database.js"; //db hace referencia a la BBDD
 import { Router } from 'express';
 import dotenv from 'dotenv';
 dotenv.config();
+import { ExtraModel } from '../models/extraMysql.js';
 
 import Stripe from 'stripe';
 const stripe = new Stripe(process.env.STRIPE_PRIV || 'PRIVATE KEY');
@@ -55,13 +56,17 @@ membresiasRouter.post('/create-checkout-session', async (req, res) => {
         success_url: `http://localhost:7001/membresia/success?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `http://localhost:7001/membresia/cancel`,
     });
-  
+
     res.redirect(session.url);
 });
 
 membresiasRouter.get('/success', async (req, res) => {
     const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
     console.log(session);
+    await ExtraModel.createFacturacion({
+        usuario_id: req.user.id,
+        session_id:session,
+    });
     res.render("membresia/success");
 });
 
@@ -69,10 +74,28 @@ membresiasRouter.get('/cancel', async (req, res) => {
     res.render("membresia/cancel");
 });
 
+membresiasRouter.post('/create-portal-session', async (req, res) => {
+    // For demonstration purposes, we're using the Checkout session to retrieve the customer ID.
+    // Typically this is stored alongside the authenticated user in your database.
+    const { session_id } = req.body;
+    const checkoutSession = await stripe.checkout.sessions.retrieve(session_id);
+  
+    // This is the url to which the customer will be redirected when they are done
+    // managing their billing with the portal.
+    const returnUrl = YOUR_DOMAIN;
+  
+    const portalSession = await stripe.billingPortal.sessions.create({
+      customer: checkoutSession.customer,
+      return_url: returnUrl,
+    });
+  
+    res.redirect(303, portalSession.url);
+  });
+
 membresiasRouter.get('/clientes/:cliente_id', funciones.isAuthenticated, async (req, res) => {
     const portalSession = await stripe.billingPortal.sessions.create({
         customer: req.params.cliente_id,
-        return_url: 'http://localhost:7001/usuarios/get/' + req.params.cliente_id,
+        return_url: 'http://localhost:7001/usuarios/get/' + req.params.cliente_id
     });
     console.log(portalSession);
     res.redirect(portalSession.url);

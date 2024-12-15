@@ -15,23 +15,23 @@
                     </form>
                 </div>
             </div>
-{{!--             <div class="card mx-auto my-2" style="width: 18rem;">
+            <div class="card mx-auto my-2" style="width: 18rem;">
                 <div class="card-body">
                     <h5 class="card-title">Niños 3-5 años</h5>
                     <p class="card-text">Pago automatico mensual. 42.50€</p>
                     <form method="POST" name="subscriptionform" action="/membresia/create-checkout-session">
-                        <input type="hidden" name="amount" value="42.5">
+                        <input type="hidden" name="plan" value="bjj3a5">
                         <input type="hidden" name="usuario" value="{{user.id}}">
                         <button class="btn btn-primary">BUY NOW</button>
                     </form>
                 </div>
-            </div> 
+            </div>
             <div class="card mx-auto my-2" style="width: 18rem;">
                 <div class="card-body">
                     <h5 class="card-title">Niños 6-9 años</h5>
                     <p class="card-text">Pago automatico mensual. 48.40€</p>
                     <form method="POST" name="subscriptionform" action="/membresia/create-checkout-session">
-                        <input type="hidden" name="amount" value="48.4">
+                        <input type="hidden" name="plan" value="bjj6a9">
                         <input type="hidden" name="usuario" value="{{user.id}}">
                         <button class="btn btn-primary">BUY NOW</button>
                     </form>
@@ -42,7 +42,7 @@
                     <h5 class="card-title">Niños 9-13 años</h5>
                     <p class="card-text">Pago automatico mensual. 54.50€</p>
                     <form method="POST" name="subscriptionform" action="/payment/create-checkout-session">
-                        <input type="hidden" name="amount" value="54.5">
+                        <input type="hidden" name="plan" value="bjj9a13">
                         <input type="hidden" name="usuario" value="{{user.id}}">
                         <button class="btn btn-primary">BUY NOW</button>
                     </form>
@@ -53,7 +53,7 @@
                     <h5 class="card-title">MMA</h5>
                     <p class="card-text">Acceso a las clases de MMA. 55€</p>
                     <form method="POST" name="subscriptionform" action="/payment/create-checkout-session">
-                        <input type="hidden" name="amount" value="55">
+                        <input type="hidden" name="plan" value="mma">
                         <input type="hidden" name="usuario" value="{{user.id}}">
                         <button class="btn btn-primary">BUY NOW</button>
                     </form>
@@ -64,12 +64,12 @@
                     <h5 class="card-title">NOGI</h5>
                     <p class="card-text">Acceso a las clases de NOGI. 60€</p>
                     <form method="POST" name="subscriptionform" action="/payment/create-checkout-session">
-                        <input type="hidden" name="amount" value="60">
+                        <input type="hidden" name="plan" value="nogi">
                         <input type="hidden" name="usuario" value="{{user.id}}">
                         <button class="btn btn-primary">BUY NOW</button>
                     </form>
                 </div>
-            </div>--}}
+            </div>
             <div class="card mx-auto my-2" style="width: 18rem;">
                 <div class="card-body">
                     <h5 class="card-title">BJJ ADULTOS</h5>
@@ -81,17 +81,30 @@
                     </form>
                 </div>
             </div>
-        {{!--     <div class="card mx-auto my-2" style="width: 18rem;">
+            <div class="card mx-auto my-2" style="width: 18rem;">
                 <div class="card-body">
                     <h5 class="card-title">ILIMITADO</h5>
                     <p class="card-text">Todas las modalidades con clases ilimitadas. 85€</p>
                     <form method="POST" name="subscriptionform" action="/payment/create-checkout-session">
-                        <input type="hidden" name="amount" value="85">
+                        <input type="hidden" name="plan" value="ilimitado">
                         <input type="hidden" name="usuario" value="{{user.id}}">
                         <button class="btn btn-primary">BUY NOW</button>
                     </form>
                 </div>
-            </div> --}}
+            </div>
         </div>
     </div>
+    <form action="/membresia/create-portal-session" method="POST">
+        <input type="hidden" id="session-id" name="session_id" value="" />
+        <button id="checkout-and-portal-button" type="submit">Manage your billing information</button>
+    </form>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        let searchParams = new URLSearchParams(window.location.search);
+        if (searchParams.has('session_id')) {
+            const session_id = searchParams.get('session_id');
+            document.getElementById('session-id').setAttribute('value', session_id);
+        }
+    });
+</script>
