@@ -47,7 +47,8 @@ passport.use(
                 usuario: username,
                 contrasena: password,
                 email: req.body.email,
-                full_name: req.body.fullname,
+                nombre: req.body.nombre,
+                apellidos: req.body.apellidos,
                 privilegio: "none",
             };
             newUser.contrasena = await funciones.encryptPass(password);

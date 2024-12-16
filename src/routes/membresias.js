@@ -24,7 +24,7 @@ const getCustomerSubscriptionsWithPlan = async (customerId) => {
             status: 'all',
         });
 
-        var subscription = subscriptions.data;
+        let subscription = subscriptions.data;
         // Mapear las suscripciones y obtener el nombre del plan
         const subscriptionsWithPlans = await Promise.all(
             subscriptions.data.map(async (subscription) => {
@@ -153,6 +153,7 @@ membresiasRouter.post('/create-portal-session', funciones.isAuthenticated, async
 membresiasRouter.get('/subscriptions', funciones.isAuthenticated, async (req, res) => {
     const [q] = await ExtraModel.getFacturacionByUserId(req.user.id);
     console.log(q);
+    console.log("------------------")
     try {
         var subscriptionswithplans;
         if (q) {

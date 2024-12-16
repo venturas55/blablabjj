@@ -3,26 +3,16 @@
         <div class="col-12 mx-auto">
             <div class="card text-center">
                 <div class="card-body">
-
                     <h3>Bienvenid@ <strong> {{usuario.usuario}} </strong> !!</h3>
-                    {{!-- {{>avatar size="m" url=user.pictureURL}} --}}
-                    <a href="/img/profiles/{{usuario.pictureURL}}">
-                        <img src="/img/profiles/{{usuario.pictureURL}}" class="rounded avatar-l m-2"
-                            alt="avatar {{usuario.pictureURL}}'" /></a>
-
+                    {{>avatar size="xl" url=user.pictureURL}}
                     <form action="/profile/upload/{{usuario.id}}" method="POST" enctype="multipart/form-data">
                         <input type="hidden" name="id" value="{{usuario.id}}" />
-                        <div class="input-group mb-3">
-                            <div class="custom-file">
-                                <input type="file" name="imagen" class="custom-file-input" id="inputGroupFile02">
-                                <label class="custom-file-label" for="inputGroupFile02">Choose file</label>
-                            </div>
-                            <div class="input-group-append">
-                                <button type="submit" class="input-group-text">Upload</button>
-                            </div>
+                        <div class="custom-file">
+                            <input type="file" name="imagen" class="custom-file-input" id="inputGroupFile02">
+                            <label class="custom-file-label" for="inputGroupFile02">Choose file</label>
+                            <button type="submit" class=" custom-file-label">Upload</button>
                         </div>
                     </form>
-
                     <h4> {{usuario.usuario}} <span class="fi fi-{{minusculas usuario.codigo_iso}}"></span> </h4>
                     <p>{{usuario.nombre}} {{usuario.apellidos}}</p>
                     <div class="asistente d-inline-flex p-2" data-color="{{usuario.cinturon}}"
