@@ -57,6 +57,7 @@ membresiasRouter.post('/create-checkout-session', async (req, res) => {
             return res.send("Suscription plan not found");
     }
     //console.log(priceId);
+    console.log(`${process.env.BASE_URL}:${process.env.PORT}/membresia/success?session_id={CHECKOUT_SESSION_ID}`);
     const session = await stripe.checkout.sessions.create({
         billing_address_collection: 'auto',
         line_items: [
@@ -70,8 +71,8 @@ membresiasRouter.post('/create-checkout-session', async (req, res) => {
         mode: 'subscription',
 
         //TODO: estos links tendrían que ser más dinamicos
-        success_url: `${process.env.BASE_URL}/membresia/success?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${process.env.BASE_URL}/membresia/cancel`,
+        success_url: `${process.env.BASE_URL}:${process.env.PORT}/membresia/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url:`${process.env.BASE_URL}:${process.env.PORT}/membresia/cancel`,
     });
 
     res.redirect(session.url);
@@ -101,7 +102,7 @@ membresiasRouter.post('/create-portal-session', async (req, res) => {
 
     const portalSession = await stripe.billingPortal.sessions.create({
         customer: checkoutSession.customer,
-        return_url: `${process.env.BASE_URL}/usuarios/get/${q.usuario_id}`,
+        return_url: `${process.env.BASE_URL}:${process.env.PORT}/usuarios/get/${q.usuario_id}`,
     });
     res.redirect(303, portalSession.url);
 
