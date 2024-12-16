@@ -43,15 +43,20 @@ function crearCinturon(color, grados, coloraux, id) {
     // Añadir el cinturón al contenedor
     beltContainer.appendChild(belt);
 }
-document.addEventListener('DOMContentLoaded', () => {
-    var cinturones = document.getElementsByClassName("itsbelt");
-    console.log(cinturones);
-});
 
-/* var id = {{ id }};
-var colores = document.getElementById("cinturon"+id).innerHTML.split("-");
-var color = colores[0];
-var aux = colores[1];
-var grados = document.getElementById("grados"+id).innerHTML;
-grados = grados.split('I').length - 1;
-crearCinturon(color, grados, aux, id); */
+document.addEventListener("DOMContentLoaded", () => {
+    // Selecciona todos los elementos renderizados con clase "asistente"
+    const asistentes = document.querySelectorAll('.asistente');
+
+    // Itera sobre cada asistente para extraer atributos y llamar a la función
+    asistentes.forEach(asistente => {
+        const colores = asistente.dataset.color.split("-");;         // Extrae el color
+        var color = colores[0];
+        var coloraux = colores[1];
+        const grados = asistente.dataset.grados.split('I').length - 1; // Extrae los grados como número
+        const id = asistente.dataset.id;               // Extrae el ID único
+
+        console.log(color+ " "+ grados+ " "+ coloraux+ " "+ id);
+        crearCinturon(color, grados, coloraux, id);
+    });
+});

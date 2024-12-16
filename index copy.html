@@ -6,148 +6,104 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cinturón BJJ Dinámico</title>
   <style>
-    /* Estilos generales */
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      background-color: #f4f4f4;
-      margin: 0;
-      padding: 0;
-    }
+   /* Definir tamaño base */
+:root {
+  --belt-height: 40px; /* Altura base del cinturón */
+  --stripe-width: 5px; /* Ancho base de las rayas */
+  --final-band-width: 70px; /* Ancho de la banda final */
+}
 
-    .belt-container {
-      margin: 20px auto;
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
+/* Cinturones */
+.belt-container {
+  margin: 0px auto;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
 
-    .belt {
-      position: relative;
-      width: 300px;
-      height: 40px;
-      line-height: 40px;
-      color: white;
-      font-weight: bold;
-      text-transform: uppercase;
-      text-align: center;
-      border: 2px solid #333;
-      display: inline-block;
-      margin-bottom: 10px;
-    }
+.belt {
+  position: relative;
+  width: 100%;
+  height: var(--belt-height); /* Altura escalable */
+  line-height: var(--belt-height); /* Centrado del texto */
+  color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: center;
+  border: 1px solid #333;
+  display: inline-block;
+  margin-bottom: calc(var(--belt-height) / 4); /* Margen proporcional */
+}
 
-    /* Banda final (negra por defecto) */
-    .final-band {
-      position: absolute;
-      bottom: 0;
-      right: 10px;
-      width: 70px;
-      /* Banda ocupa todo el ancho */
-      height: 40px;
-      /* Alto de la banda final */
-      background-color: #000;
-      /* Negra por defecto */
-    }
+/* Banda final (negra por defecto) */
+.final-band {
+  position: absolute;
+  top: -1px;
+  right: calc(var(--belt-height) / 4); /* Margen proporcional */
+  width: var(--final-band-width); /* Ancho escalable */
+  height: var(--belt-height); /* Alto escalable */
+  background-color: #000;
+}
 
-    .along-band-negro {
-      position: absolute;
-      right: 0;
-      top: 10px;
-      width: 100%;
-      /* Banda ocupa todo el ancho */
-      height: 20px;
-      /* Alto de la banda final */
-      background-color: #000;
-      /* Negra por defecto */
-    }
+.final-band-red {
+  background-color: #b00000;
+}
 
-    .along-band-blanco {
-      position: absolute;
-      right: 0;
-      top: 10px;
-      width: 100%;
-      /* Banda ocupa todo el ancho */
-      height: 20px;
-      /* Alto de la banda final */
-      background-color: #f6f1f1;
-      /* Negra por defecto */
-    }
+/* Banda que recorre el cinturón */
+.along-band-negro, .along-band-blanco {
+  position: absolute;
+  right: 0;
+  top: calc(var(--belt-height) / 4); /* Posicionamiento proporcional */
+  width: 100%;
+  height: calc(var(--belt-height) / 2); /* Mitad de la altura */
+}
 
-    /* Grados (rayas blancas) */
-    .belt .stripe {
-      position: absolute;
-      top: 0;
-      right: 5px;
-      height: 40px;
-      width: 5px;
-      background-color: #fff;
-      z-index: 2;
-    }
+.along-band-blanco {
+  background-color: #f6f1f1;
+}
+.along-band-negro {
+  background-color: #000;
+}
 
-    .belt .stripe:nth-child(1) {
-      right: 20px;
-    }
+/* Rayas (grados) */
+.belt .stripe {
+  position: absolute;
+  bottom: -1px;
+  right: calc(var(--stripe-width) + 5px); /* Espaciado entre rayas */
+  height: var(--belt-height);
+  width: var(--stripe-width); /* Ancho escalable */
+  background-color: #fff;
+  z-index: 2;
+}
 
-    .belt .stripe:nth-child(2) {
-      right: 30px;
-    }
+/* Rayas desplazadas dinámicamente */
+.belt .stripe:nth-child(1) { right: calc(var(--stripe-width) * 4); }
+.belt .stripe:nth-child(2) { right: calc(var(--stripe-width) * 5); }
+.belt .stripe:nth-child(3) { right: calc(var(--stripe-width) * 6); }
+.belt .stripe:nth-child(4) { right: calc(var(--stripe-width) * 7); }
+.belt .stripe:nth-child(5) { right: calc(var(--stripe-width) * 8); }
 
-    .belt .stripe:nth-child(3) {
-      right: 40px;
-    }
+/* Colores de los cinturones */
+.blanco { background-color: #fefefe; color: #333; }
+.gris { background-color: #a9a9a9; }
+.amarillo { background-color: #ffdd00; color: #333; }
+.naranja { background-color: #ff8800; }
+.verde { background-color: #008000; }
+.azul { background-color: #0000ff; }
+.morado { background-color: #800080; }
+.marron { background-color: #8b4513; }
+.negro { background-color: #000000; }
+.belt-grande {
+  --belt-height: 60px;
+  --stripe-width: 8px;
+  --final-band-width: 100px;
+}
 
-    .belt .stripe:nth-child(4) {
-      right: 50px;
-    }
-
-    /* Colores de los cinturones */
-    .white {
-      background-color: #fefefe;
-      color: #333;
-    }
-
-    /* Blanco */
-    .grey {
-      background-color: #a9a9a9;
-    }
-
-    /* Gris */
-    .yellow {
-      background-color: #ffdd00;
-      color: #333;
-    }
-
-    /* Amarillo */
-    .orange {
-      background-color: #ff8800;
-    }
-
-    /* Naranja */
-    .green {
-      background-color: #008000;
-    }
-
-    /* Verde */
-    .blue {
-      background-color: #0000ff;
-    }
-
-    /* Azul */
-    .purple {
-      background-color: #800080;
-    }
-
-    /* Morado */
-    .brown {
-      background-color: #8b4513;
-    }
-
-    /* Marrón */
-    .black {
-      background-color: #000000;
-    }
-
-    /* Negro */
+.belt-pequeno {
+  --belt-height: 20px;
+  --stripe-width: 3px;
+  --final-band-width: 40px;
+}
   </style>
 </head>
 
@@ -176,6 +132,14 @@
 
 
   <div id="belt-container" class="belt-container"></div>
+
+
+
+  <div class="belt-container">
+    <div class="belt blanco">Cinturón Blanco</div>
+    <div class="belt negro belt-grande">Cinturón Negro Grande</div>
+    <div class="belt azul belt-pequeno">Cinturón Azul Pequeño</div>
+  </div>
 
   <script>
     // Variables para el color del cinturón y el número de grados

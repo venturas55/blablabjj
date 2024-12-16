@@ -33,31 +33,16 @@
             <div class="form-group">
               <label for="cinturon">Cinturon</label>
               <select id="cinturon" name="cinturon" class="mt-3">
-                <option value="blanco">Blanco</option>
-                <option value="gris-blanco">Blanco y Gris</option>
-                <option value="gris">Gris</option>
-                <option value="gris-negro">Gris y Negro</option>
-                <option value="amarillo-blanco">Amarillo y Blanco</option>
-                <option value="amarillo">Amarillo</option>
-                <option value="amarillo-negro">Amarillo y Negro</option>
-                <option value="naranja-blanco">Naranja y Blanco</option>
-                <option value="naranja">Naranja</option>
-                <option value="naranja-negro">Naranja y Negro</option>
-                <option value="verde-blanco">Verde y Blanco</option>
-                <option value="verde">Verde</option>
-                <option value="verde-negro">Verde y Negro</option>
-                <option value="azul">Azul</option>
-                <option value="morado">Morado</option>
-                <option value="marron">Marrón</option>
-                <option value="negro">Negro</option>
+                {{#each cinturones}}
+                <option value="{{this.value}}" {{#when this.value 'eq' ../item.cinturon }} selected {{/when}}> {{this.nombre}}</option>
+                {{/each}}
               </select>
 
               <label for="grado">Grados</label>
               <select id="numeros" name="grado">
-                <option value="I">I</option>
-                <option value="II">I I</option>
-                <option value="III">I I I</option>
-                <option value="IIII">I I I I</option>
+                {{#each grados}}
+                <option value="{{this.value}}" {{#when this.value 'eq' ../item.grado }} selected {{/when}}> {{this.nombre}}</option>
+                {{/each}}
               </select>
             </div>
 
@@ -77,7 +62,8 @@
               <select id="pais" name="nacionalidad">
                 <option value="">--Seleccionar-- </option>
                 {{#each paises}}
-                <option value="{{this.id}}"  {{#when this.id 'eq' ../item.nacionalidad }} selected {{/when}}>{{this.nombre}}</option>
+                <option value="{{this.id}}" {{#when this.id 'eq' ../item.nacionalidad }} selected {{/when}}>
+                  {{this.nombre}}</option>
                 {{/each}}
 
 
@@ -93,7 +79,7 @@
         <div class="form-group">
           <a href="/usuarios/get/{{item.id}}" class="btn btn-danger m-4"> Cancelar </a>
         </div>
-              <a href="/usuarios/editpass/{{item.id}}" class="btn btn-danger m-4"> Cambiar Contraseña </a>
+        <a href="/usuarios/editpass/{{item.id}}" class="btn btn-danger m-4"> Cambiar Contraseña </a>
       </div>
     </div>
   </div>

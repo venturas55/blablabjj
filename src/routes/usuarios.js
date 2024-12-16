@@ -67,19 +67,47 @@ usuariosRouter.post("/add", funciones.isAuthenticated, uploadFoto, UsuarioContro
 //DELETE
 usuariosRouter.get("/delete/:id", funciones.isAuthenticated, UsuarioController.delete);
 
+const cinturones = [
+  { "value": "blanco", "nombre": "Blanco" },
+  { "value": "gris-blanco", "nombre": "Blanco y Gris" },
+  { "value": "gris", "nombre": "Gris" },
+  { "value": "gris-negro", "nombre": "Gris y Negro" },
+  { "value": "amarillo-blanco", "nombre": "Amarillo y Blanco" },
+  { "value": "amarillo", "nombre": "Amarillo" },
+  { "value": "amarillo-negro", "nombre": "Amarillo y Negro" },
+  { "value": "naranja-blanco", "nombre": "Naranja y Blanco" },
+  { "value": "naranja", "nombre": "Naranja" },
+  { "value": "naranja-negro", "nombre": "Naranja y Negro" },
+  { "value": "verde-blanco", "nombre": "Verde y Blanco" },
+  { "value": "verde", "nombre": "Verde" },
+  { "value": "verde-negro", "nombre": "Verde y Negro" },
+  { "value": "azul", "nombre": "Azul" },
+  { "value": "morado", "nombre": "Morado" },
+  { "value": "marron", "nombre": "Marrón" },
+  { "value": "negro", "nombre": "Negro" }
+]
+
+const grados = [
+  { "value": "", "nombre": "Sin grados" },
+  { "value": "I", "nombre": "I" },
+  { "value": "II", "nombre": "I I" },
+  { "value": "III", "nombre": "I I I" },
+  { "value": "IIII", "nombre": "I I I I" }
+]
 
 //UPDATE
 usuariosRouter.get("/edit", funciones.isAuthenticated, async (req, res) => {
   const { id } = req.user;
   const item = await UsuarioModel.getById( { id });
   const paises = await ExtraModel.getAllPaises();
-  res.render("profile/edit", { item: item[0],paises });
+
+  res.render("profile/edit", { item: item[0],paises,grados,cinturones });
 });
 usuariosRouter.get("/edit/:id", funciones.isAuthenticated, funciones.isMaster,async (req, res) => {
   const { id } = req.params;
   const item = await UsuarioModel.getById({ id });
   const paises = await ExtraModel.getAllPaises();
-  res.render("profile/edit", { item: item[0],paises });
+  res.render("profile/edit", { item: item[0],paises,grados,cinturones });
 });
 
 usuariosRouter.post("/edit/:id", funciones.isAuthenticated, UsuarioController.update);

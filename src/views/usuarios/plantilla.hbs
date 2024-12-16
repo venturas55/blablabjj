@@ -23,12 +23,14 @@
                         </div>
                     </form>
 
-                    <h4> {{usuario.usuario}} <span
-                            class="fi fi-{{minusculas usuario.codigo_iso}}"></span> </h4>
+                    <h4> {{usuario.usuario}} <span class="fi fi-{{minusculas usuario.codigo_iso}}"></span> </h4>
                     <p>{{usuario.nombre}} {{usuario.apellidos}}</p>
-                  
-                    {{>cinturon cinturon=usuario.cinturon grado=usuario.grado id=usuario.id}}
-
+                    <div class="asistente d-inline-flex p-2" data-color="{{usuario.cinturon}}"
+                        data-grados="{{usuario.grado}}" data-id="{{usuario.id}}">
+                        <div class="cinturon-grande">
+                            <div id="belt-container{{usuario.id}}" class="belt-container"></div>
+                        </div>
+                    </div>
                     <p>telefono:+{{usuario.pais_telefono}} {{usuario.telefono}} </p>
 
 

@@ -13,14 +13,19 @@
                     <div class="form-group">Duracion:{{item.duracion}} min </div>
                     <div class="form-group"> Instructor: {{item.nombre_instructor }}</div>
 
-
-
-
                     <div class="card-footer">
                         <h4>Asistentes</h4>
-                        <div class="d-flex flex-column justify-content-around border">
+                        <div
+                            class="d-flex flex-column align-items-center align-self-center justify-content-around border">
                             {{#each asistentes}}
                             <a href="/usuarios/get/{{this.usuario_id}}">
+                                <div class="asistente d-inline-flex p-2" data-color="{{this.cinturon}}"
+                                    data-grados="{{this.grado}}" data-id="{{this.usuario_id}}">
+                                    <div class="cinturon-pequeño">
+                                        <div id="belt-container{{this.usuario_id}}" class="belt-container"></div>
+                                    </div>
+                                </div>
+
                                 {{#if this.pictureURL_usuario}}
                                 <img src="/img/profiles/{{this.pictureURL_usuario}}" class="avatar avatar-xs m-2"
                                     alt="avatar {{this.pictureURL_usuario}}'" />
@@ -28,25 +33,23 @@
                                 <img src="/img/profiles/default.jpg" class="avatar avatar-xs m-2"
                                     alt="default avatar" />
                                 {{/if}}
-                                <span>{{this.nombre_usuario}} {{this.apellidos_usuario}}</span>
-                                <span class="fi fi-{{minusculas this.codigo_iso}}"></span> {{this.cinturon}}
-                                {{this.grado}}
-                                {{>cinturon cinturon=this.cinturon grado=this.grado id=this.usuario_id}}
-                                <div class="itsbelt" id="belt-container{{this.usuario_id}}"> </div>
-                            </a>
-                            {{/each}}
 
+
+                                <h4>{{this.nombre_usuario}} {{this.apellidos_usuario}}<span
+                                        class="fi fi-{{minusculas this.codigo_iso}}"></span> </h4>
                         </div>
-                        <form action="/asistencias/add/{{item.clase_id}}" method="post">
-                            <a onclick="this.parentNode.submit();" class="text-warning"><i
-                                    class="fa-solid fa-user-plus"></i>Join </a>
-                        </form>
-                        <a class="btn btn-warning btn-block" href="javascript:void(0)"
-                            onclick="history.back();">Volver</a>
+                        </a>
+                        {{/each}}
 
                     </div>
+                    <form action="/asistencias/add/{{item.clase_id}}" method="post">
+                        <a onclick="this.parentNode.submit();" class="text-warning"><i
+                                class="fa-solid fa-user-plus"></i>Join </a>
+                    </form>
+                    <a class="btn btn-warning btn-block" href="javascript:void(0)" onclick="history.back();">Volver</a>
 
                 </div>
+
             </div>
         </div>
     </div>
