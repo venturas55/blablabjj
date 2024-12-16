@@ -13,16 +13,8 @@ function crearCinturon(color, grados, coloraux, id) {
     // Crear el div del cinturón
     let belt = document.createElement('div');
     belt.classList.add('belt', color); // Añadir la clase del color al cinturón
-    if (coloraux) {
-        let alongband = document.createElement('div');
-        if (coloraux == 'blanco') {
-            alongband.classList.add('along-band-blanco');
-        } else {
-            alongband.classList.add('along-band-negro');
-        }
-        belt.appendChild(alongband);
 
-    }
+    
 
     // Añadir las rayas de grados al cinturón
     for (let i = 0; i < grados; i++) {
@@ -39,6 +31,16 @@ function crearCinturon(color, grados, coloraux, id) {
     // Si el cinturón es negro, aplicar la banda roja
     if (color === 'negro') {
         finalband.classList.add('final-band-red');
+    }
+    if (coloraux) {
+        let alongband = document.createElement('div');
+        if (coloraux == 'blanco') {
+            alongband.classList.add('along-band-blanco');
+        } else {
+            alongband.classList.add('along-band-negro');
+        }
+        belt.appendChild(alongband);
+
     }
     // Añadir el cinturón al contenedor
     beltContainer.appendChild(belt);

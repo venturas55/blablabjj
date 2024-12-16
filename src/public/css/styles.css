@@ -2,7 +2,7 @@
   --belt-height: 40px; /* Altura base del cinturón */
   --belt-width: 300px; /* Ancho base del cinturón */
   --stripe-width: 5px; /* Ancho base de las rayas */
-  --first-stripe-width: 20px; /* Ancho base de las rayas */
+  --first-stripe-position: 20px; /* Ancho base de las rayas */
   --final-band-width: 70px; /* Ancho de la banda final */
 }
 
@@ -256,6 +256,7 @@ a * {
   /* Alto de la banda final */
   background-color: #000;
   /* Negra por defecto */
+  z-index:1;
 }
 
 /* Banda roja para cinturón negro */
@@ -274,6 +275,7 @@ a * {
   /* Alto de la banda final */
   background-color: #000;
   /* Negra por defecto */
+  z-index:0;
 }
 
 .along-band-blanco {
@@ -285,18 +287,18 @@ a * {
 .belt .stripe {
   position: absolute;
   bottom: -1px;
-  right: calc(var(--stripe-width) + 5px);
+  right: var(--first-stripe-position);
   height: var(--belt-height);
   width: var(--stripe-width);
   background-color: #fff;
   z-index: 2;
 }
 
-.belt .stripe:nth-child(1) { right: var(--first-stripe-width); }
-.belt .stripe:nth-child(2) { right: calc(var(--first-stripe-width) * 1.5); }
-.belt .stripe:nth-child(3) { right: calc(var(--first-stripe-width) * 2); }
-.belt .stripe:nth-child(4) { right: calc(var(--first-stripe-width) * 2.5); }
-.belt .stripe:nth-child(5) { right: calc(var(--first-stripe-width) * 3); }
+.belt .stripe:nth-child(1) { right: calc(var(--first-stripe-position) + var(--stripe-width) * 0); }
+.belt .stripe:nth-child(2) { right: calc(var(--first-stripe-position) + var(--stripe-width) * 2); }
+.belt .stripe:nth-child(3) { right: calc(var(--first-stripe-position) + var(--stripe-width) * 4); }
+.belt .stripe:nth-child(4) { right: calc(var(--first-stripe-position) + var(--stripe-width) * 6); }
+.belt .stripe:nth-child(5) { right: calc(var(--first-stripe-position) + var(--stripe-width) * 8); }
 
 /* Colores de los cinturones */
 .blanco {
@@ -347,16 +349,16 @@ a * {
 .cinturon-grande{
   --belt-height: 35px; /* Altura base del cinturón */
   --belt-width: 260px; /* Ancho base del cinturón */
-  --first-stripe-width: 15px;
+  --first-stripe-position: 20px;
   --stripe-width: 5px; /* Ancho base de las rayas */
   --final-band-width: 70px; /* Ancho de la banda final */
 }
 
 .cinturon-pequeño{
   --belt-height: 20px; /* Altura base del cinturón */
-  --belt-width: 150px; /* Ancho base del cinturón */
-  --first-stripe-width: 8px;
-  --stripe-width: 2.5px; /* Ancho base de las rayas */
+  --belt-width: 100px; /* Ancho base del cinturón */
+  --first-stripe-position: 10px;
+  --stripe-width: 3px; /* Ancho base de las rayas */
   --final-band-width: 40px; /* Ancho de la banda final */
 }
 
