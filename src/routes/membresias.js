@@ -12,12 +12,50 @@ export const membresiasRouter = Router();
 
 
 // Crear una sesión de pago para una tarifa específica
-membresiasRouter.get('/landing', async (req, res) => {
+membresiasRouter.get('/landing', funciones.isAuthenticated, async (req, res) => {
     res.render("membresia/landing");
 });
 
+// Función para obtener las suscripciones con el nombre del plan
+const getCustomerSubscriptionsWithPlan = async (customerId) => {
+    try {
+        const subscriptions = await stripe.subscriptions.list({
+            customer: customerId,
+            status: 'all',
+        });
 
-membresiasRouter.post('/create-checkout-session', async (req, res) => {
+        var subscription = subscriptions.data;
+        // Mapear las suscripciones y obtener el nombre del plan
+        const subscriptionsWithPlans = await Promise.all(
+            subscriptions.data.map(async (subscription) => {
+                const price = subscription.items.data[0]?.price;
+                const productId = price?.product;
+
+                // Obtener el producto para obtener el nombre del plan
+                const product = await stripe.products.retrieve(productId);
+
+                subscription.planName = product.name;
+                subscription.planDescription = product.description;
+                /*        return {
+                           subscriptionId: subscription.id,
+                           status: subscription.status,
+                           planName: product.name,
+                           price: price.unit_amount / 100,
+                           currency: price.currency,
+                       }; */
+                return subscription;
+            })
+        );
+
+        return subscriptionsWithPlans;
+    } catch (error) {
+        console.error('Error al obtener las suscripciones:', error.message);
+        return [];
+    }
+};
+
+
+membresiasRouter.post('/create-checkout-session', funciones.isAuthenticated, async (req, res) => {
 
     const plan = req.body.plan;
 
@@ -57,7 +95,7 @@ membresiasRouter.post('/create-checkout-session', async (req, res) => {
             return res.send("Suscription plan not found");
     }
     //console.log(priceId);
-    console.log(`${process.env.BASE_URL}:${process.env.PORT}/membresia/success?session_id={CHECKOUT_SESSION_ID}`);
+    //console.log(`${process.env.BASE_URL}:${process.env.PORT}/membresia/success?session_id={CHECKOUT_SESSION_ID}`);
     const session = await stripe.checkout.sessions.create({
         billing_address_collection: 'auto',
         line_items: [
@@ -72,23 +110,27 @@ membresiasRouter.post('/create-checkout-session', async (req, res) => {
 
         //TODO: estos links tendrían que ser más dinamicos
         success_url: `${process.env.BASE_URL}:${process.env.PORT}/membresia/success?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url:`${process.env.BASE_URL}:${process.env.PORT}/membresia/cancel`,
+        cancel_url: `${process.env.BASE_URL}:${process.env.PORT}/membresia/cancel`,
     });
 
     res.redirect(session.url);
 });
 
-membresiasRouter.get('/success', async (req, res) => {
+membresiasRouter.get('/success', funciones.isAuthenticated, async (req, res) => {
     const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
     const facturacion = { usuario_id: req.user.id, session_id: req.query.session_id, customer_id: session.customer, titular: session.customer_details.name, correo: session.customer_details.email, subscription: session.subscription }
 
     const [q] = await ExtraModel.getFacturacionByUserId(req.user.id);
-    if (q) {
-        const r = await ExtraModel.updateFacturacion(facturacion, q.id);
-        console.log(r);
-    } else {
-        await ExtraModel.createFacturacion(facturacion);
-    }
+    /*     if (q) {
+            console.log("actualizando facturacion");
+            const r = await ExtraModel.updateFacturacion(facturacion, q.id);
+            console.log(r);
+        } else {
+            console.log("creando facturacion");
+            await ExtraModel.createFacturacion(facturacion);
+        } */
+    console.log("creando facturacion");
+    await ExtraModel.createFacturacion(facturacion);
     res.render("membresia/success");
 });
 
@@ -96,7 +138,7 @@ membresiasRouter.get('/cancel', async (req, res) => {
     res.render("membresia/cancel");
 });
 
-membresiasRouter.post('/create-portal-session', async (req, res) => {
+membresiasRouter.post('/create-portal-session', funciones.isAuthenticated, async (req, res) => {
     const [q] = await ExtraModel.getFacturacionByUserId(req.user.id);
     const checkoutSession = await stripe.checkout.sessions.retrieve(q.session_id);
 
@@ -106,6 +148,22 @@ membresiasRouter.post('/create-portal-session', async (req, res) => {
     });
     res.redirect(303, portalSession.url);
 
+});
+
+membresiasRouter.get('/subscriptions', funciones.isAuthenticated, async (req, res) => {
+    const [q] = await ExtraModel.getFacturacionByUserId(req.user.id);
+    console.log(q);
+    try {
+        var subscriptionswithplans;
+        if (q) {
+            const customerId = q.customer_id; // Reemplaza con el ID de cliente de tu base de datos
+            subscriptionswithplans = await getCustomerSubscriptionsWithPlan(customerId);
+            console.log(subscriptionswithplans);
+        }
+        res.render('membresia/subscriptions', { subscriptionswithplans }); // Renderiza la vista
+    } catch (error) {
+        res.status(500).send('Error al obtener las suscripciones');
+    }
 });
 
 // This is your Stripe CLI webhook secret for testing your endpoint locally.

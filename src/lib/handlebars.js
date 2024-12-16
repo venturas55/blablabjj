@@ -10,6 +10,24 @@ helpers.minusculas = (string) => {
   return string.toLowerCase();
 }
 
+helpers.unix2es = (unixTime) => {
+  // Convertir el tiempo Unix (en segundos) a milisegundos
+  const fecha = new Date(unixTime * 1000);
+
+  // Extraer día, mes y año
+  const dia = String(fecha.getDate()).padStart(2, '0'); // Asegura 2 dígitos
+  const mes = String(fecha.getMonth() + 1).padStart(2, '0'); // Los meses van de 0 a 11
+  const anio = fecha.getFullYear();
+
+  // Formato dd/mm/yyyy
+  return `${dia}/${mes}/${anio}`;
+}
+
+helpers.stripeprecio=(precio)=>{
+    precio = precio/100;
+    return precio +"€";
+}
+
 //Este es el formateo necesario para encajar una fecha en un input de type="date"
 helpers.formatearEn = (timestamp) => {
   if (timestamp) {

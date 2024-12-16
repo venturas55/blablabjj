@@ -1,0 +1,38 @@
+<div class="container p-1 mb-5">
+    <div class="row text-center">
+        <div class="col-12">
+            <h1>Subcripciones activas </h1>
+            {{user.id}} {{user.nombre}} {{user.apellidos}}
+            {{#if subscriptionswithplans}}
+            {{#each subscriptionswithplans}}
+            <div class="card mx-auto my-2" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">{{this.planName }}</h5>
+                    <p class="card-text">{{this.planDescription }}</p>
+
+                    <p prod="{{this.plan.product}}"> </p>
+                    <p price="{{this.plan.id}}">{{stripeprecio this.plan.amount}} ultimo cobro {{ unix2es
+                        this.current_period_start}}</p>
+                    <p sub="{{this.id}}"> desde {{unix2es this.created}} hasta
+                        {{ unix2es this.current_period_end}}</p>
+                </div>
+            </div>
+            {{/each}}
+            {{else}}
+            <p>Sin subscripciones activas</p>
+            {{/if}}
+        </div>
+    </div>
+    <form action="/membresia/landing" method="GET">
+        <button class="btn btn-warning" id="checkout-and-portal-button" type="submit">Plans</button>
+    </form>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        let searchParams = new URLSearchParams(window.location.search);
+        if (searchParams.has('session_id')) {
+            const session_id = searchParams.get('session_id');
+            document.getElementById('session-id').setAttribute('value', session_id);
+        }
+    });
+</script>
