@@ -16,7 +16,7 @@ weekRouter.get("/list/:id", WeekController.getById);
 weekRouter.get("/edit",WeekController.getAll2modify);
 
 //CREATE
-weekRouter.get("/add", funciones.isAuthenticated, async (req, res) => {
+weekRouter.get("/add", funciones.isAuthenticated, funciones.isMaster,async (req, res) => {
   try {
     const usuarios = await db.query(" select * from usuarios");
     const actividades = await db.query(" select * from actividades");
@@ -28,15 +28,15 @@ weekRouter.get("/add", funciones.isAuthenticated, async (req, res) => {
   }
 });
 
-weekRouter.post("/addClass", funciones.isAuthenticated, WeekController.createClass);
+weekRouter.post("/addClass", funciones.isAuthenticated,funciones.isMaster, WeekController.createClass);
 
 /* weekRouter.post("/week", funciones.isAuthenticated, WeekController.createWeek);
 weekRouter.post("/duplicate", funciones.isAuthenticated, WeekController.duplicateWeek);*/
-weekRouter.post("/clone", funciones.isAuthenticated, WeekController.cloneWeek); 
+weekRouter.post("/clone", funciones.isAuthenticated,funciones.isMaster, WeekController.cloneWeek); 
 
 
 //DELETE
-weekRouter.get("/delete/:id", funciones.isAuthenticated, WeekController.delete);
+weekRouter.get("/delete/:id", funciones.isAuthenticated,funciones.isMaster, WeekController.delete);
 
 //UPDATE
 weekRouter.get("/editClass/:id", funciones.isAuthenticated, async (req, res) => {

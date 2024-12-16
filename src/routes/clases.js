@@ -28,7 +28,7 @@ clasesRouter.get("/add", funciones.isAuthenticated, async (req, res) => {
   }
 });
 
-clasesRouter.get("/addClassWeek", funciones.isAuthenticated, async (req, res) => {
+clasesRouter.get("/addClassWeek", funciones.isAuthenticated,funciones.isMaster, async (req, res) => {
   const dias = [{ "id": 1, "dia": "lunes" }, { "id": 2, "dia": "martes" }, { "id": 3, "dia": "miercoles" }, { "id": 4, "dia": "jueves" }, { "id": 5, "dia": "viernes" }, { "id": 6, "dia": "sabado" }, { "id": 7, "dia": "domingo" }];
   try {
     const usuarios = await db.query(" select * from usuarios");
