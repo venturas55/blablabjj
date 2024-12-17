@@ -32,6 +32,42 @@
           <a class="nav-link" href="/membresia/landing" tabindex="-1" aria-disabled="true"> <i
               class="fa fa-solid fa-credit-card"></i> Membresia</a>
         </li>
+
+
+
+
+
+
+
+
+        {{#if esMaster}}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-bs-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            GESTION ADMIN
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown1">
+            <a class="dropdown-item" href="/actividades/list">Gestion actividades</a>
+            <a class="dropdown-item" href="/clases/list">Gestion Clases</a>
+            <a class="dropdown-item" href="/usuarios/list">Gestion Usuarios</a>
+            <a class="dropdown-item" href="/asistencias/list">Gestion Asistencias</a>
+            <hr class="dropdown-divider">
+            <a class="dropdown-item" href="/membresias/list">Gestion Membresias</a>
+            <hr class="dropdown-divider">
+            <a class="dropdown-item" href="/chat">Mis mensajes</a>
+            <hr class="dropdown-divider">
+            <a class="dropdown-item" href="/logout ">Cerrar sesión </a>
+          </ul>
+        </li>
+
+        {{else}}
+         <p>kk </p>
+        {{/if}}
+
+
+
+
+
         {{#if user}}
 
         <li class="nav-item dropdown">
@@ -45,11 +81,7 @@
             <a class="dropdown-item" href="/actividades/add">Crear actividad</a>
             <a class="dropdown-item" href="/anuncios/add">Publicar Clases</a>
             <hr class="dropdown-divider">
-            <a class="dropdown-item" href="/solicitudes/list?monitor_id={{user.id}}">Ver mis solicitudes</a>
-            <a class="dropdown-item" href="/anuncios/list?creador_id={{user.id}}">Ver mis anuncios</a>
-            <hr class="dropdown-divider">
-            <a class="dropdown-item" href="/transferencias">Transferencias</a>
-            <a class="dropdown-item" href="/pagos">PAgos y reembolsos</a>
+            <a class="dropdown-item" href="/transferencias">Subscriptores</a>
             <hr class="dropdown-divider">
             <a class="dropdown-item" href="/chat">Mis mensajes</a>
             <hr class="dropdown-divider">
@@ -69,6 +101,7 @@
           </div>
         </li>
         {{/if}}
+
       </ul>
     </div>
   </div>

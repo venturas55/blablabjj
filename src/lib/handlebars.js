@@ -23,9 +23,9 @@ helpers.unix2es = (unixTime) => {
   return `${dia}/${mes}/${anio}`;
 }
 
-helpers.stripeprecio=(precio)=>{
-    precio = precio/100;
-    return precio +"€";
+helpers.stripeprecio = (precio) => {
+  precio = precio / 100;
+  return precio + "€";
 }
 
 //Este es el formateo necesario para encajar una fecha en un input de type="date"
@@ -75,6 +75,14 @@ helpers.formatearHoras = (timestamp) => {
     return string.slice(0, 5);
   }
 } */
+
+helpers.esMaster = (usuario) => {
+  return (usuario.privilegio == "master");
+}
+
+helpers.esAdmin = (usuario) => {
+  return (usuario.privilegio == "admin");
+}
 
 helpers.esAdmin = (usuario) => {
   return (usuario.privilegio == "admin");
