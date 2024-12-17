@@ -76,7 +76,7 @@ CREATE TABLE actividades (
   `nombre` varchar(50) NOT NULL,
   `descripcion` varchar(250) DEFAULT NULL,
   `pictureURL` varchar(200) DEFAULT NULL
-)ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'tipos de actividades';
+) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'tipos de actividades';
 
 CREATE TABLE clases (
   clase_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -90,7 +90,7 @@ CREATE TABLE clases (
   FOREIGN KEY (actividad_id) REFERENCES actividades(actividad_id),
   FOREIGN KEY (creador_id) REFERENCES usuarios(id),
   FOREIGN KEY (instructor_id) REFERENCES usuarios(id)
-)ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'Clases publicadas';
+) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'Clases publicadas';
 
 CREATE TABLE semana (
   clase_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -104,17 +104,43 @@ CREATE TABLE semana (
   FOREIGN KEY (actividad_id) REFERENCES actividades(actividad_id),
   FOREIGN KEY (creador_id) REFERENCES usuarios(id),
   FOREIGN KEY (instructor_id) REFERENCES usuarios(id)
-)ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'Clases de la semana';
+) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'Clases de la semana';
 
 CREATE TABLE asistencias (
   asistencia_id INT PRIMARY KEY AUTO_INCREMENT,
   clase_id INT,
   usuario_id INT,
+  cinturon ENUM(
+    'blanco',
+    'gris-blanco',
+    'gris',
+    'gris-negro',
+    'amarillo-blanco',
+    'amarillo',
+    'amarillo-negro',
+    'naranja-blanco',
+    'naranja',
+    'naranja-negro',
+    'verde-blanco',
+    'verde',
+    'verde-negro',
+    'azul',
+    'morado',
+    'marron',
+    'negro'
+  ) default 'blanco',
+  grado ENUM(
+    '',
+    'I',
+    'II',
+    'III',
+    'IIII'
+  ) default NULL,
   asistencia boolean default 0,
   UNIQUE KEY `my_uniq_id` (clase_id, usuario_id),
   FOREIGN KEY (clase_id) REFERENCES clases(clase_id) ON DELETE CASCADE,
   FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
-)ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'Asistencias';
+) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'Asistencias';
 
 CREATE TABLE conversaciones (
   conversacion_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -122,7 +148,7 @@ CREATE TABLE conversaciones (
   usuario2 INT,
   FOREIGN KEY (usuario1) REFERENCES usuarios(id),
   FOREIGN KEY (usuario2) REFERENCES usuarios(id)
-)ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'conversaciones';
+) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'conversaciones';
 
 CREATE TABLE mensajes (
   mensaje_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -132,7 +158,7 @@ CREATE TABLE mensajes (
   fecha_hora_envio DATETIME,
   FOREIGN KEY (conversacion_id) REFERENCES Conversaciones(conversacion_id),
   FOREIGN KEY (remitente_id) REFERENCES Usuarios(id)
-)ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'mensajes';
+) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'mensajes';
 
 CREATE TABLE historico (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -142,41 +168,55 @@ CREATE TABLE historico (
   comentario TEXT,
   fecha_valoracion DATE,
   FOREIGN KEY (usuario_valorador) REFERENCES usuarios(id),
-    FOREIGN KEY (usuario_valorado) REFERENCES usuarios(id)
-)ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'historico';
+  FOREIGN KEY (usuario_valorado) REFERENCES usuarios(id)
+) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'historico';
 
 CREATE TABLE clientes (
-    id INT AUTO_INCREMENT PRIMARY KEY,     -- Identificador único
-    customer VARCHAR(255),               -- Usuario asociado
-    email VARCHAR(255),
-    nombre VARCHAR(255),
-    subscripcion_id VARCHAR(255),    -- Hash del número de tarjeta (encriptado)
-    titular VARCHAR(100) ,         -- Nombre del titular de la tarjeta
-    fecha_vencimiento DATE,       -- Fecha de vencimiento
-    estado ENUM('activa', 'inactiva') DEFAULT 'activa',
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) 
-)ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'datos bancarios';
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  -- Identificador único
+  customer VARCHAR(255),
+  -- Usuario asociado
+  email VARCHAR(255),
+  nombre VARCHAR(255),
+  subscripcion_id VARCHAR(255),
+  -- Hash del número de tarjeta (encriptado)
+  titular VARCHAR(100),
+  -- Nombre del titular de la tarjeta
+  fecha_vencimiento DATE,
+  -- Fecha de vencimiento
+  estado ENUM('activa', 'inactiva') DEFAULT 'activa',
+  FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'datos bancarios';
 
 CREATE TABLE facturacion (
-    id INT AUTO_INCREMENT PRIMARY KEY,     -- Identificador único
-    usuario_id INT NOT NULL UNIQUE,               -- único Usuario asociado
-    session_id VARCHAR(255),
-    customer_id VARCHAR(255),
-    subscription VARCHAR(255),
-    correo VARCHAR(255),    
-    titular VARCHAR(100) ,         -- Nombre del titular de la tarjeta
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) 
-)ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'datos facturacion stripe';
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  -- Identificador único
+  usuario_id INT NOT NULL UNIQUE,
+  -- único Usuario asociado
+  session_id VARCHAR(255),
+  customer_id VARCHAR(255),
+  subscription VARCHAR(255),
+  correo VARCHAR(255),
+  titular VARCHAR(100),
+  -- Nombre del titular de la tarjeta
+  FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'datos facturacion stripe';
 
 CREATE TABLE pagos (
-    id INT AUTO_INCREMENT PRIMARY KEY,  -- Identificador único
-    cliente_id INT NOT NULL, -- Identificador usuario
-    monto DECIMAL(10, 2) NOT NULL,      -- Monto del pago
-    fecha_pago DATETIME DEFAULT CURRENT_TIMESTAMP, -- Fecha y hora del pago
-    metodo_pago ENUM('tarjeta', 'transferencia', 'efectivo') NOT NULL, -- Método de pago
-    estado ENUM('completado', 'pendiente', 'fallido') DEFAULT 'completado', -- Estado del pago
-    FOREIGN KEY (cliente_id) REFERENCES usuarios(id) 
-  )ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'pagos';
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  -- Identificador único
+  cliente_id INT NOT NULL,
+  -- Identificador usuario
+  monto DECIMAL(10, 2) NOT NULL,
+  -- Monto del pago
+  fecha_pago DATETIME DEFAULT CURRENT_TIMESTAMP,
+  -- Fecha y hora del pago
+  metodo_pago ENUM('tarjeta', 'transferencia', 'efectivo') NOT NULL,
+  -- Método de pago
+  estado ENUM('completado', 'pendiente', 'fallido') DEFAULT 'completado',
+  -- Estado del pago
+  FOREIGN KEY (cliente_id) REFERENCES usuarios(id)
+) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'pagos';
 
 INSERT INTO
   `usuarios` (
@@ -201,7 +241,8 @@ VALUES
     'Admin apellido',
     '666999333',
     'admin',
-    '87257d98-58f6-4525-94a5-2d8c5dbbb4d1.jpg',1
+    '87257d98-58f6-4525-94a5-2d8c5dbbb4d1.jpg',
+    1
   ),
   (
     2,
@@ -221,7 +262,7 @@ VALUES
     '$2a$10$XpxNWmS5qJUMg11uI4HcAuJdc7IkC1SQNFN5GM5xLiKlMa3uH7QOG',
     '2@2.es',
     'dos',
-      'dos apellido',
+    'dos apellido',
     '222555222',
     'none',
     'abe35bc2-558f-4fde-bd87-780f7511fa8e.jpg',
@@ -233,12 +274,13 @@ VALUES
     '$2a$10$pofTnnYsWwWJ3GpLwiygbOMJlNQv22NAUqEv73/L.HFchhyY1B12e',
     'tres@tres.es',
     'nombre del tres',
-      'tres apellido',
+    'tres apellido',
     '333555333',
     'none',
     NULL,
     0
-  ),(
+  ),
+(
     5,
     'Mariouno',
     '$2a$10$x1/8kTsVlNtfNDpSmkLs0eXvgkTB5YLPXIn7FvZtXaWEO6YzcOSF2',
@@ -256,7 +298,7 @@ VALUES
     '$2a$10$XpxNWmS5qJUMg11uI4HcAuJdc7IkC1SQNFN5GM5xLiKlMa3uH7QOG',
     '22@22.es',
     'Yuri',
-      'Yuri apellido',
+    'Yuri apellido',
     '232555222',
     'none',
     'abe35bc2-558f-4fde-bd87-780f7511fa8e.jpg',
@@ -268,15 +310,13 @@ VALUES
     '$2a$10$pofTnnYsWwWJ3GpLwiygbOMJlNQv22NAUqEv73/L.HFchhyY1B12e',
     'tres@tre3s.es',
     'Tania',
-      'Tania apellido',
+    'Tania apellido',
     '333555373',
     'none',
     NULL,
     1
   );
 
-
-  
 INSERT INTO
   nacionalidades (codigo_iso, nombre, prefijo_telefonico)
 VALUES
@@ -477,54 +517,426 @@ VALUES
   ('ZM', 'Zambia', '+260'),
   ('ZW', 'Zimbabue', '+263');
 
-INSERT INTO `actividades` (`actividad_id`, `nombre`, `descripcion`, `pictureURL`) VALUES
-(1, 'BJJ principiantes', 'JiuJitsu Brasileño con kimono para principiantes', ''),
-(2, 'BJJ avanzados', 'BJJ con kimono para avanzados', ''),
-(3, 'NoGi', 'JiujitsuBrasileño SIN kimono', NULL),
-(4, 'MMA', 'Artes marciales mixtas. Obligatorio uso de protecciones', NULL),
-(5, 'Open Mat BJJ', 'OpenMat con kimono', ''),
-(6, 'OpenMat NoGi', 'OpenMat nogi sin kimono', ''),
-(7, 'BJJ femenino', 'JiuJitsu para mujeres', ''),
-(8, 'Lucha Mixta Policial', 'Defensa para policias', ''),
-(9, 'Niños 3-5', 'Jiujitsu para niños de 3 a 5 años', ''),
-(10, 'Niños 6 a 9', 'Jiujitsu para niños de 6 a 9 años', ''),
-(11, 'Niños 9-13', 'Jiujitsu para niños de 9 a 13 años', ''),
-(12, 'Competicion Kids', 'Entrenamiento enfocado a competicion para niños', '');
+INSERT INTO
+  `actividades` (
+    `actividad_id`,
+    `nombre`,
+    `descripcion`,
+    `pictureURL`
+  )
+VALUES
+  (
+    1,
+    'BJJ principiantes',
+    'JiuJitsu Brasileño con kimono para principiantes',
+    ''
+  ),
+  (
+    2,
+    'BJJ avanzados',
+    'BJJ con kimono para avanzados',
+    ''
+  ),
+  (3, 'NoGi', 'JiujitsuBrasileño SIN kimono', NULL),
+  (
+    4,
+    'MMA',
+    'Artes marciales mixtas. Obligatorio uso de protecciones',
+    NULL
+  ),
+  (5, 'Open Mat BJJ', 'OpenMat con kimono', ''),
+  (6, 'OpenMat NoGi', 'OpenMat nogi sin kimono', ''),
+  (7, 'BJJ femenino', 'JiuJitsu para mujeres', ''),
+  (
+    8,
+    'Lucha Mixta Policial',
+    'Defensa para policias',
+    ''
+  ),
+  (
+    9,
+    'Niños 3-5',
+    'Jiujitsu para niños de 3 a 5 años',
+    ''
+  ),
+  (
+    10,
+    'Niños 6 a 9',
+    'Jiujitsu para niños de 6 a 9 años',
+    ''
+  ),
+  (
+    11,
+    'Niños 9-13',
+    'Jiujitsu para niños de 9 a 13 años',
+    ''
+  ),
+  (
+    12,
+    'Competicion Kids',
+    'Entrenamiento enfocado a competicion para niños',
+    ''
+  );
 
-
-INSERT INTO `semana` (`clase_id`, `creador_id`, `actividad_id`, `instructor_id`, `duracion`, `dia`, `hora`, `created_at`) VALUES
-(1, 4, 2, 5, 60, 1, '07:00:00', '2024-12-13 00:06:48'),
-(2, 4, 3, 5, 60, 1, '10:00:00', '2024-12-13 00:07:52'),
-(3, 4, 7, 7, 60, 5, '14:30:00', '2024-12-13 01:05:49'),
-(5, 4, 3, 5, 60, 3, '07:00:00', '2024-12-13 21:30:25'),
-(6, 4, 1, 5, 60, 2, '07:00:00', '2024-12-13 22:09:38'),
-(7, 4, 1, 5, 60, 4, '07:00:00', '2024-12-13 22:09:49'),
-(8, 4, 5, 1, 120, 6, '11:00:00', '2024-12-13 22:10:06'),
-(9, 4, 6, 7, 120, 7, '12:00:00', '2024-12-13 22:10:22'),
-(10, 4, 2, 5, 60, 2, '11:00:00', '2024-12-13 22:11:02'),
-(11, 4, 2, 5, 60, 4, '11:00:00', '2024-12-13 22:11:18'),
-(12, 4, 2, 5, 60, 5, '07:00:00', '2024-12-13 22:29:41'),
-(13, 4, 2, 5, 60, 5, '10:00:00', '2024-12-13 22:30:00'),
-(14, 4, 1, 5, 60, 5, '11:00:00', '2024-12-13 22:30:12'),
-(15, 4, 1, 5, 60, 1, '11:00:00', '2024-12-13 22:43:01'),
-(16, 4, 11, 7, 60, 1, '18:00:00', '2024-12-13 22:45:13'),
-(17, 4, 2, 6, 60, 1, '19:00:00', '2024-12-13 22:45:29'),
-(18, 4, 1, 6, 60, 1, '20:00:00', '2024-12-13 22:45:37'),
-(19, 4, 8, 1, 90, 2, '12:45:00', '2024-12-13 22:46:09'),
-(20, 4, 8, 1, 90, 4, '12:45:00', '2024-12-13 22:46:25'),
-(22, 4, 9, 7, 30, 4, '18:00:00', '2024-12-13 22:46:54'),
-(23, 4, 9, 7, 30, 2, '18:00:00', '2024-12-13 22:48:24'),
-(24, 4, 10, 7, 50, 2, '18:30:00', '2024-12-13 22:48:45'),
-(25, 4, 10, 7, 50, 4, '18:30:00', '2024-12-13 22:49:00'),
-(26, 4, 11, 7, 60, 3, '18:00:00', '2024-12-13 22:49:19'),
-(27, 4, 12, 7, 60, 5, '18:00:00', '2024-12-13 22:49:58'),
-(28, 4, 2, 5, 60, 3, '10:00:00', '2024-12-13 22:50:17'),
-(29, 4, 1, 5, 60, 3, '11:00:00', '2024-12-13 22:50:27'),
-(30, 4, 2, 6, 60, 3, '19:00:00', '2024-12-13 22:50:43'),
-(31, 4, 1, 6, 60, 3, '20:00:00', '2024-12-13 22:50:49'),
-(32, 4, 2, 6, 60, 5, '19:00:00', '2024-12-13 22:51:08'),
-(33, 4, 1, 6, 60, 5, '20:00:00', '2024-12-13 22:51:17'),
-(34, 4, 3, 6, 60, 2, '19:30:00', '2024-12-13 22:51:49'),
-(35, 4, 3, 6, 60, 4, '19:30:00', '2024-12-13 22:51:57'),
-(36, 4, 4, 6, 60, 2, '20:30:00', '2024-12-13 22:52:07'),
-(37, 4, 4, 6, 60, 4, '20:30:00', '2024-12-13 22:52:18');
+INSERT INTO
+  `semana` (
+    `clase_id`,
+    `creador_id`,
+    `actividad_id`,
+    `instructor_id`,
+    `duracion`,
+    `dia`,
+    `hora`,
+    `created_at`
+  )
+VALUES
+  (
+    1,
+    4,
+    2,
+    5,
+    60,
+    1,
+    '07:00:00',
+    '2024-12-13 00:06:48'
+  ),
+  (
+    2,
+    4,
+    3,
+    5,
+    60,
+    1,
+    '10:00:00',
+    '2024-12-13 00:07:52'
+  ),
+  (
+    3,
+    4,
+    7,
+    7,
+    60,
+    5,
+    '14:30:00',
+    '2024-12-13 01:05:49'
+  ),
+  (
+    5,
+    4,
+    3,
+    5,
+    60,
+    3,
+    '07:00:00',
+    '2024-12-13 21:30:25'
+  ),
+  (
+    6,
+    4,
+    1,
+    5,
+    60,
+    2,
+    '07:00:00',
+    '2024-12-13 22:09:38'
+  ),
+  (
+    7,
+    4,
+    1,
+    5,
+    60,
+    4,
+    '07:00:00',
+    '2024-12-13 22:09:49'
+  ),
+  (
+    8,
+    4,
+    5,
+    1,
+    120,
+    6,
+    '11:00:00',
+    '2024-12-13 22:10:06'
+  ),
+  (
+    9,
+    4,
+    6,
+    7,
+    120,
+    7,
+    '12:00:00',
+    '2024-12-13 22:10:22'
+  ),
+  (
+    10,
+    4,
+    2,
+    5,
+    60,
+    2,
+    '11:00:00',
+    '2024-12-13 22:11:02'
+  ),
+  (
+    11,
+    4,
+    2,
+    5,
+    60,
+    4,
+    '11:00:00',
+    '2024-12-13 22:11:18'
+  ),
+  (
+    12,
+    4,
+    2,
+    5,
+    60,
+    5,
+    '07:00:00',
+    '2024-12-13 22:29:41'
+  ),
+  (
+    13,
+    4,
+    2,
+    5,
+    60,
+    5,
+    '10:00:00',
+    '2024-12-13 22:30:00'
+  ),
+  (
+    14,
+    4,
+    1,
+    5,
+    60,
+    5,
+    '11:00:00',
+    '2024-12-13 22:30:12'
+  ),
+  (
+    15,
+    4,
+    1,
+    5,
+    60,
+    1,
+    '11:00:00',
+    '2024-12-13 22:43:01'
+  ),
+  (
+    16,
+    4,
+    11,
+    7,
+    60,
+    1,
+    '18:00:00',
+    '2024-12-13 22:45:13'
+  ),
+  (
+    17,
+    4,
+    2,
+    6,
+    60,
+    1,
+    '19:00:00',
+    '2024-12-13 22:45:29'
+  ),
+  (
+    18,
+    4,
+    1,
+    6,
+    60,
+    1,
+    '20:00:00',
+    '2024-12-13 22:45:37'
+  ),
+  (
+    19,
+    4,
+    8,
+    1,
+    90,
+    2,
+    '12:45:00',
+    '2024-12-13 22:46:09'
+  ),
+  (
+    20,
+    4,
+    8,
+    1,
+    90,
+    4,
+    '12:45:00',
+    '2024-12-13 22:46:25'
+  ),
+  (
+    22,
+    4,
+    9,
+    7,
+    30,
+    4,
+    '18:00:00',
+    '2024-12-13 22:46:54'
+  ),
+  (
+    23,
+    4,
+    9,
+    7,
+    30,
+    2,
+    '18:00:00',
+    '2024-12-13 22:48:24'
+  ),
+  (
+    24,
+    4,
+    10,
+    7,
+    50,
+    2,
+    '18:30:00',
+    '2024-12-13 22:48:45'
+  ),
+  (
+    25,
+    4,
+    10,
+    7,
+    50,
+    4,
+    '18:30:00',
+    '2024-12-13 22:49:00'
+  ),
+  (
+    26,
+    4,
+    11,
+    7,
+    60,
+    3,
+    '18:00:00',
+    '2024-12-13 22:49:19'
+  ),
+  (
+    27,
+    4,
+    12,
+    7,
+    60,
+    5,
+    '18:00:00',
+    '2024-12-13 22:49:58'
+  ),
+  (
+    28,
+    4,
+    2,
+    5,
+    60,
+    3,
+    '10:00:00',
+    '2024-12-13 22:50:17'
+  ),
+  (
+    29,
+    4,
+    1,
+    5,
+    60,
+    3,
+    '11:00:00',
+    '2024-12-13 22:50:27'
+  ),
+  (
+    30,
+    4,
+    2,
+    6,
+    60,
+    3,
+    '19:00:00',
+    '2024-12-13 22:50:43'
+  ),
+  (
+    31,
+    4,
+    1,
+    6,
+    60,
+    3,
+    '20:00:00',
+    '2024-12-13 22:50:49'
+  ),
+  (
+    32,
+    4,
+    2,
+    6,
+    60,
+    5,
+    '19:00:00',
+    '2024-12-13 22:51:08'
+  ),
+  (
+    33,
+    4,
+    1,
+    6,
+    60,
+    5,
+    '20:00:00',
+    '2024-12-13 22:51:17'
+  ),
+  (
+    34,
+    4,
+    3,
+    6,
+    60,
+    2,
+    '19:30:00',
+    '2024-12-13 22:51:49'
+  ),
+  (
+    35,
+    4,
+    3,
+    6,
+    60,
+    4,
+    '19:30:00',
+    '2024-12-13 22:51:57'
+  ),
+  (
+    36,
+    4,
+    4,
+    6,
+    60,
+    2,
+    '20:30:00',
+    '2024-12-13 22:52:07'
+  ),
+  (
+    37,
+    4,
+    4,
+    6,
+    60,
+    4,
+    '20:30:00',
+    '2024-12-13 22:52:18'
+  );

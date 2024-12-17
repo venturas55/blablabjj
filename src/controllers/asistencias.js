@@ -8,8 +8,9 @@ import { validateAsistencia, validatePartialAsistencia } from '../schemas/valida
 
 export class AsistenciaController {
     static async getAll(req, res) {
-        let input="";
+        let input = "";
         const asistencias = await AsistenciaModel.getAll(input);
+        console.log(asistencias[0]);
         res.render("asistencias/list", { asistencias, });
     }
 
@@ -24,10 +25,12 @@ export class AsistenciaController {
         const item = {
             clase_id,
             usuario_id: req.user.id,
+            cinturon:req.user.cinturon,
+            grado:req.user.grado
         };
         const a = await AsistenciaModel.create({ input: item });
         req.flash("success", "Solicitud realizada correctamente");
-       res.redirect("/clases/ver/"+clase_id); //te redirige una vez insertado el item
+        res.redirect("/clases/ver/" + clase_id); //te redirige una vez insertado el item
 
     }
     static async delete(req, res) {

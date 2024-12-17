@@ -121,16 +121,14 @@ membresiasRouter.get('/success', funciones.isAuthenticated, async (req, res) => 
     const facturacion = { usuario_id: req.user.id, session_id: req.query.session_id, customer_id: session.customer, titular: session.customer_details.name, correo: session.customer_details.email, subscription: session.subscription }
 
     const [q] = await ExtraModel.getFacturacionByUserId(req.user.id);
-    /*     if (q) {
+        if (q) {
             console.log("actualizando facturacion");
             const r = await ExtraModel.updateFacturacion(facturacion, q.id);
             console.log(r);
         } else {
             console.log("creando facturacion");
             await ExtraModel.createFacturacion(facturacion);
-        } */
-    console.log("creando facturacion");
-    await ExtraModel.createFacturacion(facturacion);
+        }
     res.render("membresia/success");
 });
 

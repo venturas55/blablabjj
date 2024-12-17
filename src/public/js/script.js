@@ -5,7 +5,8 @@
    return false;
   }); */
 
-function crearCinturon(color, grados, coloraux, id) {
+
+  function crearCinturon(color, grados, coloraux, id) {
     console.log("Dibujando cinturon: " + color + " " + grados + " en " + id + " es niño " + coloraux);
 
     let beltContainer = document.getElementById("belt-container" + id);

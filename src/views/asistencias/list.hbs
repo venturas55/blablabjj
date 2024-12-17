@@ -2,7 +2,7 @@
 	<div class="row">
 		<div class="col-md-12 text-center">
 			{{#if asistencias}}
-			 <table class="mt-4 table table-dark table-striped">
+			<table class="mt-4 table table-dark table-striped">
 				<tr>
 					<th>Id asistencia</th>
 					<th>Clase</th>
@@ -10,10 +10,10 @@
 					<th>Creador</th>
 					<th>Instructor</th>
 					<th>Asistente</th>
+					<th>cinturon</th>
 					<th>Dia</th>
 					<th>Hora</th>
 					<th>Duracion</th>
-
 					<th>Accion</th>
 
 				</tr>
@@ -25,22 +25,27 @@
 					<td>{{this.creador_id}} {{this.nombre_creador}} {{this.apellidos_creador}} </td>
 					<td>{{this.instructor_id}} {{this.nombre_instructor}} {{this.apellidos_instructor}} </td>
 					<td>{{this.usuario_id}} {{this.nombre_usuario}} {{this.apellidos_usuario}} </td>
+					<td class="asistente d-flex flex-row align-items-center align-self-center justify-content-start p-2"
+						data-color="{{this.cinturon}}" data-grados="{{this.grado}}" data-id="{{this.asistencia_id}}">
+						<div class="cinturon-pequeño">
+							<div id="belt-container{{this.asistencia_id}}" class="belt-container"></div>
+						</div>
+					</td>
 					<td>{{formatearSp this.fecha_hora}} </td>
 					<td>{{formatearHoras this.fecha_hora}}</td>
 					<td>{{this.duracion}}</td>
 					<td>
-				{{!-- 		<a href="/asistencias/edit/{{this.asistencia_id}}" class="text-warning"><i
+						{{!-- <a href="/asistencias/edit/{{this.asistencia_id}}" class="text-warning"><i
 								class="fa-solid fa-pen"></i>Edit</a> --}}
 						<a href="/asistencias/delete/{{this.asistencia_id}}" class="text-warning"><i
 								class="fa-solid fa-trash"></i>Del</a>
-			{{!-- 			<form action="/asistencias/remove/{{this.asistencia_id}}" method="post">
+						{{!-- <form action="/asistencias/remove/{{this.asistencia_id}}" method="post">
 							<a onclick="this.parentNode.submit();" class="text-warning"><i
 									class="fa-solid fa-user-plus"></i>Exit </a>
 						</form> --}}
 						{{!-- <a href="/asistencias/add/{{this.clase_id}}" class="text-warning"></a> --}}
 					</td>
 				</tr>
-
 				{{/each}}
 			</table>
 			{{/if}}
@@ -48,17 +53,13 @@
 		</div>
 	</div>
 
+	<!-- Button trigger modal -->
+	<div class="text-center">
+		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+			AÑADIR CLASE
+		</button>
+	</div>
 </div>
-
-
-<!-- Button trigger modal -->
-<div class="text-center">
-	<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-		AÑADIR CLASE
-	</button>
-</div>
-</div>
-
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
