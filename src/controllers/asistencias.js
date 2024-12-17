@@ -15,11 +15,19 @@ export class AsistenciaController {
     }
 
 
-    static async getById(req, res) {
-        const { clase_id } = req.params
-        const [item] = await AsistenciaModel.getById({ id: clase_id });
-        res.render("anuncios/plantilla", { item });
+    static async confirmById(req, res) {
+        const { asistencia_id,clase_id } = req.body
+        console.log(asistencia_id+" "+clase_id);
+        const item = await AsistenciaModel.confirmById({  asistencia_id });
+        res.redirect("/clases/ver/"+clase_id);
     }
+
+    static async cancelById(req, res) {
+        const { asistencia_id,clase_id } = req.body
+        const item = await AsistenciaModel.cancelById({ asistencia_id });
+        res.redirect("/clases/ver/"+clase_id);
+    }
+
     static async create(req, res) {
         const { clase_id } = req.params
         const item = {

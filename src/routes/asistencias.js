@@ -9,18 +9,20 @@ export const asistenciasRouter = Router();
 
 //READ
 asistenciasRouter.get("/list", AsistenciaController.getAll);
-asistenciasRouter.get("/list/:asistencia_id", AsistenciaController.getById);
-asistenciasRouter.get("/:asistencia_id", AsistenciaController.getById);
+//asistenciasRouter.get("/list/:asistencia_id", AsistenciaController.getById);
 //CREATE
 /* asistenciasRouter.get("/add", funciones.isAuthenticated,async  (req, res) => {
   const actividades = await db.query("SELECT * FROM actividades");
   res.render("anuncios/add",{actividades});
 }); */
+
+asistenciasRouter.post("/confirm", funciones.isAuthenticated, AsistenciaController.confirmById);
+asistenciasRouter.post("/cancel", funciones.isAuthenticated, AsistenciaController.cancelById);
+
+
 asistenciasRouter.post("/add/:clase_id", funciones.isAuthenticated, AsistenciaController.create);
-
-
 //DELETE
-asistenciasRouter.get("/delete/:asistencia_id", funciones.isAuthenticated, AsistenciaController.delete);
+asistenciasRouter.post("/delete/:asistencia_id", funciones.isAuthenticated, AsistenciaController.delete);
 //UPDATE
 asistenciasRouter.get("/edit/:asistencia_id", funciones.isAuthenticated, async (req, res) => {
   const { asistencia_id } = req.params;

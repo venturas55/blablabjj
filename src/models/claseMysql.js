@@ -12,7 +12,7 @@ export class ClaseModel {
   }
 
   static async getById({ id }) {
-    const clase = await db.query(sqlSelectQueryActivity+" where clase_id=?", id);
+    const clase = await db.query(sqlSelectQueryActivity+" where c.clase_id=?", id);
     return clase;
   }
 

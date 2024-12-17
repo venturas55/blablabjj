@@ -25,20 +25,16 @@ export class ClaseController {
 
     static async getClase(req, res) {
         const { id } = req.params;
-        const usuarios = await UsuarioModel.getAll();
-        const actividades = await ActividadModel.getAll();
+        /* const usuarios = await UsuarioModel.getAll();
+        const actividades = await ActividadModel.getAll(); */
         const asistentes = await AsistenciaModel.getByClaseId({ id: id });
-        console.log(asistentes);
         const clase = await ClaseModel.getById({ id: id })
-        res.render("clases/plantilla", { item: clase[0], actividades, usuarios,asistentes });
+        res.render("clases/plantilla", { item: clase[0],  asistentes });
     }
-
-
 
     static async getById(req, res) {
         const { id } = req.params;
         const [clase] = await ClaseModel.getById({ id });
-        console.log(clase);
         res.render("clases/plantilla", { clase });
     }
 
