@@ -1,10 +1,30 @@
 <div class="container p-1 mb-5">
-
-      
-           <a class="btn btn-warning btn-block" href="/membresia/subscriptions">Subcripciones</a>
-   
+    <a class="btn btn-warning btn-block" href="/membresia/subscriptions">Subcripciones</a>
     <div class="row text-center">
         <div class="col-12">
+            {{#if subscriptionswithplans}}
+            <h1>Subcripciones activas </h1>
+            {{user.id}} {{user.nombre}} {{user.apellidos}}
+            {{#each subscriptionswithplans}}
+            <div class="card mx-auto my-2" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">{{this.planName }}</h5>
+                    <p class="card-text">{{this.planDescription }}</p>
+
+                    <p prod="{{this.plan.product}}"> {{this.customer}}</p>
+                    <p price="{{this.plan.id}}">{{stripeprecio this.plan.amount}} ultimo cobro {{unix2es
+                        this.current_period_start}}</p>
+                    <p sub="{{this.id}}"> desde {{unix2es this.created}} hasta {{unix2es this.current_period_end}}</p>
+                </div>
+            </div>
+            <form action="/membresia/create-portal-session" method="POST">
+                <button class="btn btn-warning" id="checkout-and-portal-button" type="submit">Manage your billing
+                    information</button>
+            </form>
+            {{/each}}
+            {{else}}
+
+
             <h1>Selecciona Membresía</h1>
             {{user.id}} {{user.nombre}} {{user.apellidos}}
 
@@ -96,11 +116,10 @@
                     </form>
                 </div>
             </div>
+            {{/if}}
         </div>
     </div>
-    <form action="/membresia/create-portal-session" method="POST">
-        <button class="btn btn-warning" id="checkout-and-portal-button" type="submit">Manage your billing information</button>
-    </form>
+
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', async () => {

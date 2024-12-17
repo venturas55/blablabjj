@@ -13,7 +13,20 @@ export const membresiasRouter = Router();
 
 // Crear una sesión de pago para una tarifa específica
 membresiasRouter.get('/landing', funciones.isAuthenticated, async (req, res) => {
-    res.render("membresia/landing");
+    const [q] = await ExtraModel.getFacturacionByUserId(req.user.id);
+    console.log(q);
+    console.log("------------------")
+    try {
+        var subscriptionswithplans;
+        if (q) {
+            const customerId = q.customer_id; // Reemplaza con el ID de cliente de tu base de datos
+            subscriptionswithplans = await getCustomerSubscriptionsWithPlan(customerId);
+            console.log(subscriptionswithplans);
+        }
+        res.render('membresia/landing', { subscriptionswithplans }); // Renderiza la vista
+    } catch (error) {
+        res.status(500).send('Error al obtener las suscripciones');
+    }
 });
 
 // Función para obtener las suscripciones con el nombre del plan
@@ -121,15 +134,15 @@ membresiasRouter.get('/success', funciones.isAuthenticated, async (req, res) => 
     const facturacion = { usuario_id: req.user.id, session_id: req.query.session_id, customer_id: session.customer, titular: session.customer_details.name, correo: session.customer_details.email, subscription: session.subscription }
 
     const [q] = await ExtraModel.getFacturacionByUserId(req.user.id);
-        if (q) {
-            console.log("actualizando facturacion");
-            const r = await ExtraModel.updateFacturacion(facturacion, q.id);
-            console.log(r);
-        } else {
-            console.log("creando facturacion");
-            await ExtraModel.createFacturacion(facturacion);
-        }
-    res.render("membresia/success");
+    if (q) {
+        console.log("actualizando facturacion");
+        const r = await ExtraModel.updateFacturacion(facturacion, q.id);
+        console.log(r);
+    } else {
+        console.log("creando facturacion");
+        await ExtraModel.createFacturacion(facturacion);
+    }
+    res.redirect("membresia/landing");
 });
 
 membresiasRouter.get('/cancel', async (req, res) => {
@@ -142,27 +155,11 @@ membresiasRouter.post('/create-portal-session', funciones.isAuthenticated, async
 
     const portalSession = await stripe.billingPortal.sessions.create({
         customer: checkoutSession.customer,
-        return_url: `${process.env.BASE_URL}:${process.env.PORT}/usuarios/get/${q.usuario_id}`,
+        return_url: `${process.env.BASE_URL}:${process.env.PORT}/membresia/landing`,
+        //return_url: `${process.env.BASE_URL}:${process.env.PORT}/usuarios/get/${q.usuario_id}`,
     });
     res.redirect(303, portalSession.url);
 
-});
-
-membresiasRouter.get('/subscriptions', funciones.isAuthenticated, async (req, res) => {
-    const [q] = await ExtraModel.getFacturacionByUserId(req.user.id);
-    console.log(q);
-    console.log("------------------")
-    try {
-        var subscriptionswithplans;
-        if (q) {
-            const customerId = q.customer_id; // Reemplaza con el ID de cliente de tu base de datos
-            subscriptionswithplans = await getCustomerSubscriptionsWithPlan(customerId);
-            console.log(subscriptionswithplans);
-        }
-        res.render('membresia/subscriptions', { subscriptionswithplans }); // Renderiza la vista
-    } catch (error) {
-        res.status(500).send('Error al obtener las suscripciones');
-    }
 });
 
 // This is your Stripe CLI webhook secret for testing your endpoint locally.

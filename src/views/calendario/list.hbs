@@ -45,7 +45,7 @@
         <div class="row text-center m-4">
           <div class="table-responsive">
             {{#each clases}}
-            <a href="/clases/ver/{{clase_id}}">
+            <a href="/clases/ver/{{clase_id}}" class="d-block">
               <div class="card mb-2 dia{{getDay fecha_hora}}">
                 <div class="card-body">
                   <h5 class="card-title">{{clase_id}} {{nombre_actividad}}</h5>
@@ -56,16 +56,14 @@
                   <p>{{formatearSp fecha_hora}}</p>
                   <div class="d-flex justify-content-around ">
                     {{#each this.asistentes}}
-                    <a href="/usuarios/get/{{this.usuario_id}}"> 
+                    <a href="/usuarios/get/{{this.usuario_id}}">
                       {{#if this.pictureURL_usuario}}
                       <img src="/img/profiles/{{this.pictureURL_usuario}}" class="avatar avatar-xs m-2"
                         alt="avatar {{this.pictureURL_usuario}}'" />
                       {{else}}
                       <img src="/img/profiles/default.jpg" class="avatar avatar-xs m-2" alt="default avatar" />
                       {{/if}}
-          
                     </a>
-             
                     {{/each}}
                   </div>
                 </div>
