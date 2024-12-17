@@ -88,11 +88,6 @@ helpers.esAdmin = (usuario) => {
   return (usuario.privilegio == "admin");
 }
 
-helpers.esProfe = (usuario) => {
-  return (usuario.privilegio == "maestro");
-}
-
-
 helpers.when = (operand_1, operator, operand_2, options) => {
   var operators = {
     'eq': function (l, r) { return l == r; },

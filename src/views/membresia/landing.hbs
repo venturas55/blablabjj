@@ -1,9 +1,8 @@
 <div class="container p-1 mb-5">
-    <a class="btn btn-warning btn-block" href="/membresia/subscriptions">Subcripciones</a>
     <div class="row text-center">
         <div class="col-12">
             {{#if subscriptionswithplans}}
-            <h1>Subcripciones activas </h1>
+            <h1>Mis subcripciones activas </h1>
             {{user.id}} {{user.nombre}} {{user.apellidos}}
             {{#each subscriptionswithplans}}
             <div class="card mx-auto my-2" style="width: 18rem;">
@@ -24,8 +23,7 @@
             {{/each}}
             {{else}}
 
-
-            <h1>Selecciona Membresía</h1>
+            <h1>Selecciona una Membresía y únete</h1>
             {{user.id}} {{user.nombre}} {{user.apellidos}}
 
             <div class="card mx-auto my-2" style="width: 18rem;">

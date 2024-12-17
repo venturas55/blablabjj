@@ -48,6 +48,8 @@
             <a href="/clases/ver/{{clase_id}}" class="d-block">
               <div class="card mb-2 dia{{getDay fecha_hora}}">
                 <div class="card-body">
+            {{>avatar size="m" url=pictureURL_instructor}}
+
                   <h5 class="card-title">{{clase_id}} {{nombre_actividad}}</h5>
                   <p class="card-text">{{formatearHoras fecha_hora}}</p>
                   <p> {{duracion}}min</p>
