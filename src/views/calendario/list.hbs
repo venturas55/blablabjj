@@ -1,13 +1,12 @@
 <div class="container p-2 mb-5">
-  {{user.nombre}}
-  {{!-- {{#if esMaster}} --}}
+  {{#when user.privilegio 'eq' "master"}}
   <div class="row text-center m-4">
     <div class="col-12 text-center">
       <a href="/clases/add"> <button class="btn btn-warning">NUEVA CLASE</button></a>
       <a href="/week/list"> <button class="btn btn-warning">GESTIONAR SEMANA</button></a>
     </div>
   </div>
-  {{!-- {{/esAdmin}} --}}
+  {{/when }}
 
 
   <div class="row text-center m-4">
@@ -48,7 +47,7 @@
             <a href="/clases/ver/{{clase_id}}" class="d-block">
               <div class="card mb-2 dia{{getDay fecha_hora}}">
                 <div class="card-body">
-            {{>avatar size="m" url=pictureURL_instructor}}
+                  {{>avatar size="m" url=pictureURL_instructor}}
 
                   <h5 class="card-title">{{clase_id}} {{nombre_actividad}}</h5>
                   <p class="card-text">{{formatearHoras fecha_hora}}</p>

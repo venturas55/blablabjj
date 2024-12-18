@@ -1,84 +1,84 @@
 <div class="container p-2">
-    <h1>Cambios en la clase {{item.clase_id}} - {{item.nombre_actividad}} </h1>
-    <div class="row">
-
-        <div class="col-12 mx-auto">
-            <div class="card">
-                <div class="card-body">
-                    {{>avatar size="m" url=pictureURL_instructor}}
-                    <h2> {{item.nombre_actividad}} </h2>
-                    <p>{{item.descripcion_actividad}}</p>
-
-                    <div class="form-group">Fecha: {{formatearSp item.fecha_hora}} a las {{formatearHoras
-                        item.fecha_hora}} creado por {{item.nombre_creador }}</div>
-                    <div class="form-group">Duracion:{{item.duracion}} min </div>
-                    <div class="form-group"> Instructor: {{item.nombre_instructor }}</div>
+    <h1>Información de la clase de {{item.nombre_actividad}} -  {{item.clase_id}} </h1>
 
 
-                    <h4>Asistentes</h4>
-                    <table class="mt-4 table table-dark table-striped">
-                        <tr>
-                            <th>Cinturon</th>
-                            <th>avatar</th>
-                            <th>nac</th>
-                            <th>Nombre</th>
-                            <th>Acciones</th>
-                        </tr>
-                        {{#each asistentes}}
+    <div class="col-12 mx-auto mb-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="form-group"> Instructor: {{item.nombre_instructor }}</div>
+                {{>avatar size="m" url=item.pictureURL_instructor}}
+                <h2> {{item.nombre_actividad}} </h2>
+                <div class="form-group">{{item.descripcion_actividad}}</div>
+                <div class="form-group">Duracion:{{item.duracion}} min </div>
+                <hr>
+                <div class="form-group">Fecha: {{formatearSp item.fecha_hora}} a las {{formatearHoras
+                    item.fecha_hora}} </div>
+                <div> Clase creada por {{item.nombre_creador }}</div>
+
+                <hr>
+                <h4>Asistentes</h4>
+                <table class="mt-4 table table-dark table-striped">
+                    <tr>
+                        <th>Cinturon</th>
+                        <th>avatar</th>
+                        <th>Nombre</th>
+                        <th>Acciones</th>
+                    </tr>
+                    {{#each asistentes}}
+                    <tr>
                         <a href="/usuarios/get/{{this.usuario_id}}">
-                            <tr>
-                                <td>
-                                    <div class="asistente d-flex flex-row align-items-center align-self-center justify-content-start p-2"
-                                        data-color="{{this.cinturon}}" data-grados="{{this.grado}}"
-                                        data-id="{{this.usuario_id}}">
-                                        <div class="cinturon-pequeño">
-                                            <div id="belt-container{{this.usuario_id}}" class="belt-container">
-                                            </div>
+
+                            <td>
+                                <div class="asistente d-flex flex-row align-items-center align-self-center justify-content-start p-2"
+                                    data-color="{{this.cinturon}}" data-grados="{{this.grado}}"
+                                    data-id="{{this.usuario_id}}">
+                                    <div class="cinturon-pequeño">
+                                        <div id="belt-container{{this.usuario_id}}" class="belt-container">
                                         </div>
-                                </td>
-                                <td> {{#if this.pictureURL_usuario}}
-                                    <img src="/img/profiles/{{this.pictureURL_usuario}}" class="avatar avatar-xs m-2"
-                                        alt="avatar {{this.pictureURL_usuario}}'" />
-                                    {{else}}
-                                    <img src="/img/profiles/default.jpg" class="avatar avatar-xs m-2"
-                                        alt="default avatar" />
-                                    {{/if}}
-                                </td>
-
-                                <td><span class="fi fi-{{minusculas this.codigo_iso}}"></td>
-                                <td> {{this.nombre_usuario}} {{this.apellidos_usuario}} </td>
-                                {{#if this.asistencia}}
-                                <td>
-                                    <form action="/asistencias/cancel" method="post">
-                                        <input type="hidden" name="asistencia_id" value="{{this.asistencia_id}}">
-                                        <input type="hidden" name="clase_id" value="{{this.clase_id}}"><button
-                                            class="btn "><i class="text-warning fa-solid fa-ban"></i></button>
-                                    </form>
-                                </td>
+                                    </div>
+                            </td>
+                            <td> {{#if this.pictureURL_usuario}}
+                                <img src="/img/profiles/{{this.pictureURL_usuario}}" class="avatar avatar-xs m-2"
+                                    alt="avatar {{this.pictureURL_usuario}}'" />
                                 {{else}}
-                                <td>
-                                    <form action="/asistencias/confirm" method="post">
-                                        <input type="hidden" name="asistencia_id" value="{{this.asistencia_id}}">
-                                        <input type="hidden" name="clase_id" value="{{this.clase_id}}"><button
-                                            class="btn "><i class="text-warning fa-solid fa-check"></i></button>
-                                    </form>
-                                </td>
+                                <img src="/img/profiles/default.jpg" class="avatar avatar-xs m-2"
+                                    alt="default avatar" />
                                 {{/if}}
-                            </tr>
+                                <span class="fi fi-{{minusculas this.codigo_iso}}"></span>
+                            </td>
+                            <td> {{this.nombre_usuario}} {{this.apellidos_usuario}} </td>
+                            {{#if this.asistencia}}
+                            <td>
+                                <form action="/asistencias/cancel" method="post">
+                                    <input type="hidden" name="asistencia_id" value="{{this.asistencia_id}}">
+                                    <input type="hidden" name="clase_id" value="{{this.clase_id}}"><button
+                                        class="btn "><i class="text-warning fa-solid fa-ban"></i></button>
+                                </form>
+                            </td>
+                            {{else}}
+                            <td>
+                                <form action="/asistencias/confirm" method="post">
+                                    <input type="hidden" name="asistencia_id" value="{{this.asistencia_id}}">
+                                    <input type="hidden" name="clase_id" value="{{this.clase_id}}"><button
+                                        class="btn "><i class="text-warning fa-solid fa-check"></i></button>
+                                </form>
+                            </td>
+                            {{/if}}
                         </a>
-                </div>
-                {{/each}}
-                <div class="card-footer">
 
-                </div>
+                    </tr>
 
+                    {{/each}}
+                </table>
             </div>
-            <div>
-                <a class="btn btn-warning btn-block mb-3" href="javascript:void(0)" onclick="history.back();">Volver</a>
+            <div class="card-footer">
                 <form action="/asistencias/add/{{item.clase_id}}" method="post">
                     <button class="btn btn-warning"> <i class="fa-solid fa-user-plus"></i>Join </button>
                 </form>
             </div>
         </div>
     </div>
+</div>
+<div class="mb-5"><a class="btn btn-warning btn-block mb-3" href="javascript:void(0)"
+        onclick="history.back();">Volver</a></div>
 </div>

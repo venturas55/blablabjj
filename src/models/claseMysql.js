@@ -13,6 +13,7 @@ export class ClaseModel {
 
   static async getById({ id }) {
     const clase = await db.query(sqlSelectQueryActivity+" where c.clase_id=?", id);
+    console.log(clase);
     return clase;
   }
 
