@@ -11,7 +11,7 @@ import { validateCalendario, validatePartialCalendario } from '../schemas/valida
 export class CalendarioController {
     static async getAll(req, res) {
         let input = "";
-        const clases = await CalendarioModel.getAll3m(input);
+        const clases = await CalendarioModel.getAll(input);
 
         //Se añade la info de los asistentes de cada clase
         for (let i = 0; i < clases.length; i++) {
