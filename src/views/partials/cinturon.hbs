@@ -1,5 +1,13 @@
-<p class="position-absolute invisible">Cinturon: <span id="cinturon{{id}}">{{cinturon}}</span>
+{{!-- <p class="position-absolute invisible">Cinturon: <span id="cinturon{{id}}">{{cinturon}}</span>
         <span id="grados{{id}}">{{grado}}</span>
 </p>
 
 <div class="itsbelt" id="belt-container{{id}}"> </div>
+--}}
+
+<div class="asistente d-inline-flex p-2" data-color="{{cinturon}}" data-grados="{{grados}}"
+        data-id="{{id}}">
+        <div class="cinturon-{{tamano}}">
+                <div id="belt-container{{id}}" class="belt-container"></div>
+        </div>
+</div>

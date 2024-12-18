@@ -15,12 +15,7 @@
                     </form>
                     <h4> {{usuario.usuario}} <span class="fi fi-{{minusculas usuario.codigo_iso}}"></span> </h4>
                     <p>{{usuario.nombre}} {{usuario.apellidos}}</p>
-                    <div class="asistente d-inline-flex p-2" data-color="{{usuario.cinturon}}"
-                        data-grados="{{usuario.grado}}" data-id="{{usuario.id}}">
-                        <div class="cinturon-grande">
-                            <div id="belt-container{{usuario.id}}" class="belt-container"></div>
-                        </div>
-                    </div>
+                    {{>cinturon cinturon=usuario.cinturon grados=usuario.grado id="cinturonusuario" tamano="grande"}}
                     <p>telefono:+{{usuario.pais_telefono}} {{usuario.telefono}} </p>
 
 
@@ -37,14 +32,20 @@
             </div>
             <div class="card text-center mb-5">
                 <h2>Asistencias</h2>
-               <p> <span>mes: {{clasesMes asistencias}} </span>  <span>Año: {{clasesAno asistencias}}</span> <span>Totales: {{clasesTotales asistencias}}</span></p> 
+                <p> <span>mes: {{clasesMes asistencias}} </span> <span>Año: {{clasesAno asistencias}}</span>
+                    <span>Totales: {{clasesTotales asistencias}}</span>
+                </p>
                 <div class="card-body my-0 py-0">
 
                     {{#each asistencias}}
                     <div class="d-flex">
-                        <div >
-                            <h5 class="card-title">{{this.nombre_actividad}}</h5>
-                            <p class="card-text">{{formatearHoras this.fecha_hora}}</p>
+                        <div>
+                            <h5 class="card-title">{{this.nombre_actividad}} {{this.asistencia_id}}</h5>
+                            <p class="card-text">{{formatearHoras this.fecha_hora}} {{formatearSp this.fecha_hora}}</p>
+                        </div>
+                        <div>
+                            {{>cinturon cinturon=this.cinturon grados=this.grado id=this.asistencia_id
+                            tamano="pequeño"}}
                         </div>
                         <div>
                             <a href="/clases/ver/{{this.clase_id}}" class="btn btn-sm btn-primary">Más info</a>
@@ -57,5 +58,4 @@
             </div>
         </div>
     </div>
-</div>
 </div>
