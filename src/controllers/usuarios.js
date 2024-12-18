@@ -1,4 +1,5 @@
 import { UsuarioModel } from '../models/usuarioMysql.js';
+import { AsistenciaModel } from '../models/asistenciaMysql.js';
 import * as url from 'url';
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 import { createRequire } from 'node:module'
@@ -15,10 +16,10 @@ export class UsuarioController {
     }
     static async getById(req, res) {
         const { id } = req.params;
-        console.log(id);
         const [usuario] = await UsuarioModel.getById({ id });
-        console.log(usuario);
-        res.render("usuarios/plantilla", { usuario });
+        const asistencias = await AsistenciaModel.getByUserId({ user_id:id });
+        console.log(asistencias);
+        res.render("usuarios/plantilla", { usuario,asistencias });
     }
 
     static async create(req, res) {

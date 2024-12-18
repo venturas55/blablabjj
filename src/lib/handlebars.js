@@ -76,6 +76,10 @@ helpers.formatearHoras = (timestamp) => {
   }
 } */
 
+helpers.yaAsiste = (usuario) => {
+  return (usuario.privilegio == "master");
+}
+
 helpers.esMaster = (usuario) => {
   return (usuario.privilegio == "master");
 }
@@ -84,8 +88,41 @@ helpers.esAdmin = (usuario) => {
   return (usuario.privilegio == "admin");
 }
 
-helpers.esAdmin = (usuario) => {
-  return (usuario.privilegio == "admin");
+helpers.clasesMes = (asistencias) => {
+  var contador = 0;
+  const date = new Date();
+  for (let i = 0; i < asistencias.length; i++) {
+    if (date.getMonth() == asistencias[i].fecha_hora.getMonth())
+      contador++;
+  }
+  return (contador);
+}
+
+helpers.clasesAno = (asistencias) => {
+  var contador = 0;
+  const date = new Date();
+  for (let i = 0; i < asistencias.length; i++) {
+    if (date.getFullYear() == asistencias[i].fecha_hora.getFullYear())
+      contador++;
+  }
+  return (contador);
+}
+
+helpers.clasesTotales = (asistencias) => {
+  var contador = 0;
+  for (let i = 0; i < asistencias.length; i++) {
+      contador++;
+  }
+  return (contador);
+}
+
+//TODO:
+helpers.clasesCinturon = (asistencias) => {
+  var contador = 0;
+  for (let i = 0; i < asistencias.length; i++) {
+      contador++;
+  }
+  return (contador);
 }
 
 helpers.when = (operand_1, operator, operand_2, options) => {

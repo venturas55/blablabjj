@@ -1,5 +1,12 @@
-{{#if url}}
-<img src="/img/profiles/{{url}}" class="avatar avatar-{{size}} m-2" alt="avatar {{url}}" />
-{{else}}
-<img src="/img/profiles/default.jpg" class="avatar avatar-{{size}} m-2" alt="default avatar" />
-{{/if}}
+<div class="avatar-content">
+    {{#if url}}
+    <a href="/img/profiles/{{url}}" class="d-inline-block">
+        <img src="/img/profiles/{{url}}" class="avatar avatar-{{size}} m-2" alt="avatar {{url}}" />
+    </a>
+    {{else}}
+    <img src="/img/profiles/default.jpg" class="avatar avatar-{{size}} m-2" alt="default avatar" />
+    {{/if}}
+    {{#if this.asistencia}}
+    <i class="fa-solid fa-check"></i>
+    {{/if}}
+</div>

@@ -1,4 +1,4 @@
-<div class="container p-4">
+<div class="container p-4 mb-5">
     <div class="row4">
         <div class="col-12 mx-auto">
             <div class="card text-center">
@@ -35,6 +35,27 @@
                     <a href="/" class="btn btn-primary m-4"> Volver a Inicio</a>
                 </div>
             </div>
+            <div class="card text-center mb-5">
+                <h2>Asistencias</h2>
+               <p> <span>mes: {{clasesMes asistencias}} </span>  <span>Año: {{clasesAno asistencias}}</span> <span>Totales: {{clasesTotales asistencias}}</span></p> 
+                <div class="card-body my-0 py-0">
+
+                    {{#each asistencias}}
+                    <div class="d-flex">
+                        <div >
+                            <h5 class="card-title">{{this.nombre_actividad}}</h5>
+                            <p class="card-text">{{formatearHoras this.fecha_hora}}</p>
+                        </div>
+                        <div>
+                            <a href="/clases/ver/{{this.clase_id}}" class="btn btn-sm btn-primary">Más info</a>
+                        </div>
+                    </div>
+                    <hr>
+                    {{/each}}
+                </div>
+
+            </div>
         </div>
     </div>
+</div>
 </div>

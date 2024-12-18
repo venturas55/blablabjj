@@ -9,13 +9,10 @@ export const asistenciasRouter = Router();
 
 //READ
 asistenciasRouter.get("/list", AsistenciaController.getAll);
-//asistenciasRouter.get("/list/:asistencia_id", AsistenciaController.getById);
-//CREATE
-/* asistenciasRouter.get("/add", funciones.isAuthenticated,async  (req, res) => {
-  const actividades = await db.query("SELECT * FROM actividades");
-  res.render("anuncios/add",{actividades});
-}); */
+asistenciasRouter.get("/list/:user_id", AsistenciaController.getByUserId);
 
+
+//CREATE
 asistenciasRouter.post("/confirm", funciones.isAuthenticated, AsistenciaController.confirmById);
 asistenciasRouter.post("/cancel", funciones.isAuthenticated, AsistenciaController.cancelById);
 

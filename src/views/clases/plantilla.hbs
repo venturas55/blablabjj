@@ -1,5 +1,5 @@
 <div class="container p-2">
-    <h1>Información de la clase de {{item.nombre_actividad}} -  {{item.clase_id}} </h1>
+    <h1>Información de la clase de {{item.nombre_actividad}} - {{item.clase_id}} </h1>
 
 
     <div class="col-12 mx-auto mb-4">
@@ -22,7 +22,7 @@
                         <th>Cinturon</th>
                         <th>avatar</th>
                         <th>Nombre</th>
-                        <th>Acciones</th>
+                        <th>Asistencia</th>
                     </tr>
                     {{#each asistentes}}
                     <tr>
@@ -52,7 +52,7 @@
                                 <form action="/asistencias/cancel" method="post">
                                     <input type="hidden" name="asistencia_id" value="{{this.asistencia_id}}">
                                     <input type="hidden" name="clase_id" value="{{this.clase_id}}"><button
-                                        class="btn "><i class="text-warning fa-solid fa-ban"></i></button>
+                                        class="btn"><i class="text-warning fa-solid fa-check "></i></button>
                                 </form>
                             </td>
                             {{else}}
@@ -60,14 +60,12 @@
                                 <form action="/asistencias/confirm" method="post">
                                     <input type="hidden" name="asistencia_id" value="{{this.asistencia_id}}">
                                     <input type="hidden" name="clase_id" value="{{this.clase_id}}"><button
-                                        class="btn "><i class="text-warning fa-solid fa-check"></i></button>
+                                        class="btn "><span class="text-warning fa-solid fa-xmark"></i></button>
                                 </form>
                             </td>
                             {{/if}}
                         </a>
-
                     </tr>
-
                     {{/each}}
                 </table>
             </div>

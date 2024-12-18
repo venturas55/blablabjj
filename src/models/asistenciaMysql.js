@@ -18,6 +18,11 @@ export class AsistenciaModel {
     return asistencias;
   }
 
+  static async getByUserId({ user_id }) {
+    const asistencias = await db.query(AsistenciasQuery + " where a.usuario_id=?", user_id);
+    return asistencias;
+  }
+
   static async getByClaseId({ id }) {
     const asistencias = await db.query(AsistenciasQuery + "  where a.clase_id=?", id);
     return asistencias;
