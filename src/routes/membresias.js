@@ -106,9 +106,10 @@ membresiasRouter.get('/list', funciones.isAuthenticated, async (req, res) => {
               const product = await stripe.products.retrieve(productId);
               subscription.planName = product.name;
               subscription.planDescription = product.description; */
-    console.log("La nueva lista");
     let subscriptions = await stripe.subscriptions.list({
     });
+    const balance = await stripe.balance.retrieve();
+    console.log(balance);
     subscriptions = subscriptions.data;
     try {
         // Mapear las suscripciones y obtener el nombre del plan
@@ -133,14 +134,14 @@ membresiasRouter.get('/list', funciones.isAuthenticated, async (req, res) => {
                 subscription.customerName = customer.name;
                 subscription.customerName = customer.prhone; */
 
-                console.log(subscription);
+                //console.log(subscription);
 
                 return subscription;
 
             })
         );
 
-        res.render('membresia/list', { subscriptions: subscriptionsWithPlans });
+        res.render('membresia/list', { subscriptions: subscriptionsWithPlans,balance });
     } catch (error) {
         console.error('Error al obtener las suscripciones:', error.message);
         return [];

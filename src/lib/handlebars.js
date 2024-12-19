@@ -2,6 +2,12 @@ import { format } from 'timeago.js';
 import moment from 'moment';
 const helpers = {};
 
+
+
+helpers.counter = (index)=>{
+  return index + 1;
+};
+
 helpers.timeago = (timestamp) => {
   return format(timestamp);
 }

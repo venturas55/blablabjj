@@ -1,23 +1,41 @@
-<div class="container p-1 mb-5">
-    <div class="row text-center">
-        <div class="col-12">
-            <h1>Subcripciones activas </h1>
-            {{user.id}} {{user.nombre}} {{user.apellidos}}
-            {{#each subscriptions}}
-            <div class="card mx-auto my-2">
-                <div class="card-body">
-                    <h5 class="card-title">{{this.id}} {{this.planName}}</h5>
-                    <p class="card-text">    {{this.planDescription}}   {{unix2es this.current_period_start }} - {{unix2es this.current_period_end }} desde {{unix2es this.created }}</p>
+<div class="container-fluid p-1 mb-5">
 
-                    <p prod="{{this.plan.product}}"> Payment Method {{this.default_payment_method}}</p>
-                    <p price="{{this.plan.id}}">PLan: {{this.plan.id}} {{this.plan.product}}   {{stripeprecio this.plan.amount}}   Activo: {{this.plan.active}} </p>
-                    <p sub="{{this.id}}"> desde {{unix2es this.created}} hasta {{unix2es this.current_period_end}}</p>
-                    <p cli="{{this.customer.id}}">  {{this.customer.name}}  {{this.customer.email}} </p>
-                   
-                </div>
-            </div>
-            {{/each}}
-        </div>
+    <p>Balance {{balance.available.0.amount}}</p>
+    <h1>Subcripciones activas </h1>
+    <div class="my-2">
+        <input class="form-control" id="myInput" type="text" placeholder="Filtrar por.." autofocus>
     </div>
-
+    <div class="table-responsive py-4">
+        <table id="listado" class="listado mx-auto w-100 table table-hover table-dark" data-search="true">
+            <tr>
+                <th>#</th>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Plan</th>
+                <th class="d-none d-xl-table-cell">Descripcion</th>
+                <th>Precio</th>
+                <th>Subscrito desde</th>
+                <th class="d-none d-xl-table-cell">Ultimo pago</th>
+                <th class="d-none d-sm-table-cell">Proximo pago</th>
+                <th>Activo</th>
+            </tr>
+         
+{{!--             PLan: {{this.plan.id}} {{this.plan.product}} Activo: --}}
+            {{#each subscriptions}}
+            <tr>
+                <td>{{counter @index}}</td>
+                <td>{{this.customer.name}}</td>
+                <td>{{this.customer.email}} </td>
+                <td id="{{this.id}}"> {{this.planName}}</td>
+                <td  class="d-none d-xl-table-cell"> {{this.planDescription}}</td>
+                <td>{{stripeprecio this.plan.amount}}</td>
+                <td> {{unix2es this.created }}</td>
+                <td  class="d-none d-xl-table-cell"> {{unix2es this.current_period_start }} </td>
+                <td  class="d-none d-sm-table-cell"> {{unix2es this.current_period_end }}</td>
+                <td id="{{this.default_payment_method}} ">{{this.plan.active}} </td>
+           {{!--      <td>{{this.plan.id}} {{this.plan.product}}</td> --}}
+            </tr>
+            {{/each}}
+        </table>
+    </div>
 </div>
