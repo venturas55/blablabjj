@@ -47,45 +47,6 @@ const getCustomerSubscriptionsWithPlan = async (customerId) => {
     }
 };
 
-const getAlgo = async (subscriptions) => {
-    const subscriptionsWithPlans = await Promise.all(
-        subscriptions.data.map(async (subscription) => {
-            const price = subscription.items.data[0]?.price;
-            const productId = price?.product;
-
-            // Obtener el producto para obtener el nombre del plan
-            const product = await stripe.products.retrieve(productId);
-            subscription.planName = product.name;
-            subscription.planDescription = product.description;
-            return subscription;
-        })
-    );
-    return subscriptionsWithPlans;
-}
-
-const getAlgo2 = async (subscriptions) => {
-    const subscriptionsWithPlans = await Promise.all(
-        subscriptions.data.map(async (subscription) => {
-            const price = subscription.items.data[0]?.price;
-            const productId = price?.product;
-
-            // Obtener el producto para obtener el nombre del plan
-            const product = await stripe.products.retrieve(productId);
-            subscription.planName = product.name;
-            subscription.planDescription = product.description;
-            /*        return {
-                       subscriptionId: subscription.id,
-                       status: subscription.status,
-                       planName: product.name,
-                       price: price.unit_amount / 100,
-                       currency: price.currency,
-                   }; */
-            return subscription;
-        })
-    );
-    return subscriptionsWithPlans;
-}
-
 // Crear una sesión de pago para una tarifa específica
 membresiasRouter.get('/landing', funciones.isAuthenticated, async (req, res) => {
     const [q] = await ExtraModel.getFacturacionByUserId(req.user.id);
@@ -109,7 +70,7 @@ membresiasRouter.get('/list', funciones.isAuthenticated, async (req, res) => {
     let subscriptions = await stripe.subscriptions.list({
     });
     const balance = await stripe.balance.retrieve();
-    console.log(balance);
+    //console.log(balance);
     subscriptions = subscriptions.data;
     try {
         // Mapear las suscripciones y obtener el nombre del plan
@@ -229,15 +190,15 @@ membresiasRouter.get('/cancel', async (req, res) => {
 
 membresiasRouter.post('/create-portal-session', funciones.isAuthenticated, async (req, res) => {
     const [q] = await ExtraModel.getFacturacionByUserId(req.user.id);
-    const checkoutSession = await stripe.checkout.sessions.retrieve(q.session_id);
-
+    //const checkoutSession = await stripe.checkout.sessions.retrieve(q.session_id);
+    //console.log(q.customer_id);
+    //console.log(checkoutSession.customer);
     const portalSession = await stripe.billingPortal.sessions.create({
-        customer: checkoutSession.customer,
+        customer: q.customer_id,
         return_url: `${process.env.BASE_URL}:${process.env.PORT}/membresia/landing`,
         //return_url: `${process.env.BASE_URL}:${process.env.PORT}/usuarios/get/${q.usuario_id}`,
     });
     res.redirect(303, portalSession.url);
-
 });
 
 // This is your Stripe CLI webhook secret for testing your endpoint locally.
