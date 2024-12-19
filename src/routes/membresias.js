@@ -18,7 +18,7 @@ const getCustomerSubscriptionsWithPlan = async (customerId) => {
             status: 'all',
         });
 
-        let subscription = subscriptions.data;
+        //let subscription = subscriptions.data;
         // Mapear las suscripciones y obtener el nombre del plan
         const subscriptionsWithPlans = await Promise.all(
             subscriptions.data.map(async (subscription) => {
@@ -109,15 +109,43 @@ membresiasRouter.get('/list', funciones.isAuthenticated, async (req, res) => {
     console.log("La nueva lista");
     let subscriptions = await stripe.subscriptions.list({
     });
-    subscriptions=subscriptions.data;
-    console.log(subscriptions);
-    //res.send(subscriptions.data);
-    res.render('membresia/list', {subscriptions});
+    subscriptions = subscriptions.data;
+    try {
+        // Mapear las suscripciones y obtener el nombre del plan
+        const subscriptionsWithPlans = await Promise.all(
+            subscriptions.map(async (subscription) => {
+                const productId = subscription.plan.product;
+                const customerId = subscription.customer;
 
+                // Obtener el producto para obtener el nombre del plan
+                const product = await stripe.products.retrieve(productId);
+                const customer = await stripe.customers.retrieve(customerId);
+                //console.log(customer);
+
+
+
+
+                subscription.planName = product.name;
+                subscription.planDescription = product.description;
+                subscription.customer = customer;
+   /*              subscription.customerName = customer.created;
+                subscription.customerName = customer.email;
+                subscription.customerName = customer.name;
+                subscription.customerName = customer.prhone; */
+
+                console.log(subscription);
+
+                return subscription;
+
+            })
+        );
+
+        res.render('membresia/list', { subscriptions: subscriptionsWithPlans });
+    } catch (error) {
+        console.error('Error al obtener las suscripciones:', error.message);
+        return [];
+    }
 });
-
-
-
 
 membresiasRouter.post('/create-checkout-session', funciones.isAuthenticated, async (req, res) => {
     const plan = req.body.plan;
