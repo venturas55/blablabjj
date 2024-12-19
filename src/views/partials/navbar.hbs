@@ -59,13 +59,19 @@
             <a class="dropdown-item" href="/logout ">Cerrar sesión </a>
           </ul>
         </li>
-        {{/when}} 
+        {{/when}}
 
         {{#if user}}
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-bs-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            {{>avatar size="xs" url=user.pictureURL}}
+            {{#if user.pictureURL}}
+            <a href="/img/profiles/{{user.pictureURL}}" class="d-inline-block">
+              <img src="/img/profiles/{{user.pictureURL}}" class="avatar avatar-s m-2" alt="avatar picture" />
+            </a>
+            {{else}}
+            <img src="/img/profiles/default.jpg" class="avatar avatar-s m-2" alt="default avatar" />
+            {{/if}}
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown1">
             <a class="dropdown-item" href="/usuarios/get/{{user.id}}">Perfil</a>
@@ -74,7 +80,6 @@
             <a class="dropdown-item" href="/anuncios/add">Publicar Clases</a>
             <hr class="dropdown-divider">
             <a class="dropdown-item" href="/transferencias">Subscriptores</a>
-            <hr class.privilegio);n-divider">
             <a class="dropdown-item" href="/chat">Mis mensajes</a>
             <hr class="dropdown-divider">
             <a class="dropdown-item" href="/logout ">Cerrar sesión </a>
@@ -85,7 +90,7 @@
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            {{!-- {{>avatar size="s"}} --}}
+           <img src="/img/profiles/default.jpg" class="avatar avatar-s m-2" alt="default avatar" />
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown2">
             <a class="dropdown-item" href="/signin">Iniciar Sesion</a>

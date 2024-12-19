@@ -1,0 +1,22 @@
+<div class="container p-1 mb-5">
+    <div class="row text-center">
+        <div class="col-12">
+            <h1>Subcripciones activas </h1>
+            {{user.id}} {{user.nombre}} {{user.apellidos}}
+            {{#each subscriptions}}
+            <div class="card mx-auto my-2">
+                <div class="card-body">
+                    <h5 class="card-title">{{this.id}}</h5>
+                    <p class="card-text">{{unix2es this.current_period_start }} - {{unix2es this.current_period_end }} desde {{unix2es this.created }}</p>
+
+                    <p prod="{{this.plan.product}}"> Cus {{this.customer}} Payment Method {{this.default_payment_method}}</p>
+                    <p price="{{this.plan.id}}">PLan: {{this.plan.id}}   {{stripeprecio this.plan.amount}}   Activo: {{this.plan.active}} </p>
+                    <p sub="{{this.id}}"> desde {{unix2es this.created}} hasta {{unix2es this.current_period_end}}</p>
+                   
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+
+</div>

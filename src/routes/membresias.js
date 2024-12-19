@@ -10,25 +10,6 @@ const stripe = new Stripe(process.env.STRIPE_PRIV || 'PRIVATE KEY');
 
 export const membresiasRouter = Router();
 
-
-// Crear una sesión de pago para una tarifa específica
-membresiasRouter.get('/landing', funciones.isAuthenticated, async (req, res) => {
-    const [q] = await ExtraModel.getFacturacionByUserId(req.user.id);
-    console.log(q);
-    console.log("------------------")
-    try {
-        var subscriptionswithplans;
-        if (q) {
-            const customerId = q.customer_id; // Reemplaza con el ID de cliente de tu base de datos
-            subscriptionswithplans = await getCustomerSubscriptionsWithPlan(customerId);
-            console.log(subscriptionswithplans);
-        }
-        res.render('membresia/landing', { subscriptionswithplans }); // Renderiza la vista
-    } catch (error) {
-        res.status(500).send('Error al obtener las suscripciones');
-    }
-});
-
 // Función para obtener las suscripciones con el nombre del plan
 const getCustomerSubscriptionsWithPlan = async (customerId) => {
     try {
@@ -46,7 +27,6 @@ const getCustomerSubscriptionsWithPlan = async (customerId) => {
 
                 // Obtener el producto para obtener el nombre del plan
                 const product = await stripe.products.retrieve(productId);
-
                 subscription.planName = product.name;
                 subscription.planDescription = product.description;
                 /*        return {
@@ -67,9 +47,79 @@ const getCustomerSubscriptionsWithPlan = async (customerId) => {
     }
 };
 
+const getAlgo = async (subscriptions) => {
+    const subscriptionsWithPlans = await Promise.all(
+        subscriptions.data.map(async (subscription) => {
+            const price = subscription.items.data[0]?.price;
+            const productId = price?.product;
+
+            // Obtener el producto para obtener el nombre del plan
+            const product = await stripe.products.retrieve(productId);
+            subscription.planName = product.name;
+            subscription.planDescription = product.description;
+            return subscription;
+        })
+    );
+    return subscriptionsWithPlans;
+}
+
+const getAlgo2 = async (subscriptions) => {
+    const subscriptionsWithPlans = await Promise.all(
+        subscriptions.data.map(async (subscription) => {
+            const price = subscription.items.data[0]?.price;
+            const productId = price?.product;
+
+            // Obtener el producto para obtener el nombre del plan
+            const product = await stripe.products.retrieve(productId);
+            subscription.planName = product.name;
+            subscription.planDescription = product.description;
+            /*        return {
+                       subscriptionId: subscription.id,
+                       status: subscription.status,
+                       planName: product.name,
+                       price: price.unit_amount / 100,
+                       currency: price.currency,
+                   }; */
+            return subscription;
+        })
+    );
+    return subscriptionsWithPlans;
+}
+
+// Crear una sesión de pago para una tarifa específica
+membresiasRouter.get('/landing', funciones.isAuthenticated, async (req, res) => {
+    const [q] = await ExtraModel.getFacturacionByUserId(req.user.id);
+    var subscriptionswithplans;
+    if (q) {
+        const customerId = q.customer_id; // Reemplaza con el ID de cliente de tu base de datos
+        subscriptionswithplans = await getCustomerSubscriptionsWithPlan(customerId);
+        console.log(subscriptionswithplans);
+    }
+    res.render('membresia/landing', { subscriptionswithplans }); // Renderiza la vista
+});
+
+membresiasRouter.get('/list', funciones.isAuthenticated, async (req, res) => {
+    /*   const subscriptions = await ExtraModel.getSubscriptions(req.user.id);
+  
+              // Obtener el producto para obtener el nombre del plan
+              subscription.items.data[0]?.price.product;
+              const product = await stripe.products.retrieve(productId);
+              subscription.planName = product.name;
+              subscription.planDescription = product.description; */
+    console.log("La nueva lista");
+    let subscriptions = await stripe.subscriptions.list({
+    });
+    subscriptions=subscriptions.data;
+    console.log(subscriptions);
+    //res.send(subscriptions.data);
+    res.render('membresia/list', {subscriptions});
+
+});
+
+
+
 
 membresiasRouter.post('/create-checkout-session', funciones.isAuthenticated, async (req, res) => {
-
     const plan = req.body.plan;
 
     if (!plan) {
@@ -132,7 +182,6 @@ membresiasRouter.post('/create-checkout-session', funciones.isAuthenticated, asy
 membresiasRouter.get('/success', funciones.isAuthenticated, async (req, res) => {
     const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
     const facturacion = { usuario_id: req.user.id, session_id: req.query.session_id, customer_id: session.customer, titular: session.customer_details.name, correo: session.customer_details.email, subscription: session.subscription }
-
     const [q] = await ExtraModel.getFacturacionByUserId(req.user.id);
     if (q) {
         console.log("actualizando facturacion");
@@ -142,7 +191,7 @@ membresiasRouter.get('/success', funciones.isAuthenticated, async (req, res) => 
         console.log("creando facturacion");
         await ExtraModel.createFacturacion(facturacion);
     }
-    res.redirect("membresia/landing");
+    res.redirect("/landing");
 });
 
 membresiasRouter.get('/cancel', async (req, res) => {
