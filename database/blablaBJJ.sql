@@ -192,7 +192,7 @@ CREATE TABLE clientes (
 CREATE TABLE membresias (
   id INT AUTO_INCREMENT PRIMARY KEY,
   -- Identificador único
-  usuario_id INT NOT NULL UNIQUE,
+  usuario_id INT,
   -- único Usuario asociado
   session_id VARCHAR(255),
   customer_id VARCHAR(255),

@@ -18,7 +18,7 @@ export class MembresiaModel {
     
       static async updateMembresia(input) {
         try {
-          const a = await db.query("UPDATE membresias set ? WHERE id = ?", [input]);
+          const a = await db.query("UPDATE membresias set ? WHERE id = ?", [input,input.id]);
           return a;
         } catch (error) {
           console.error(error.code + ": " + error.message);

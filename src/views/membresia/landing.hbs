@@ -14,25 +14,21 @@
                     <p price="{{this.plan.id}}">{{stripeprecio this.plan.amount}} ultimo cobro {{unix2es
                         this.current_period_start}}</p>
                     <p sub="{{this.id}}"> desde {{unix2es this.created}} hasta {{unix2es this.current_period_end}}</p>
-                    <p> {{this.cancellation_details.reason}}</p>
+                     {{#if this.cancellation_details.reason}}
+                    <p> Renueva tu subscripción. No se {{this.cancellation_details.reason}}</p>
 
                 </div>
             </div>
         </div>
         <div class="col-12">
             <form action="/membresia/create-portal-session" method="POST">
-                {{#if this.cancellation_details.reason}}
+              
                 <button class="btn btn-danger py-0" id="checkout-and-portal-button" type="submit">
                     <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                    <p>Actualizar pago</p>
+                    <p>Actualizar plan</p>
                 </button>
 
-                {{else}}
-                <button class="btn btn-warning" id="checkout-and-portal-button" type="submit">
-                    <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                    <p>Darse de baja</p>
-                </button>
-                {{/if}}
+  
             </form>
             {{/each}}
             {{else}}
@@ -133,7 +129,7 @@
     </div>
 </div>
 
-<script>
+{{!-- <script>
     document.addEventListener('DOMContentLoaded', async () => {
         let searchParams = new URLSearchParams(window.location.search);
         if (searchParams.has('session_id')) {
@@ -141,4 +137,4 @@
             document.getElementById('session-id').setAttribute('value', session_id);
         }
     });
-</script>
+</script> --}}
