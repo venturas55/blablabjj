@@ -163,6 +163,8 @@ membresiasRouter.post('/create-checkout-session', funciones.isAuthenticated, asy
 });
 
 membresiasRouter.get('/success', funciones.isAuthenticated, async (req, res) => {
+    console.log(req.query);
+
     res.redirect("/membresia/landing");
 });
 
@@ -185,41 +187,42 @@ membresiasRouter.post('/create-portal-session', funciones.isAuthenticated, async
 
 // This is your Stripe CLI webhook secret for testing your endpoint locally.
 membresiasRouter.post('/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
+    const signat = req.headers['stripe-signature'];
     console.log("webhook post de nodejs");
-    const sig = req.headers['stripe-signature'];
-
     let event;
     try {
-        event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET_KEY);
+        event = stripe.webhooks.constructEvent(req.body, signat, process.env.STRIPE_WEBHOOK_SECRET_KEY);
     } catch (err) {
         return res.status(400).send(`Webhook Error: ${err.message}`);
 
     }
-    console.log(event);
     // Handle the event
     switch (event.type) {
         case 'checkout.session.completed':
             console.log("Nueva subscription empezada")
+           
+            const checkoutSessionCompleted = event.data.object;
+            console.log(checkoutSessionCompleted);
 
-            const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
-            console.log(session);
-            let customer_id = session.customer;
 
+            // session = await stripe.checkout.sessions.retrieve(req.query.session_id);
+            //console.log(session);
+            let customer_id = checkoutSessionCompleted.customer;
+        
             //const customer = await stripe.customers.retrieve(customer_id);
-
-            let facturacion = { usuario_id: req.user.id, session_id: req.query.session_id, customer_id, titular: session.customer_details.name, correo: session.customer_details.email, subscription: session.subscription }
+        
+            let facturacion = { usuario_id: req.user.id, session_id: checkoutSessionCompleted.id, customer_id:checkoutSessionCompleted.customer, titular: checkoutSessionCompleted.customer_details.name, correo: checkoutSessionCompleted.customer_details.email, subscription: checkoutSessionCompleted.subscription,hasAccess:true }
             const [q] = await MembresiaModel.getMembresiaByEmail(facturacion.correo);
-            facturacion.id = q.q.id;
             if (q) {
                 console.log("actualizando facturacion");
+                facturacion.id = q.id;
                 const r = await MembresiaModel.updateMembresia(facturacion);
                 console.log(r);
             } else {
                 console.log("creando facturacion");
                 await MembresiaModel.createMembresia(facturacion);
             }
-            //const checkoutSessionCompleted = event.data.object;
-            //console.log(checkoutSessionCompleted);
+
             // Then define and call a function to handle the event checkout.session.completed
             break;
         case 'customer.subscription.updated':
