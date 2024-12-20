@@ -124,3 +124,15 @@ n <version-number>    or      n lts
 
 # blablabjj
 # blablabjj
+
+==============================
+la app necesita un .env con las siguientes variables:
+
+DB_HOST=localhost
+DB_USER=root
+DB_PASS=weR65hS
+DB_NAME=blablabjj
+PORT=7001
+STRIPE_PRIV=sk_test_dfhdfheK8esrhdgfh4E1OsFGutlABoIEJVDFbAEx4g23jdfhHMjdeshj
+STRIPE_WEBHOOK_SECRET_KEY=whsec_bcdsfh742bsdfhb6701dsdsfhdfhbfgc8eb7bdsfgh71c1
+BASE_URL=http://localhost
