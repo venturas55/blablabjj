@@ -3,9 +3,8 @@ import { Router } from 'express';
 import express from 'express';
 import dotenv from 'dotenv';
 dotenv.config();
-import { ExtraModel } from '../models/extraMysql.js';
-
 import Stripe from 'stripe';
+import { MembresiaModel } from "../models/membresiaMysql.js";
 const stripe = new Stripe(process.env.STRIPE_PRIV || 'PRIVATE KEY');
 
 export const membresiasRouter = Router();
@@ -49,7 +48,7 @@ const getCustomerSubscriptionsWithPlan = async (customerId) => {
 
 // Crear una sesión de pago para una tarifa específica
 membresiasRouter.get('/landing', funciones.isAuthenticated, async (req, res) => {
-    const [q] = await ExtraModel.getFacturacionByUserId(req.user.id);
+    const [q] = await MembresiaModel.getMembresiaByUserId(req.user.id);
     var subscriptionswithplans;
     if (q) {
         const customerId = q.customer_id; // Reemplaza con el ID de cliente de tu base de datos
@@ -60,13 +59,7 @@ membresiasRouter.get('/landing', funciones.isAuthenticated, async (req, res) => 
 });
 
 membresiasRouter.get('/list', funciones.isAuthenticated, async (req, res) => {
-    /*   const subscriptions = await ExtraModel.getSubscriptions(req.user.id);
-  
-              // Obtener el producto para obtener el nombre del plan
-              subscription.items.data[0]?.price.product;
-              const product = await stripe.products.retrieve(productId);
-              subscription.planName = product.name;
-              subscription.planDescription = product.description; */
+
     let subscriptions = await stripe.subscriptions.list({
     });
     const balance = await stripe.balance.retrieve();
@@ -90,10 +83,10 @@ membresiasRouter.get('/list', funciones.isAuthenticated, async (req, res) => {
                 subscription.planName = product.name;
                 subscription.planDescription = product.description;
                 subscription.customer = customer;
-   /*              subscription.customerName = customer.created;
-                subscription.customerName = customer.email;
-                subscription.customerName = customer.name;
-                subscription.customerName = customer.prhone; */
+                /*              subscription.customerName = customer.created;
+                             subscription.customerName = customer.email;
+                             subscription.customerName = customer.name;
+                             subscription.customerName = customer.prhone; */
 
                 //console.log(subscription);
 
@@ -102,7 +95,7 @@ membresiasRouter.get('/list', funciones.isAuthenticated, async (req, res) => {
             })
         );
 
-        res.render('membresia/list', { subscriptions: subscriptionsWithPlans,balance });
+        res.render('membresia/list', { subscriptions: subscriptionsWithPlans, balance });
     } catch (error) {
         console.error('Error al obtener las suscripciones:', error.message);
         return [];
@@ -166,22 +159,11 @@ membresiasRouter.post('/create-checkout-session', funciones.isAuthenticated, asy
         cancel_url: `${process.env.BASE_URL}:${process.env.PORT}/membresia/cancel`,
     });
 
-    res.redirect(session.url);
+    res.redirect(session.url)//+"?prefilled_email="+req.user.email);
 });
 
 membresiasRouter.get('/success', funciones.isAuthenticated, async (req, res) => {
-    const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
-    const facturacion = { usuario_id: req.user.id, session_id: req.query.session_id, customer_id: session.customer, titular: session.customer_details.name, correo: session.customer_details.email, subscription: session.subscription }
-    const [q] = await ExtraModel.getFacturacionByUserId(req.user.id);
-    if (q) {
-        console.log("actualizando facturacion");
-        const r = await ExtraModel.updateFacturacion(facturacion, q.id);
-        console.log(r);
-    } else {
-        console.log("creando facturacion");
-        await ExtraModel.createFacturacion(facturacion);
-    }
-    res.redirect("/landing");
+    res.redirect("/membresia/landing");
 });
 
 membresiasRouter.get('/cancel', async (req, res) => {
@@ -189,7 +171,7 @@ membresiasRouter.get('/cancel', async (req, res) => {
 });
 
 membresiasRouter.post('/create-portal-session', funciones.isAuthenticated, async (req, res) => {
-    const [q] = await ExtraModel.getFacturacionByUserId(req.user.id);
+    const [q] = await MembresiaModel.getMembresiaByUserId(req.user.id);
     //const checkoutSession = await stripe.checkout.sessions.retrieve(q.session_id);
     //console.log(q.customer_id);
     //console.log(checkoutSession.customer);
@@ -198,11 +180,11 @@ membresiasRouter.post('/create-portal-session', funciones.isAuthenticated, async
         return_url: `${process.env.BASE_URL}:${process.env.PORT}/membresia/landing`,
         //return_url: `${process.env.BASE_URL}:${process.env.PORT}/usuarios/get/${q.usuario_id}`,
     });
-    res.redirect(303, portalSession.url);
+    res.redirect(303, portalSession.url + "?prefilled_email=" + req.user.email);
 });
 
 // This is your Stripe CLI webhook secret for testing your endpoint locally.
-membresiasRouter.post('/webhook', express.raw({ type: 'application/json' }), (req, res) => {
+membresiasRouter.post('/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
     console.log("webhook post de nodejs");
     const sig = req.headers['stripe-signature'];
 
@@ -216,14 +198,28 @@ membresiasRouter.post('/webhook', express.raw({ type: 'application/json' }), (re
     console.log(event);
     // Handle the event
     switch (event.type) {
-        case 'account.updated':
-            const accountUpdated = event.data.object;
-            // Then define and call a function to handle the event account.updated
-            break;
         case 'checkout.session.completed':
             console.log("Nueva subscription empezada")
-            const checkoutSessionCompleted = event.data.object;
-            console.log(checkoutSessionCompleted);
+
+            const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
+            console.log(session);
+            let customer_id = session.customer;
+
+            //const customer = await stripe.customers.retrieve(customer_id);
+
+            let facturacion = { usuario_id: req.user.id, session_id: req.query.session_id, customer_id, titular: session.customer_details.name, correo: session.customer_details.email, subscription: session.subscription }
+            const [q] = await MembresiaModel.getMembresiaByEmail(facturacion.correo);
+            facturacion.id = q.q.id;
+            if (q) {
+                console.log("actualizando facturacion");
+                const r = await MembresiaModel.updateMembresia(facturacion);
+                console.log(r);
+            } else {
+                console.log("creando facturacion");
+                await MembresiaModel.createMembresia(facturacion);
+            }
+            //const checkoutSessionCompleted = event.data.object;
+            //console.log(checkoutSessionCompleted);
             // Then define and call a function to handle the event checkout.session.completed
             break;
         case 'customer.subscription.updated':
@@ -232,6 +228,21 @@ membresiasRouter.post('/webhook', express.raw({ type: 'application/json' }), (re
             console.log(customerSubscriptionUpdated)
             // Then define and call a function to handle the event customer.subscription.updated
             break;
+
+        case 'customer.subscription.deleted':
+            console.log("Se borro una subscripcion!!");
+            const subscription = await stripe.subscriptions.retrieve(data.object.id);
+            //revoke access to the subscription
+            let usuario = await MembresiaModel.getMembresiaByCostumerId(subscription.customer);
+            usuario.hasAccess = false;
+            const a = await MembresiaModel.updateMembresia(usuario);
+            break;
+        case 'account.updated':
+            const accountUpdated = event.data.object;
+            // Then define and call a function to handle the event account.updated
+            break;
+
+
         case 'invoice.paid':
             console.log('Invoice correctamente pagada');
             const invoicePaid = event.data.object;
@@ -245,10 +256,15 @@ membresiasRouter.post('/webhook', express.raw({ type: 'application/json' }), (re
             console.log(invoicePaymentFailed);
             // Then define and call a function to handle the event invoice.payment_failed
             break;
-
+        case 'billing_portal.session.created':
+            console.log("Billing portal creadito");
+            const invoiceCreated = event.data.object;
+            console.log(invoiceCreated);
+            break;
         default:
             console.log(`Unhandled event type ${event.type}`);
     }
+    console.log(`Unhandled event type ${event.type}`);
     res.send();
 });
 

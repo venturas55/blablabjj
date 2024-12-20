@@ -18,6 +18,7 @@ DROP TABLE IF EXISTS gimnasios;
 
 DROP TABLE IF EXISTS usuarios;
 
+
 CREATE TABLE `nacionalidades` (
   id INT AUTO_INCREMENT PRIMARY KEY,
   codigo_iso VARCHAR(3) NOT NULL,
@@ -188,7 +189,7 @@ CREATE TABLE clientes (
   FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 ) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'datos bancarios';
 
-CREATE TABLE facturacion (
+CREATE TABLE membresias (
   id INT AUTO_INCREMENT PRIMARY KEY,
   -- Identificador único
   usuario_id INT NOT NULL UNIQUE,
@@ -198,9 +199,10 @@ CREATE TABLE facturacion (
   subscription VARCHAR(255),
   correo VARCHAR(255),
   titular VARCHAR(100),
+  hasAccess boolean,
   -- Nombre del titular de la tarjeta
   FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
-) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'datos facturacion stripe';
+) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'datos membresias stripe';
 
 CREATE TABLE pagos (
   id INT AUTO_INCREMENT PRIMARY KEY,
