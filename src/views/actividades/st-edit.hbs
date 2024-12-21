@@ -7,13 +7,15 @@
 
             <div class="card">
                 <div class="card-body">
-                    <form action="/actividades/edit/{{item.actividad_id}}" method="POST">
-                        <div class="form-group"><input class="form-control" type="text" name="nombre"
-                                value="{{item.nombre}}" autofocus /> </div>
-                        <div class="form-group"><input class="form-control" type="text" name="descripcion"
-                                value="{{item.descripcion}}" />
+                    <form action="/actividades/edit" method="POST">
+                         <input class="form-control" type="hidden" name="id"
+                                value="{{item.id}}"  /> 
+                        <div class="form-group"><input class="form-control" type="text" name="name"
+                                value="{{item.name}}" autofocus /> </div>
+                        <div class="form-group"><input class="form-control" type="text" name="description"
+                                value="{{item.description}}" />
                         </div>
-        
+
 
                         <button class="btn btn-primary btn-block">Guardar</button>
                     </form>
@@ -24,4 +26,3 @@
         </div>
     </div>
 </div>
-

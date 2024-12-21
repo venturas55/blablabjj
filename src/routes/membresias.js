@@ -1,10 +1,10 @@
 import funciones from "../lib/funciones.js";
 import { Router } from 'express';
 import express from 'express';
+import { MembresiaModel } from "../models/membresiaMysql.js";
 import dotenv from 'dotenv';
 dotenv.config();
 import Stripe from 'stripe';
-import { MembresiaModel } from "../models/membresiaMysql.js";
 const stripe = new Stripe(process.env.STRIPE_PRIV || 'PRIVATE KEY');
 
 export const membresiasRouter = Router();
@@ -58,12 +58,14 @@ membresiasRouter.get('/landing', funciones.isAuthenticated, async (req, res) => 
     res.render('membresia/landing', { subscriptionswithplans }); // Renderiza la vista
 });
 
-membresiasRouter.get('/list', funciones.isAuthenticated, async (req, res) => {
+membresiasRouter.get('/list', funciones.isAuthenticated, funciones.isMaster,async (req, res) => {
 
     let subscriptions = await stripe.subscriptions.list({
     });
     const balance = await stripe.balance.retrieve();
-    //console.log(balance);
+
+    const balanceTransactions = await stripe.balanceTransactions.list();
+    console.log(balanceTransactions);
     subscriptions = subscriptions.data;
     try {
         // Mapear las suscripciones y obtener el nombre del plan
@@ -95,7 +97,7 @@ membresiasRouter.get('/list', funciones.isAuthenticated, async (req, res) => {
             })
         );
 
-        res.render('membresia/list', { subscriptions: subscriptionsWithPlans, balance });
+        res.render('membresia/list', { subscriptions: subscriptionsWithPlans, balance ,balanceTransactions});
     } catch (error) {
         console.error('Error al obtener las suscripciones:', error.message);
         return [];

@@ -54,6 +54,10 @@ const profileSchema = z.object({
    
 });
 
+const planSchema = z.object({
+   
+});
+
 
 export function validateActividad(object) {
     return actividadSchema.safeParse(object);
@@ -83,6 +87,10 @@ export function validateProfile(object) {
     return profileSchema.safeParse(object);
 }
 
+export function validatePlan(object) {
+    return planSchema.safeParse(object);
+}
+
 
 export function validatePartialActividad(object) {
     return actividadSchema.partial().safeParse(object);
@@ -110,5 +118,9 @@ export function validatePartialCalendario(object) {
 
 export function validatePartialProfile(object) {
     return profileSchema.partial().safeParse(object);
+}
+
+export function validatePartialPlan(object) {
+    return planSchema.safeParse(object);
 }
 

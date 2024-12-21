@@ -6,20 +6,20 @@ export const readJSON = (path) => require(path)
 
 
 
-export class ActividadModel {
+export class PlanModel {
   static async getAll() {
-    const actividades = await db.query('SELECT * from actividades');
+    const actividades = await db.query('SELECT * from planes');
     return actividades;
   }
 
   static async getById({ id }) {
-    const actividad = await db.query("SELECT * FROM actividades where actividad_id=?", id);
+    const actividad = await db.query("SELECT * FROM planes where plan_id=?", id);
     return actividad;
   }
 
   static async create({ input }) {
     try {
-      const a = await db.query("INSERT INTO actividades set ?", [input]);
+      const a = await db.query("INSERT INTO planes set ?", [input]);
       return a;
     } catch (error) {
       console.error(error.code);
@@ -29,7 +29,7 @@ export class ActividadModel {
   }
   static async delete({ input }) {
     try {
-      await db.query("DELETE FROM actividades WHERE actividad_id=?", [input]);
+      await db.query("DELETE FROM planes WHERE plan_id=?", [input]);
     } catch (error) {
       console.error(error.code);
       return error;
@@ -38,7 +38,7 @@ export class ActividadModel {
 
   static async update({ input }) {
     try {
-      await db.query("UPDATE actividades set ? WHERE actividad_id = ?", [input, input.actividad_id,]);
+      await db.query("UPDATE planes set ? WHERE plan_id = ?", [input, input.plan_id,]);
     } catch (error) {
       console.error(error.code);
       return error;

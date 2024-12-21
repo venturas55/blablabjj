@@ -18,13 +18,13 @@
         </tr>
         {{#each actividades}}
         <tr>
-          <td>{{actividad_id}} - {{nombre}}</td>
-          <td> {{descripcion}} </td>
-      
+          <td> {{this.name}}</td>
+          <td> {{this.description}} </td>
+          </td>
           <td>
-            <a href="/actividades/edit/{{this.actividad_id}}" class="text-warning"><i
+            <a href="/actividades/edit/{{this.id}}" class="text-warning"><i
                 class="fa-solid fa-pen"></i>Edit</a>
-            <a href="/actividades/delete/{{this.actividad_id}}" class="text-warning"><i
+            <a href="/actividades/delete/{{this.id}}" class="text-warning"><i
                 class="fa-solid fa-trash"></i>Del</a>
           </td>
         </tr>

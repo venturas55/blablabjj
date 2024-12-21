@@ -40,3 +40,41 @@
         </table>
     </div>
 </div>
+
+
+<div class="container-fluid p-1 mb-5">
+
+    <h1>TRANSACCIONES </h1>
+    <div class="my-2">
+        <input class="form-control" id="myInput2" type="text" placeholder="Filtrar por.." autofocus>
+    </div>
+    <div class="table-responsive py-4">
+        <table id="listado2" class="listado2 mx-auto w-100 table table-hover table-dark" data-search="true">
+            <tr>
+                <th>#</th>
+                <th>Nombre</th>
+                <th>Importe</th>
+                <th>Creado</th>
+                <th class="d-none d-xl-table-cell">disponible</th>
+                <th>source</th>
+                <th>Status </th>
+      
+            </tr>
+         
+{{!--             PLan: {{this.plan.id}} {{this.plan.product}} Activo: --}}
+            {{#each balanceTransactions.data}}
+            <tr>
+                <td>{{counter @index}}</td>
+                <td>{{this.id}}</td>
+                <td>{{ stripeprecio this.amount}} </td>
+                <td> {{unix2es this.created}}</td>
+                <td> {{unix2es this.available_on}}</td>
+                <td> {{this.source}}</td>
+                <td > {{this.status}}</td>
+               
+           {{!--      <td>{{this.plan.id}} {{this.plan.product}}</td> --}}
+            </tr>
+            {{/each}}
+        </table>
+    </div>
+</div>

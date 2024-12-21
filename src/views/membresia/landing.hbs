@@ -2,8 +2,8 @@
     <div class="row text-center">
         <div class="col-12">
             {{#if subscriptionswithplans}}
-            <h1>Mis subcripciones activas </h1>
-           {{!--  {{user.id}} --}} {{user.nombre}} {{user.apellidos}}
+            <h1>Mi subcripcion activa </h1>
+            {{!-- {{user.id}} --}} {{user.nombre}} {{user.apellidos}}
             {{#each subscriptionswithplans}}
             <div class="card mx-auto my-2" style="width: 18rem;">
                 <div class="card-body">
@@ -14,27 +14,26 @@
                     <p price="{{this.plan.id}}">{{stripeprecio this.plan.amount}} ultimo cobro {{unix2es
                         this.current_period_start}}</p>
                     <p sub="{{this.id}}"> desde {{unix2es this.created}} hasta {{unix2es this.current_period_end}}</p>
-                     {{#if this.cancellation_details.reason}}
+                    {{#if this.cancellation_details.reason}}
                     <p> Renueva tu subscripción. No se {{this.cancellation_details.reason}}</p>
-
+                    {{/if}}
                 </div>
             </div>
         </div>
         <div class="col-12">
             <form action="/membresia/create-portal-session" method="POST">
-              
+
                 <button class="btn btn-danger py-0" id="checkout-and-portal-button" type="submit">
                     <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
                     <p>Actualizar plan</p>
                 </button>
 
-  
+
             </form>
             {{/each}}
             {{else}}
 
             <h1>Selecciona una Membresía y únete</h1>
-            {{user.id}} {{user.nombre}} {{user.apellidos}}
 
             <div class="card mx-auto my-2" style="width: 18rem;">
                 <div class="card-body">
@@ -129,7 +128,8 @@
     </div>
 </div>
 
-{{!-- <script>
+{{!--
+<script>
     document.addEventListener('DOMContentLoaded', async () => {
         let searchParams = new URLSearchParams(window.location.search);
         if (searchParams.has('session_id')) {

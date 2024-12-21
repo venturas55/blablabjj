@@ -13,6 +13,71 @@ function createdDate(file) {
     return birthtime
 }
 
+
+helpers.planes = {
+    "price_1QWIQCKIeHEOMKlDpJMin5Ip": {
+        "amount": 6000,
+        "currency": "EUR",
+        "activities": [
+            "nogi"
+        ]
+    },
+    "price_1QWIQ1KIeHEOMKlDdKtPM12x": {
+        "amount": 5500,
+        "currency": "EUR",
+        "activities": [
+            "mma"
+        ]
+    },
+    "price_1QWIPnKIeHEOMKlD3PgMiAms": {
+        "amount": 5450,
+        "currency": "EUR",
+        "activities": [
+            "bjj913"
+        ]
+    },
+    "price_1QWIPVKIeHEOMKlDPB5JGReN": {
+        "amount": 4840,
+        "currency": "EUR",
+        "activities": [
+            "bjj69"
+        ]
+    },
+    "price_1QWIPAKIeHEOMKlDj3sm7vqf": {
+        "amount": 4250,
+        "currency": "EUR",
+        "activities": [
+            "bjj35"
+        ]
+    },
+    "price_1QW5wcKIeHEOMKlDZ5HUPw8j": {
+        "amount": 7260,
+        "currency": "EUR",
+        "activities": [
+            "bjj",
+            "nogi",
+            "femenino"
+        ]
+    },
+    "price_1QW5uBKIeHEOMKlDTuF8QGpf": {
+        "amount": 4000,
+        "currency": "EUR",
+        "activities": [
+            "bjjfemenino"
+        ]
+    },
+    "price_1QWIQJKIeHEOMKlDpJMinXXL": {
+        "amount": 8500,
+        "currency": "EUR",
+        "activities": [
+            "bjj",
+            "nogi",
+            "mma",
+            "bjjfemenino"
+        ]
+    }
+}
+
 helpers.listadoFotos = (req, res, next) => {
     const nif = req;
     var fotitos = [];
@@ -46,13 +111,13 @@ helpers.listadoBackups = (req, res, next) => {
     return documentos;
 }
 
-helpers.encryptPass = async(password) => {
+helpers.encryptPass = async (password) => {
     const sal = await bcrypt.genSalt(10);
     password = await bcrypt.hash(password, sal);
     return password;
 };
 
-helpers.verifyPassword = async(password, hashedPassword) => {
+helpers.verifyPassword = async (password, hashedPassword) => {
     try {
         return await bcrypt.compare(password, hashedPassword);
     } catch (e) {
@@ -123,7 +188,7 @@ helpers.hasPermission = async (req, res, next) => {
     return res.render('error', { error });
 }
 
-helpers.insertarLog = async(usuario, accion, observacion) => {
+helpers.insertarLog = async (usuario, accion, observacion) => {
     const log = {
         usuario,
         accion,

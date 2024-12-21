@@ -25,7 +25,8 @@ import { weekRouter } from './routes/week.js';
 import { apiRouter } from './routes/api.js';
 import { authRouter } from './routes/authentication.js';
 import { fotosRouter } from './routes/fotos.js';
-import { membresiasRouter } from './routes/membresias.js';
+import { membresiasRouter } from './routes/membresias.js'; 
+import { planesRouter } from './routes/planes.js';
 
 //Initialization
 const app = express();
@@ -79,6 +80,7 @@ app.use('/js', express.static(path.join(__dirname + '../node_modules/jquery/dist
 //Routes
 app.use(indexRouter);
 app.use(authRouter);
+app.use('/planes', planesRouter);
 app.use('/actividades', actividadesRouter);
 app.use('/asistencias', asistenciasRouter);
 app.use('/calendario', calendarioRouter);

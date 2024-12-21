@@ -70,9 +70,15 @@
                 </table>
             </div>
             <div class="card-footer">
+                {{#if yomismo.asiste}}
+                <form action="/asistencias/delete/{{yomismo.asistencia_id}}/" method="post">
+                    <button class="btn btn-warning"> <i class="fa-solid fa-user-minus"></i>Exit </button>
+                </form>
+                {{else}}
                 <form action="/asistencias/add/{{item.clase_id}}" method="post">
                     <button class="btn btn-warning"> <i class="fa-solid fa-user-plus"></i>Join </button>
                 </form>
+                {{/if}}
             </div>
         </div>
     </div>

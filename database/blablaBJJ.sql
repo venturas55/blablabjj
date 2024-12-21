@@ -76,8 +76,21 @@ CREATE TABLE actividades (
   `actividad_id` INT PRIMARY KEY AUTO_INCREMENT,
   `nombre` varchar(50) NOT NULL,
   `descripcion` varchar(250) DEFAULT NULL,
-  `pictureURL` varchar(200) DEFAULT NULL
-) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'tipos de actividades';
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'tipos de productos';
+
+CREATE TABLE planes (
+    plan_id INT AUTO_INCREMENT PRIMARY KEY,
+    stripe_price_id VARCHAR(255) NOT NULL UNIQUE,
+    stripe_product_id INT NOT NULL,
+    currency VARCHAR(10) NOT NULL,
+    amount INT NOT NULL,
+    type VARCHAR(50) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+)ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'tipos de planes';
+
 
 CREATE TABLE clases (
   clase_id INT PRIMARY KEY AUTO_INCREMENT,
