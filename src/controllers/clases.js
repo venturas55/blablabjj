@@ -42,6 +42,19 @@ export class ClaseController {
         res.render("clases/plantilla", { item: clase[0], asistentes, yomismo });
     }
 
+    static async getAddClassWeek(req, res) {
+        const dias = [{ "id": 1, "dia": "lunes" }, { "id": 2, "dia": "martes" }, { "id": 3, "dia": "miercoles" }, { "id": 4, "dia": "jueves" }, { "id": 5, "dia": "viernes" }, { "id": 6, "dia": "sabado" }, { "id": 7, "dia": "domingo" }];
+        try {
+            const usuarios = await db.query(" select * from usuarios");
+            const actividades = await db.query(" select * from actividades");
+            res.render('clases/addClassWeek', { usuarios, actividades, dias });
+        } catch (error) {
+            console.error(error);
+            req.flash("error", "Hubo algun error al intentar añadir la clase " + error);
+            res.redirect("/clases/list");
+        }
+    }
+
     static async getById(req, res) {
         const { id } = req.params;
         const [clase] = await ClaseModel.getById({ id });
@@ -97,8 +110,15 @@ export class ClaseController {
             return res.status(404).json({ message: 'clases not found' })
         }
 
-        //req.flash("success", "clases borrado correctamente");
+        req.flash("success", "clases borrado correctamente");
         res.redirect("/clases/list");
+    }
+
+    static async deleteAllFutureClass(req, res) {
+        
+        const result = await ClaseModel.deleteAllFutureClass();
+        res.redirect("/calendario/list");
+       
     }
 
     static async getUpdate(req, res) {

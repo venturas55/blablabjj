@@ -52,6 +52,16 @@ export class ClaseModel {
       return error;
     }
   }
+  static async deleteAllFutureClass() {
+    try {
+      await db.query("DELETE FROM clases WHERE fecha_hora  > DATE_ADD(CURDATE(),INTERVAL 7 DAY)");
+    } catch (error) {
+      console.error(error.code + " "  + error.message);
+      return error;
+    }
+  }
+
+
 
   static async update({ input }) {
     try {
