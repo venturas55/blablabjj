@@ -83,6 +83,8 @@ CREATE TABLE actividades (
 
 CREATE TABLE planes (
     plan_id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre varchar(100),
+    descripcion varchar(100),
     stripe_price_id VARCHAR(255) NOT NULL UNIQUE,
     stripe_product_id INT NOT NULL,
     currency VARCHAR(10) NOT NULL,
@@ -209,7 +211,7 @@ CREATE TABLE membresias (
   usuario_id INT,
   -- único Usuario asociado
   session_id VARCHAR(255),
-  customer_id VARCHAR(255),
+  customer_id VARCHAR(100),
   subscription VARCHAR(255),
   correo VARCHAR(255),
   titular VARCHAR(100),
@@ -217,22 +219,6 @@ CREATE TABLE membresias (
   -- Nombre del titular de la tarjeta
   FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 ) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'datos membresias stripe';
-
-CREATE TABLE pagos (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  -- Identificador único
-  cliente_id INT NOT NULL,
-  -- Identificador usuario
-  monto DECIMAL(10, 2) NOT NULL,
-  -- Monto del pago
-  fecha_pago DATETIME DEFAULT CURRENT_TIMESTAMP,
-  -- Fecha y hora del pago
-  metodo_pago ENUM('tarjeta', 'transferencia', 'efectivo') NOT NULL,
-  -- Método de pago
-  estado ENUM('completado', 'pendiente', 'fallido') DEFAULT 'completado',
-  -- Estado del pago
-  FOREIGN KEY (cliente_id) REFERENCES usuarios(id)
-) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'pagos';
 
 INSERT INTO
   `usuarios` (

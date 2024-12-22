@@ -9,7 +9,7 @@ const stripe = new Stripe(process.env.STRIPE_PRIV || 'PRIVATE KEY');
 
 import { validateActividad, validatePartialActividad } from '../schemas/validaciones.js';
 
-export class ActividadController {
+export class ActividadStripeController {
 
     static async getAll(req, res) {
         const actividades = await stripe.products.list();

@@ -12,8 +12,8 @@ const stripe = new Stripe(process.env.STRIPE_PRIV || 'PRIVATE KEY');
 export class PlanController {
 
     static async getAll(req, res) {
-        const items = await stripe.prices.list();
-        console.log(items);
+        const items = await stripe.products.list({expand: ['data.default_price']});
+        console.log(items.data);
         res.render("planes/st-list", { items: items.data });
     }
     static async getById(req, res) {
@@ -66,11 +66,9 @@ export class PlanController {
 
     static async getUpdate(req, res) {
         const { id } = req.params;
-        console.log(id);
-        const plan = await stripe.products.retrieve(id);
+        const plan = await stripe.products.retrieve(id,{expand: ['default_price']});
         console.log(plan);
-        console.log("fin");
-        res.render("plan/st-edit", { item: plan });
+        res.render("planes/st-edit", { item: plan });
     }
 
     static async update(req, res) {

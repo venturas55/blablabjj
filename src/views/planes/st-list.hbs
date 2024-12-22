@@ -19,10 +19,10 @@
         </tr>
         {{#each items}}
         <tr>
-          <td>{{this.id}} {{stripeprecio this.unit_amount}}</td>
-          <td>{{this.product}}  </td>
+          <td>{{this.name}}</td>
+          <td>{{this.description}}  </td>
           
-          <td>{{stripeprecio this.unit_amount}} {{this.currency}}</td>
+          <td>{{stripeprecio this.default_price.unit_amount}} {{this.default_price.currency}}</td>
           <td>
             <a href="/planes/edit/{{this.id}}" class="text-warning"><i
                 class="fa-solid fa-pen"></i>Edit</a>

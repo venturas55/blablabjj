@@ -4,8 +4,7 @@ const require = createRequire(import.meta.url);
 import * as url from 'url';
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 import { MembresiaModel } from "../models/membresiaMysql.js";
-import dotenv from 'dotenv';
-dotenv.config();
+import { ExtraModel } from "../models/extraMysql.js";
 import Stripe from 'stripe';
 const stripe = new Stripe(process.env.STRIPE_PRIV || 'PRIVATE KEY');
 
@@ -172,9 +171,9 @@ export class MembresiaController {
     }
     static async getSuccess(req, res) {
 
-        const session = await stripe.checkout.sessions.retrieve(req.query.session_id,{expand: ['line_items.data.price']});
+        const session = await stripe.checkout.sessions.retrieve(req.query.session_id, { expand: ['line_items.data.price'] });
         //console.log(session.line_items.data[0].price.id);
-        const facturacion = { usuario_id: req.user.id, session_id: req.query.session_id, customer_id: session.customer, titular: session.customer_details.name, correo: session.customer_details.email, subscription: session.subscription, hasAccess: true ,price_id:session.line_items.data[0].price.id};
+        const facturacion = { usuario_id: req.user.id, session_id: req.query.session_id, customer_id: session.customer, titular: session.customer_details.name, correo: session.customer_details.email, subscription: session.subscription, hasAccess: true, price_id: session.line_items.data[0].price.id };
         const [q] = await MembresiaModel.getMembresiaByUserId(req.user.id);
         if (q) {
             console.log("actualizando facturacion");
@@ -211,7 +210,7 @@ export class MembresiaController {
         const { id } = req.params
         console.log(req.params);
 
-        const subscription = await stripe.subscriptions.update(id,{cancel_at_period_end: false});
+        const subscription = await stripe.subscriptions.update(id, { cancel_at_period_end: false });
         res.redirect('/membresia/list');
     }
 
@@ -316,13 +315,24 @@ export class MembresiaController {
 
     }
 
+    static async traerProductos(req, res) {
+        const q1 = await ExtraModel.deleteProducts();
+        const products = await stripe.products.list();
+        var productos = [];
+        products.data.forEach((product) => {
+            productos.push([product.name, product.description, product.id, product.default_price]);
+        });
+        //console.log(productos);
+        const q2 = await ExtraModel.insertProducts(productos);
+    }
+
     static async pruebas(req, res) {
-        const subscription  = await stripe.subscriptions.retrieve("sub_1QYGN6KIeHEOMKlDamj1m8Od");
-        const priceId = subscription.items.data[0].price.id;
-        console.log(priceId);
-        const price = await stripe.prices.retrieve(priceId);
-        const productId = price.product;
-        console.log(productId);
+        /*        const subscription  = await stripe.subscriptions.retrieve("sub_1QYGN6KIeHEOMKlDamj1m8Od");
+               const priceId = subscription.items.data[0].price.id;
+               console.log(priceId);
+               const price = await stripe.prices.retrieve(priceId);
+               const productId = price.product;
+               console.log(productId); */
         //const facturacion = { usuario_id: req.user.id, session_id: req.query.session_id, customer_id: session.customer, titular: session.customer_details.name, correo: session.customer_details.email, subscription: session.subscription, hasAccess: true }
         //const [q] = await MembresiaModel.getMembresiaByUserId(req.user.id);
     }

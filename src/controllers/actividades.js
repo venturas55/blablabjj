@@ -3,8 +3,7 @@ import * as url from 'url';
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 import { createRequire } from 'node:module'
 const require = createRequire(import.meta.url);
-import dotenv from 'dotenv';
-dotenv.config();
+import { ActividadStripeController } from '../controllers/st-actividades.js'
 import Stripe from 'stripe';
 const stripe = new Stripe(process.env.STRIPE_PRIV || 'PRIVATE KEY');
 

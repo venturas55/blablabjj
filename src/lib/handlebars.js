@@ -31,7 +31,7 @@ helpers.unix2es = (unixTime) => {
 
 helpers.stripeprecio = (precio) => {
   precio = precio / 100;
-  return precio + "€";
+  return precio;
 }
 
 //Este es el formateo necesario para encajar una fecha en un input de type="date"
