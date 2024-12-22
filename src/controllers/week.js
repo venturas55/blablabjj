@@ -1,6 +1,8 @@
 import { WeekModel } from '../models/weekMysql.js';
 import { ClaseModel } from '../models/claseMysql.js';
 import { UsuarioModel } from '../models/usuarioMysql.js';
+import { ActividadModel } from '../models/actividadMysql.js';
+import funciones from '../lib/funciones.js';
 import * as url from 'url';
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 import { createRequire } from 'node:module'
@@ -34,13 +36,8 @@ export class WeekController {
                 return horaA[2] - horaB[2]; // Comparar segundos (opcional si tu formato incluye segundos)
             });
         });
-        console.log(clasesPorDia);
+        //console.log(clasesPorDia);
         res.render("week/list", { clases: clasesPorDia, usuarios });
-    }
-
-    static async getAll2modify(req, res) {
-        const clases = await WeekModel.getAll();
-        res.render("week/list2edit", { clases });
     }
 
     static async getById(req, res) {
@@ -52,9 +49,9 @@ export class WeekController {
 
     static async getCreate(req, res) {
          try {
-           const usuarios = await db.query(" select * from usuarios");
-           const actividades = await db.query(" select * from actividades");
-           res.render('week/add', { usuarios, actividades, dias });
+           const usuarios = await UsuarioModel.getAll();
+           const actividades = await ActividadModel.getAll();
+           res.render('week/add', { usuarios, actividades, dias:funciones.dias  });
          } catch (error) {
            console.error(error);
            req.flash("error", "Hubo algun error al intentar añadir la clase " + error);
@@ -130,8 +127,7 @@ export class WeekController {
     
     static async delete(req, res) {
         const { id } = req.params
-        console.log("deleteclases: " + JSON.stringify(id));
-        const result = await ClaseModel.delete({ input: id })
+        const result = await WeekModel.delete({ input: id })
         if (result === false) {
             return res.status(404).json({ message: 'clases not found' })
         }
@@ -142,10 +138,11 @@ export class WeekController {
 
     static async getUpdate(req, res){
         const { id } = req.params;
-        const usuarios = await db.query(" select * from usuarios");
-        const actividades = await db.query(" select * from actividades");
-        const item = await db.query("SELECT * FROM semana c LEFT JOIN actividades a ON c.actividad_id = a.actividad_id WHERE c.clase_id=?", [id,]);
-        res.render("week/edit", { item: item[0], actividades, usuarios,dias });
+        const usuarios = await UsuarioModel.getAll();
+        const actividades = await ActividadModel.getAll();
+        const [item] = await WeekModel.getClaseSemana({id});
+        console.log(item);
+        res.render("week/edit", { item, actividades, usuarios,dias:funciones.dias });
 
 
     }

@@ -4,17 +4,35 @@ import moment from 'moment';
 import db from "../database.js"; //db hace referencia a la BBDD
 export const readJSON = (path) => require(path);
 const sqlClasesQuery = "SELECT s.clase_id,s.creador_id,s.actividad_id,s.instructor_id,s.duracion,s.dia,s.hora,s.created_at,ui.nombre as nombre_instructor,ui.apellidos as apellidos_instructor,ui.email as email_instructor,ui.telefono as telefono_instructor,ui.pictureURL as pictureURL_instructor,uc.nombre as nombre_creador,uc.apellidos as apellidos_creador,uc.email as email_creador,uc.telefono as telefono_creador,uc.pictureURL as pictureURL_creador,a.nombre as nombre_actividad, a.descripcion as descripcion_actividad, a.pictureURL as pictureURL_actividad FROM semana s LEFT JOIN usuarios ui ON s.instructor_id = ui.id LEFT JOIN usuarios uc ON s.creador_id=uc.id LEFT JOIN actividades a ON s.actividad_id=a.actividad_id"
+const sqlSemana = "SELECT * FROM semana c LEFT JOIN actividades a ON c.actividad_id = a.actividad_id"
 
 
 export class WeekModel {
   static async getAll() {
-    const clases = await db.query(sqlClasesQuery);
-    return clases;
+    try {
+      const clases = await db.query(sqlClasesQuery);
+      return clases;
+    } catch (error) {
+      console.error('Error al clonar las semanas:', error);
+    }
   }
 
   static async getById({ id }) {
-    const clase = await db.query(sqlClasesQuery + " where s.clase_id=?", id);
-    return clase;
+    try {
+      const clase = await db.query(sqlClasesQuery + " where s.clase_id=?", id);
+      return clase;
+    } catch (error) {
+      console.error('Error al clonar las semanas:', error);
+    }
+  }
+
+  static async getClaseSemana({ id }) {
+    try {
+      const clases = await db.query(sqlSemana + "  WHERE c.clase_id=?", id);
+      return clases;
+    } catch (error) {
+      console.error('Error al clonar las semanas:', error);
+    }
   }
 
 
@@ -57,7 +75,7 @@ export class WeekModel {
       for (const semana of semanasFuturas) {
         // Crear las fechas y horas de las clases para cada semana futura
         const inserts = clasesSemana.map((clase) => {
-          const diaOffset = clase.dia-1; // Día de la semana (0=lunes, 1=martes, ..., 6=domingo)
+          const diaOffset = clase.dia - 1; // Día de la semana (0=lunes, 1=martes, ..., 6=domingo)
           const fechaClase = semana.clone().add(diaOffset, 'days').set({
             hour: moment(clase.hora, 'HH:mm').hour(),
             minute: moment(clase.hora, 'HH:mm').minute(),
@@ -95,18 +113,15 @@ export class WeekModel {
     }
   }
 
-
-
   static async delete({ input }) {
     try {
+      console.log(input);
       await db.query("DELETE FROM semana WHERE clase_id=?", [input]);
     } catch (error) {
       console.error(error.code);
       return error;
     }
   }
-
-
 
   static async update({ input }) {
     try {

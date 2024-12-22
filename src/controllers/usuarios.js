@@ -27,15 +27,15 @@ const cinturones = [
     { "value": "morado", "nombre": "Morado" },
     { "value": "marron", "nombre": "Marrón" },
     { "value": "negro", "nombre": "Negro" }
-  ]
-  
-  const grados = [
+]
+
+const grados = [
     { "value": "", "nombre": "Sin grados" },
     { "value": "I", "nombre": "I" },
     { "value": "II", "nombre": "I I" },
     { "value": "III", "nombre": "I I I" },
     { "value": "IIII", "nombre": "I I I I" }
-  ]
+]
 
 export class UsuarioController {
 
@@ -66,16 +66,16 @@ export class UsuarioController {
 
     static async getUpdate(req, res) {
         const { id } = req.user;
-        const item = await UsuarioModel.getById( { id });
+        const item = await UsuarioModel.getById({ id });
         const paises = await ExtraModel.getAllPaises();
-      
-        res.render("profile/edit", { item: item[0],paises,grados,cinturones });
+
+        res.render("profile/edit", { item: item[0], paises, grados, cinturones });
     }
     static async getUpdateId(req, res) {
-          const { id } = req.params;
-          const item = await UsuarioModel.getById({ id });
-          const paises = await ExtraModel.getAllPaises();
-          res.render("profile/edit", { item: item[0],paises,grados,cinturones });
+        const { id } = req.params;
+        const item = await UsuarioModel.getById({ id });
+        const paises = await ExtraModel.getAllPaises();
+        res.render("profile/edit", { item: item[0], paises, grados, cinturones });
     }
 
     static async update(req, res) {

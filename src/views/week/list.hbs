@@ -1,43 +1,8 @@
-{{!-- <div class="container pb-2 mb-5">
-	<div class="row">
-		<div class="col-12 text-center">
-			<div id="week">
-				<div class="day">Lunes</div>
-				<div class="day">Martes</div>
-				<div class="day">Miercoles</div>
-				<div class="day">Jueves</div>
-				<div class="day">Viernes</div>
-				<div class="day">Sabado</div>
-				<div class="day">Domingo</div>
-				{{#each clases}}
-				<div class="clase">
-					<div>{{this.dia}} {{this.nombre_actividad}} </div>
-					<div>{{this.hora}} {{this.duracion}}min </div>
-					<div>{{this.nombre_instructor}}</div>
-				</div>
-				{{/each}}
-
-
-			</div>
-		</div>
-	</div>
-</div> --}}
-
-<div class="text-center">
+<div class="text-center my-1">
 	<a href="/week/add"> <button class="btn btn-warning">NUEVA CLASE WEEK</button></a>
-	<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+	<button type="button" class="btn btn-primary mx-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
 		UN MODAL
 	</button>
-
-	<form action="/week/clone" method="post">
-		<button class="btn btn-danger">CLONAR SEMANA</button>
-	</form>
-
-		<form action="/clases/deleteAll" method="post">
-		<button class="btn btn-danger">BORRAR CLASES FUTURAS</button>
-	</form>
-
-	<a href="/week/edit"> <button class="btn btn-warning">MODIFICACION SEMANA BASE</button></a>
 </div>
 
 <!-- Modal -->
@@ -62,7 +27,7 @@
 
 
 <div>
-	<div class="container pb-2 mb-5">
+	<div class="container pb-2 my-2">
 		<div class="table-responsive">
 			<table class="table table-bordered table-dark">
 				<thead class="thead-light">
@@ -87,7 +52,7 @@
 									<p class="card-text">{{ hora}}
 									<p> {{duracion}}min</p>
 									</p>
-									<a href="/week/editClass/{{clase_id}}" class="text-warning"><i
+									<a href="/week/edit/{{clase_id}}" class="text-warning"><i
 											class="fa-solid fa-pen"></i>Edit</a>
 									<a href="/week/delete/{{clase_id}}" class="text-warning"><i
 											class="fa-solid fa-trash"></i>Del</a>
@@ -102,5 +67,18 @@
 				</tbody>
 			</table>
 		</div>
+	</div>
+</div>
+
+<div class="text-center mb-5">
+	<div>
+		<form action="/week/clone" method="post">
+			<button class="btn btn-danger">CLONAR SEMANA</button>
+		</form>
+	</div>
+	<div class="my-5">
+		<form action="/clases/deleteAll" method="post">
+			<button class="btn btn-danger">BORRAR CLASES FUTURAS</button>
+		</form>
 	</div>
 </div>

@@ -13,6 +13,7 @@ function createdDate(file) {
     return birthtime
 }
 
+helpers.dias=[{ "id": 1, "dia": "lunes" }, { "id": 2, "dia": "martes" }, { "id": 3, "dia": "miercoles" }, { "id": 4, "dia": "jueves" }, { "id": 5, "dia": "viernes" }, { "id": 6, "dia": "sabado" }, { "id": 7, "dia": "domingo" }];
 
 helpers.planes = {
     "price_1QWIQCKIeHEOMKlDpJMin5Ip": {
