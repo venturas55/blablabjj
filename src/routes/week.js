@@ -14,7 +14,7 @@ weekRouter.get("/list", WeekController.getAll);
 weekRouter.get("/list/:id", WeekController.getById);
 
 //CREATE
-weekRouter.get("/add", funciones.isAuthenticated, funciones.isMaster,WeekController.getCreate);
+//weekRouter.get("/add", funciones.isAuthenticated, funciones.isMaster,WeekController.getCreate);
 weekRouter.post("/add", funciones.isAuthenticated,funciones.isMaster, WeekController.create);
 
 weekRouter.post("/clone", funciones.isAuthenticated,funciones.isMaster, WeekController.cloneWeek); 

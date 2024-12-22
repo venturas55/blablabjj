@@ -15,6 +15,7 @@ export class WeekController {
     static async getAll(req, res) {
         const usuarios = await UsuarioModel.getAll();
         const clases = await WeekModel.getAll();
+        const actividades = await ActividadModel.getAll();
         // Ordenar las clases por fecha
         const clasesOrdenadas = clases.sort((a, b) => (a.dia) - (b.dia));
         // Agrupar las clases por día de la semana (Lunes=1, ..., Domingo=7)
@@ -37,7 +38,7 @@ export class WeekController {
             });
         });
         //console.log(clasesPorDia);
-        res.render("week/list", { clases: clasesPorDia, usuarios });
+        res.render("week/list", { clases: clasesPorDia, usuarios,actividades,dias:funciones.dias });
     }
 
     static async getById(req, res) {
@@ -47,7 +48,7 @@ export class WeekController {
         res.render("week/plantilla", { clase });
     }
 
-    static async getCreate(req, res) {
+/*     static async getCreate(req, res) {
          try {
            const usuarios = await UsuarioModel.getAll();
            const actividades = await ActividadModel.getAll();
@@ -57,7 +58,7 @@ export class WeekController {
            req.flash("error", "Hubo algun error al intentar añadir la clase " + error);
            res.redirect("/week/list");
          }
-    }
+    } */
     static async create(req, res) {
         const result = validateClase(req.body);
 

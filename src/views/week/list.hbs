@@ -1,7 +1,9 @@
+<h1>SEMANA REGULAR</h1>
+
 <div class="text-center my-1">
-	<a href="/week/add"> <button class="btn btn-warning">NUEVA CLASE WEEK</button></a>
+	{{!-- <a href="/week/add"> <button class="btn btn-warning">NUEVA CLASE WEEK</button></a> --}}
 	<button type="button" class="btn btn-primary mx-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
-		UN MODAL
+		NUEVA CLASE SEMANAL
 	</button>
 </div>
 
@@ -15,7 +17,61 @@
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-				{{>crearClase}}
+				{{!-- {{>crearClase}} --}}
+				 <h2>NUEVA CLASE</h2>
+                    <form action="/week/add" method="POST">
+                        {{user.nombre}} - {{user.id}}
+                        <input type="hidden" name="creador_id" placeholder="" value="{{user.id}}" />
+
+                        <div class="form-group">
+                            <label for="actividad_id">Actividad </label>
+                            <div class="input-group mb-3">
+                                <select class="custom-select form-select form-select-sm" name="actividad_id"
+                                    id="input_actividad_id" aria-label=".form-select-sm example">
+                                    <option value=""> Selecciona</option>
+                                    {{#each actividades}}
+                                    <option value="{{this.actividad_id}}"> {{this.nombre}} </option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="dia">Dia de la semana </label>
+                            <div class="input-group mb-3">
+                                <select class="custom-select form-select form-select-sm" name="dia"
+                                    id="input_dia" aria-label=".form-select-sm example">
+                                    <option value=""> Selecciona</option>
+                                    {{#each dias}}
+                                    <option value="{{this.id}}"> {{this.dia}} </option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">Hora:<input class="form-control" type="time" value=""
+                                name="hora" /> </div>
+
+                        <div class="form-group">Duracion:<input class="form-control" type="tex" name="duracion"
+                                placeholder="60" value="60" autofocus /> </div>
+
+                        <div class="form-group">
+                            <label for="instructor_id">Instructor </label>
+                            <div class="input-group mb-3">
+                                <select class="custom-select form-select form-select-sm" name="instructor_id"
+                                    id="input_instructor_id" aria-label=".form-select-sm example">
+                                    <option value=""> Selecciona</option>
+                                    {{#each usuarios}}
+                                    <option value="{{this.id}}" {{#when this.id 'eq' user.id }} selected {{/when}}>
+                                        {{this.nombre}} </option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary btn-block">Guardar</button>
+                        <a class="btn btn-warning btn-block" href="javascript:void(0)"
+                            onclick="history.back();">Volver</a>
+                    </form>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
