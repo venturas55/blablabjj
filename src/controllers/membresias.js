@@ -171,19 +171,20 @@ export class MembresiaController {
 
     }
     static async getSuccess(req, res) {
-        const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
-        const facturacion = { usuario_id: req.user.id, session_id: req.query.session_id, customer_id: session.customer, titular: session.customer_details.name, correo: session.customer_details.email, subscription: session.subscription, hasAccess: true }
+
+        const session = await stripe.checkout.sessions.retrieve(req.query.session_id,{expand: ['line_items.data.price']});
+        //console.log(session.line_items.data[0].price.id);
+        const facturacion = { usuario_id: req.user.id, session_id: req.query.session_id, customer_id: session.customer, titular: session.customer_details.name, correo: session.customer_details.email, subscription: session.subscription, hasAccess: true ,price_id:session.line_items.data[0].price.id};
         const [q] = await MembresiaModel.getMembresiaByUserId(req.user.id);
         if (q) {
             console.log("actualizando facturacion");
             const r = await MembresiaModel.updateMembresia(facturacion, q.id);
-            console.log(r);
         } else {
             console.log("creando facturacion");
             await MembresiaModel.createMembresia(facturacion);
         }
 
-        console.log(req.query);
+        //console.log(req.query);
 
         res.redirect("/membresia/landing");
 
@@ -210,14 +211,7 @@ export class MembresiaController {
         const { id } = req.params
         console.log(req.params);
 
-        const subscription = await stripe.subscriptions.update
-            (
-                id
-                ,
-                {
-                    cancel_at_period_end: false,
-                }
-            );
+        const subscription = await stripe.subscriptions.update(id,{cancel_at_period_end: false});
         res.redirect('/membresia/list');
     }
 
@@ -248,6 +242,7 @@ export class MembresiaController {
 
         }
         const checkoutSessionCompleted = event.data.object;
+        console.log("webhook checkoutSessionCompleted");
         console.log(checkoutSessionCompleted);
 
         // Handle the event
@@ -274,6 +269,7 @@ export class MembresiaController {
                 // Then define and call a function to handle the event checkout.session.completed
                 break;
             case 'customer.subscription.updated':
+                console.log('customer.subscription.updated');
                 console.log('customer.subscription.updated');
                 const customerSubscriptionUpdated = event.data.object;
                 console.log(customerSubscriptionUpdated)
@@ -317,6 +313,21 @@ export class MembresiaController {
         }
         console.log(`Unhandled event type ${event.type}`);
         res.send();
+
+    }
+
+    static async pruebas(req, res) {
+        const subscription  = await stripe.subscriptions.retrieve("sub_1QYGN6KIeHEOMKlDamj1m8Od");
+        const priceId = subscription.items.data[0].price.id;
+        console.log(priceId);
+        const price = await stripe.prices.retrieve(priceId);
+        const productId = price.product;
+        console.log(productId);
+        //const facturacion = { usuario_id: req.user.id, session_id: req.query.session_id, customer_id: session.customer, titular: session.customer_details.name, correo: session.customer_details.email, subscription: session.subscription, hasAccess: true }
+        //const [q] = await MembresiaModel.getMembresiaByUserId(req.user.id);
+
+
+
 
     }
 }

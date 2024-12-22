@@ -5,17 +5,7 @@ export const readJSON = (path) => require(path)
 
 
 export class MembresiaModel {
-    static async createMembresia(input) {
-        try {
-          const a = await db.query("INSERT INTO membresias set ?", [input]);
-          return a;
-        } catch (error) {
-          console.error(error.code + ": " + error.message);
-          console.error(error);
-          return false;
-        }
-      }
-    
+     
       static async updateMembresia(input) {
         try {
           const a = await db.query("UPDATE membresias set ? WHERE id = ?", [input,input.id]);
@@ -64,6 +54,17 @@ export class MembresiaModel {
         try {
           const cliente = await db.query("SELECT * FROM membresias where correo=?", email);
           return cliente;
+        } catch (error) {
+          console.error(error.code + ": " + error.message);
+          console.error(error);
+          return false;
+        }
+      }
+
+      static async createMembresia(input) {
+        try {
+          const a = await db.query("INSERT INTO membresias set ?", [input]);
+          return a;
         } catch (error) {
           console.error(error.code + ": " + error.message);
           console.error(error);

@@ -40,7 +40,7 @@ export class AsistenciaController {
     }
 
     static async create(req, res) {
-        const { clase_id } = req.params
+/*         const { clase_id } = req.params
         const item = {
             clase_id,
             usuario_id: req.user.id,
@@ -49,7 +49,7 @@ export class AsistenciaController {
         };
         const a = await AsistenciaModel.create({ input: item });
         req.flash("success", "Solicitud realizada correctamente");
-        res.redirect("/clases/ver/" + clase_id); //te redirige una vez insertado el item
+        res.redirect("/clases/ver/" + clase_id); //te redirige una vez insertado el item */
 
     }
     static async delete(req, res) {

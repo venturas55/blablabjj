@@ -78,7 +78,7 @@ export class ActividadController {
         const { id } = req.params;
         const [actividad] = await ActividadModel.getById( {id} );
         console.log(actividad);
-        res.render("actividades/edit", { actividad });
+        res.render("actividades/edit", { item:actividad });
     }
 
     static async update(req, res) {

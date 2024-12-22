@@ -23,3 +23,5 @@ membresiasRouter.post('/resume/:id', funciones.isAuthenticated,funciones.isMaste
 membresiasRouter.post('/create-portal-session', funciones.isAuthenticated, MembresiaController.createPortal);
 
 membresiasRouter.post('/webhook', funciones.isAuthenticated, express.raw({ type: 'application/json' }), MembresiaController.webhook);
+
+membresiasRouter.get('/pruebas', funciones.isAuthenticated, MembresiaController.pruebas);

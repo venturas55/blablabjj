@@ -25,4 +25,4 @@ actividadesRouter.post("/add", funciones.isAuthenticated, ActividadController.cr
 actividadesRouter.get("/delete/:id", funciones.isAuthenticated, ActividadController.delete);
 //UPDATE
 actividadesRouter.get("/edit/:id", funciones.isAuthenticated, ActividadController.getUpdate);
-actividadesRouter.post("/edit", funciones.isAuthenticated,   ActividadController.update);
+actividadesRouter.post("/edit/:id", funciones.isAuthenticated,   ActividadController.update);

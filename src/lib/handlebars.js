@@ -132,7 +132,6 @@ helpers.clasesCinturon = (asistencias) => {
 }
 
 helpers.when = (operand_1, operator, operand_2, options) => {
-  console.log(operand_1 +" "+ operand_2)
   var operators = {
     'eq': function (l, r) { return l == r; },
     'noteq': function (l, r) { return l != r; },

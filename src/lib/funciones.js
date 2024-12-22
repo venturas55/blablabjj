@@ -3,8 +3,10 @@ import { join } from 'path';
 import { statSync, readdir } from 'fs';
 import mysqldump from 'mysqldump';
 import { stringify } from 'querystring';
-import { promisify } from 'util';
-import db from "../database.js";
+import { MembresiaModel } from "../models/membresiaMysql.js";
+import { ClaseModel } from '../models/claseMysql.js';
+import Stripe from 'stripe';
+const stripe = new Stripe(process.env.STRIPE_PRIV || 'PRIVATE KEY');
 
 const helpers = {};
 
@@ -13,7 +15,7 @@ function createdDate(file) {
     return birthtime
 }
 
-helpers.dias=[{ "id": 1, "dia": "lunes" }, { "id": 2, "dia": "martes" }, { "id": 3, "dia": "miercoles" }, { "id": 4, "dia": "jueves" }, { "id": 5, "dia": "viernes" }, { "id": 6, "dia": "sabado" }, { "id": 7, "dia": "domingo" }];
+helpers.dias = [{ "id": 1, "dia": "lunes" }, { "id": 2, "dia": "martes" }, { "id": 3, "dia": "miercoles" }, { "id": 4, "dia": "jueves" }, { "id": 5, "dia": "viernes" }, { "id": 6, "dia": "sabado" }, { "id": 7, "dia": "domingo" }];
 
 helpers.planes = {
     "price_1QWIQCKIeHEOMKlDpJMin5Ip": {
@@ -126,6 +128,69 @@ helpers.verifyPassword = async (password, hashedPassword) => {
     }
 }
 
+helpers.esSocio = async (req, res, next) => {
+    try {
+        var [membresia] = await MembresiaModel.getMembresiaByUserId(req.user.id);
+        var sessionId = membresia.session_id;
+        const session = await stripe.checkout.sessions.retrieve(sessionId, { expand: ['line_items.data.price'] });
+        const contratado = session.line_items.data[0].description.toLowerCase();;
+        const { clase_id } = req.params;
+        const [clase] = await ClaseModel.getById({ id: clase_id });
+        const peticion = clase.nombre_actividad.toLowerCase();
+        console.log(contratado + " entrando a " + peticion);
+
+        if (contratado == 'ilimitado')
+            return next();
+        if (contratado.includes("adulto")) {
+            if (peticion.includes("bjj") || peticion.includes("nogi") || peticion.includes("femenino")) {
+                return next();
+            }
+            else {
+                req.flash("warning", "Realice el pago de alguna membresia para poder unirse a clases");
+                return res.redirect('/membresia/landing');
+            }
+        }
+        if (contratado.includes("mma")) {
+            if (peticion.includes("mma")) {
+                return next();
+            }
+            else {
+                req.flash("warning", "Amplie su membresia para poder unirse a clases de mma");
+                return res.redirect('/membresia/landing');
+            }
+
+        }
+        if (contratado.includes("nogi")) {
+            if (peticion.includes("nogi")) {
+                return next();
+            }
+            else {
+                req.flash("warning", "Amplie su membresia para poder unirse a este tipo de clases");
+                return res.redirect('/membresia/landing');
+            }
+        }
+        if (contratado.includes("femenino")) {
+            if (peticion.includes("femenino")) {
+                return next();
+            }
+            else {
+                req.flash("warning", "Amplie su membresia para poder unirse a este tipo de clases");
+                return res.redirect('/membresia/landing');
+            }
+
+        }
+
+    } catch (error) {
+        req.flash("warning", "Realice el pago de alguna membresia para poder unirse a clases");
+        return res.redirect('/membresia/landing');
+    }
+
+
+    return next();
+
+    //return res.redirect('/membresia/landing');
+}
+
 helpers.isAuthenticated = (req, res, next) => {
     if (req.isAuthenticated()) {
         return next();
@@ -167,7 +232,7 @@ helpers.isNotMaster = (req, res, next) => {
     }
     return res.redirect('/noperm');
 }
-helpers.hasPermission = async (req, res, next) => {
+/* helpers.hasPermission = async (req, res, next) => {
     //BIEN LEE POR PARAMS O POR BODY
     var logged_user_id = req.params.id;
     if (id_partida == null)
@@ -188,7 +253,7 @@ helpers.hasPermission = async (req, res, next) => {
     var error = "No tienes permisos";
     return res.render('error', { error });
 }
-
+ */
 helpers.insertarLog = async (usuario, accion, observacion) => {
     const log = {
         usuario,

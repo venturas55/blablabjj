@@ -16,8 +16,8 @@ asistenciasRouter.get("/list/:user_id", AsistenciaController.getByUserId);
 asistenciasRouter.post("/confirm", funciones.isAuthenticated, AsistenciaController.confirmById);
 asistenciasRouter.post("/cancel", funciones.isAuthenticated, AsistenciaController.cancelById);
 
-
-asistenciasRouter.post("/add/:clase_id", funciones.isAuthenticated, AsistenciaController.create);
+                //solicitar asistencia por usuario
+asistenciasRouter.post("/add/:clase_id", funciones.isAuthenticated,funciones.esSocio, AsistenciaController.create);
 //DELETE
 asistenciasRouter.post("/delete/:asistencia_id", funciones.isAuthenticated, AsistenciaController.delete);
 //UPDATE
