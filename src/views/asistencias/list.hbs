@@ -1,4 +1,47 @@
+<h1>Top 3 asistencias</h1>
+
+<div class="podium-container">
+	<div class="podium">
+		<div class="podium__front podium__left">
+			<div>
+			</div>
+			<div class="">2</div>
+			<div class="podium__image"><img class="" src="/img/profiles/{{ranking.1.pictureURL_usuario}}" alt=""></div>
+			<span> {{ranking.1.total_asistencias}} asistencias</span>
+		</div>
+
+		<div class="podium__front podium__center">
+			<div class="">1</div>
+			<div class="podium__image"><img class="" src="/img/profiles/{{ranking.0.pictureURL_usuario}}" alt=""></div>
+			<span> {{ranking.0.total_asistencias}} asistencias</span>
+		</div>
+		<div class="podium__front podium__right">
+			<div class="">3</div>
+			<div class="podium__image"><img class="" src="/img/profiles/{{ranking.2.pictureURL_usuario}}" alt=""></div>
+			<span> {{ranking.2.total_asistencias}} asistencias</span>
+		</div>
+	</div>
+</div>
+
+
 <div class="container pb-2 mb-5">
+	<div class="row">
+		<div class="col-md-12 text-center">
+			{{#each ranking}}
+			{{#when @index 'gt' 2}}
+			<div class="d-flex flex-row justify-content-center">
+				<span> {{counter @index}}</span> {{>avatar size="xs" url=../this.pictureURL_usuario }} <span>
+					{{../this.nombre_usuario}} {{../this.apellidos_usuario}} {{../this.codigo_iso}}
+					{{../this.total_asistencias}}</span>
+			</div>
+			{{/when}}
+			{{/each}}
+		</div>
+	</div>
+
+
+
+
 	<div class="row">
 		<div class="col-md-12 text-center">
 			{{#if asistencias}}

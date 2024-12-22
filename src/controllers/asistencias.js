@@ -8,10 +8,9 @@ import { validateAsistencia, validatePartialAsistencia } from '../schemas/valida
 
 export class AsistenciaController {
     static async getAll(req, res) {
-        let input = "";
-        const asistencias = await AsistenciaModel.getAll(input);
-        console.log(asistencias[0]);
-        res.render("asistencias/list", { asistencias, });
+        const {asistencias,ranking} = await AsistenciaModel.getAll();
+        console.log(ranking);
+        res.render("asistencias/list", { asistencias,ranking });
     }
 
     static async getById(req, res) {
