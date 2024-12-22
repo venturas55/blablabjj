@@ -20,21 +20,31 @@
                 <th>Activo</th>
                 <th>Acciones</th>
             </tr>
-         
-{{!--             PLan: {{this.plan.id}} {{this.plan.product}} Activo: --}}
+
+            {{!-- PLan: {{this.plan.id}} {{this.plan.product}} Activo: --}}
             {{#each subscriptions}}
             <tr>
                 <td>{{counter @index}}</td>
                 <td>{{this.customer.name}}</td>
                 <td>{{this.customer.email}} </td>
-                <td id="{{this.id}}"> {{this.planName}}</td>
-                <td  class="d-none d-xl-table-cell"> {{this.planDescription}}</td>
+                <td id="{{this.id}}"> {{this.planName}} {{this.id}}</td>
+                <td class="d-none d-xl-table-cell"> {{this.planDescription}}</td>
                 <td>{{stripeprecio this.plan.amount}}</td>
                 <td> {{unix2es this.created }}</td>
-                <td  class="d-none d-xl-table-cell"> {{unix2es this.current_period_start }} </td>
-                <td  class="d-none d-sm-table-cell"> {{unix2es this.current_period_end }}</td>
-                <td id="{{this.default_payment_method}} ">{{this.plan.active}} </td>
-           {{!--      <td>{{this.plan.id}} {{this.plan.product}}</td> --}}
+                <td class="d-none d-xl-table-cell"> {{unix2es this.current_period_start }} </td>
+                <td class="d-none d-sm-table-cell"> {{unix2es this.current_period_end }}</td>
+                <td id="{{this.default_payment_method}} ">{{this.plan.active}} - {{this.cancellation_details.reason}}
+                </td>
+                <td>
+                    <form action="/membresia/resume/{{this.id}}" method="post">
+                        <a onclick="this.parentNode.submit();" class="text-warning"><i
+                                class="fa-solid fa-user-minus"></i>Join </a>
+                    </form>
+                    <form action="/membresia/cancel/{{this.id}}" method="post">
+                        <a onclick="this.parentNode.submit();" class="text-warning"><i
+                                class="fa-solid fa-user-minus"></i>Cancel </a>
+                    </form>
+                </td>
             </tr>
             {{/each}}
         </table>
@@ -58,10 +68,10 @@
                 <th class="d-none d-xl-table-cell">disponible</th>
                 <th>source</th>
                 <th>Status </th>
-      
+
             </tr>
-         
-{{!--             PLan: {{this.plan.id}} {{this.plan.product}} Activo: --}}
+
+            {{!-- PLan: {{this.plan.id}} {{this.plan.product}} Activo: --}}
             {{#each balanceTransactions.data}}
             <tr>
                 <td>{{counter @index}}</td>
@@ -70,9 +80,9 @@
                 <td> {{unix2es this.created}}</td>
                 <td> {{unix2es this.available_on}}</td>
                 <td> {{this.source}}</td>
-                <td > {{this.status}}</td>
-               
-           {{!--      <td>{{this.plan.id}} {{this.plan.product}}</td> --}}
+                <td> {{this.status}}</td>
+
+                {{!-- <td>{{this.plan.id}} {{this.plan.product}}</td> --}}
             </tr>
             {{/each}}
         </table>

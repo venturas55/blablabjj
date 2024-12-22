@@ -17,7 +17,8 @@ membresiasRouter.post('/create-checkout-session', funciones.isAuthenticated, Mem
 
 membresiasRouter.get('/success', funciones.isAuthenticated, MembresiaController.getSuccess);
 
-membresiasRouter.get('/cancel', funciones.isAuthenticated,MembresiaController.getCancel);
+membresiasRouter.post('/cancel/:id', funciones.isAuthenticated,MembresiaController.postCancel);
+membresiasRouter.post('/resume/:id', funciones.isAuthenticated,MembresiaController.postResume);
 
 membresiasRouter.post('/create-portal-session', funciones.isAuthenticated, MembresiaController.createPortal);
 

@@ -66,10 +66,12 @@ export class MembresiaController {
 
         let subscriptions = await stripe.subscriptions.list({
         });
+
+        console.log(subscriptions);
         const balance = await stripe.balance.retrieve();
 
         const balanceTransactions = await stripe.balanceTransactions.list();
-        console.log(balanceTransactions);
+        //console.log(balanceTransactions);
         subscriptions = subscriptions.data;
         try {
             // Mapear las suscripciones y obtener el nombre del plan
@@ -189,8 +191,34 @@ export class MembresiaController {
 
     }
 
-    static async getCancel(req, res) {
-        res.render("membresia/cancel");
+    static async postCancel(req, res) {
+        const { id } = req.params
+        console.log(req.params);
+
+        const subscription = await stripe.subscriptions.update
+            (
+                id
+                ,
+                {
+                    cancel_at_period_end: true,
+                }
+            );
+        res.redirect('/membresia/list');
+    }
+
+    static async postResume(req, res) {
+        const { id } = req.params
+        console.log(req.params);
+
+        const subscription = await stripe.subscriptions.update
+            (
+                id
+                ,
+                {
+                    cancel_at_period_end: false,
+                }
+            );
+        res.redirect('/membresia/list');
     }
 
     static async createPortal(req, res) {
@@ -207,7 +235,7 @@ export class MembresiaController {
 
     }
 
-// This is your Stripe CLI webhook secret for testing your endpoint locally.
+    // This is your Stripe CLI webhook secret for testing your endpoint locally.
     static async webhook(req, res) {
         const signat = req.headers['stripe-signature'];
         console.log("webhook post de nodejs");
