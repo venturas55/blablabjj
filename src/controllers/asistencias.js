@@ -57,11 +57,17 @@ export class AsistenciaController {
         const { asistencia_id } = req.params
         const [clase] = await AsistenciaModel.getById({ id: asistencia_id })
         const result = await AsistenciaModel.delete({ input: asistencia_id })
-         if (result === false) {
+        if (result === false) {
             return res.status(404).json({ message: 'Asistencia not found' })
         }
         req.flash("success", "Actividad borrado correctamente");
         res.redirect("/clases/ver/" + clase.clase_id); //te redirige una vez insertado el item
+    }
+
+    static async getUpdate(req, res) {
+        const { asistencia_id } = req.params;
+        const [item] = await db.query("SELECT * FROM asistencias WHERE asistencia_id=?", [asistencia_id,]);
+        res.render("asistencias/list", { item });
     }
     static async update(req, res) {
         /*  const result = validatePartialMovie(req.body)

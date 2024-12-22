@@ -21,9 +21,5 @@ asistenciasRouter.post("/add/:clase_id", funciones.isAuthenticated, AsistenciaCo
 //DELETE
 asistenciasRouter.post("/delete/:asistencia_id", funciones.isAuthenticated, AsistenciaController.delete);
 //UPDATE
-asistenciasRouter.get("/edit/:asistencia_id", funciones.isAuthenticated, async (req, res) => {
-  const { asistencia_id } = req.params;
-  const [item] = await db.query("SELECT * FROM asistencias WHERE asistencia_id=?", [asistencia_id,]);
-  res.render("asistencias/list", { item });
-});
+asistenciasRouter.get("/edit/:asistencia_id", funciones.isAuthenticated, AsistenciaController.getUpdate);
 asistenciasRouter.post("/edit/:asistencia_id", funciones.isAuthenticated,  AsistenciaController.update);

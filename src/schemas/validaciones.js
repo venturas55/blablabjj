@@ -57,6 +57,7 @@ const profileSchema = z.object({
 const planSchema = z.object({
    
 });
+const membresiaSchema = z.object({  });
 
 
 export function validateActividad(object) {
@@ -91,6 +92,11 @@ export function validatePlan(object) {
     return planSchema.safeParse(object);
 }
 
+export function validateMembresia(object) {
+    return membresiaSchema.safeParse(object);
+}
+
+
 
 export function validatePartialActividad(object) {
     return actividadSchema.partial().safeParse(object);
@@ -124,3 +130,6 @@ export function validatePartialPlan(object) {
     return planSchema.safeParse(object);
 }
 
+export function validatePartialMembresia(object) {
+    return membresiaSchema.partial().safeParse(object);
+}
