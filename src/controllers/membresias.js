@@ -325,9 +325,5 @@ export class MembresiaController {
         console.log(productId);
         //const facturacion = { usuario_id: req.user.id, session_id: req.query.session_id, customer_id: session.customer, titular: session.customer_details.name, correo: session.customer_details.email, subscription: session.subscription, hasAccess: true }
         //const [q] = await MembresiaModel.getMembresiaByUserId(req.user.id);
-
-
-
-
     }
 }

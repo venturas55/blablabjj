@@ -16,14 +16,14 @@ export class ActividadController {
         const actividades = await ActividadModel.getAll();
         //var actividades = await stripe.products.list({  });
         //var actividades = actividades.data
-        console.log(actividades);
+        //console.log(actividades);
         res.render("actividades/list", { actividades });
 
     }
     static async getById(req, res) {
         const { id } = req.params;
         const [actividad] = await ActividadModel.getById({ id });
-        console.log(actividad);
+        //console.log(actividad);
         res.render("actividades/plantilla", { actividad });
     }
 
@@ -39,13 +39,13 @@ export class ActividadController {
             // 422 Unprocessable Entity
             return res.status(400).json({ error: JSON.parse(result.error.message) });
         }
-        console.log(result);
+        //console.log(result);
 
         const producto = {
             name:result.data.nombre,
             description:result.data.descripcion,
         };
-        console.log(producto);
+        //console.log(producto);
         const product = await stripe.products.create(producto);
 
 
@@ -64,7 +64,7 @@ export class ActividadController {
 
     static async delete(req, res) {
         const { id } = req.params
-        console.log("deleteActividad: " + JSON.stringify(id));
+        //console.log("deleteActividad: " + JSON.stringify(id));
         const result = await ActividadModel.delete({ input: id })
         if (result === false) {
             return res.status(404).json({ message: 'Actividad not found' })
@@ -77,7 +77,7 @@ export class ActividadController {
     static async getUpdate(req, res) {
         const { id } = req.params;
         const [actividad] = await ActividadModel.getById( {id} );
-        console.log(actividad);
+        //console.log(actividad);
         res.render("actividades/edit", { item:actividad });
     }
 
@@ -104,8 +104,8 @@ export class ActividadController {
                 descripcion,
                 pictureURL,
             };
-            console.log(newItem);
-            console.log(req.file);
+            //console.log(newItem);
+            //console.log(req.file);
             const result = await ActividadModel.update({ input: newItem })
             if (result === false) {
                 return res.status(404).json({ message: 'Actividad not found' })

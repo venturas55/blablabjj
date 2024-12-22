@@ -37,8 +37,8 @@ export class ClaseController {
                 yomismo = asistente;
             }
         });
-        console.log(yomismo);
-        console.log(asistentes);
+        //console.log(yomismo);
+        //console.log(asistentes);
         res.render("clases/plantilla", { item: clase[0], asistentes, yomismo });
     }
 
@@ -104,7 +104,7 @@ export class ClaseController {
 
     static async delete(req, res) {
         const { id } = req.params
-        console.log("deleteclases: " + JSON.stringify(id));
+        //console.log("deleteclases: " + JSON.stringify(id));
         const result = await ClaseModel.delete({ input: id })
         if (result === false) {
             return res.status(404).json({ message: 'clases not found' })
@@ -155,7 +155,7 @@ export class ClaseController {
                 duracion,
                 fecha_hora
             };
-            console.log(newItem);
+            //console.log(newItem);
             const result = await ClaseModel.update({ input: newItem })
             if (result === false) {
                 return res.status(404).json({ message: 'Clase not found' })

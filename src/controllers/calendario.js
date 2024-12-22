@@ -63,7 +63,7 @@ export class CalendarioController {
     static async getById(req, res) {
         const { anuncio_id } = req.params
         const [item] = await CalendarioModel.getById({ id: anuncio_id });
-        console.log(item);
+        //console.log(item);
         res.render("anuncios/plantilla", { item });
     }
     static async create(req, res) {
@@ -72,7 +72,7 @@ export class CalendarioController {
             clase_id,
             usuario_id: req.user.id,
         };
-        console.log(item);
+        //console.log(item);
         //const solicitudes = await CalendarioModel.getAll({ monitor_id: item.monitor_id });
         const a = await CalendarioModel.create({ input: item });
         req.flash("success", "Solicitud realizada correctamente");
@@ -110,8 +110,8 @@ export class CalendarioController {
             salario_propuesto,
             creador_id: req.user.id
         };
-        console.log(anuncio_id);
-        console.log(item);
+        //console.log(anuncio_id);
+        //console.log(item);
         const result = await CalendarioModel.update({ input: item })
         if (result === false) {
             return res.status(404).json({ message: 'anuncio not found' })

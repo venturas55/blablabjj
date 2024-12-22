@@ -132,6 +132,7 @@ helpers.esSocio = async (req, res, next) => {
     try {
         var [membresia] = await MembresiaModel.getMembresiaByUserId(req.user.id);
         var sessionId = membresia.session_id;
+        console.log(sessionId);
         const session = await stripe.checkout.sessions.retrieve(sessionId, { expand: ['line_items.data.price'] });
         const contratado = session.line_items.data[0].description.toLowerCase();;
         const { clase_id } = req.params;

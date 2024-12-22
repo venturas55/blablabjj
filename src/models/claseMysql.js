@@ -13,7 +13,7 @@ export class ClaseModel {
 
   static async getById({ id }) {
     const clase = await db.query(sqlSelectQueryActivity+" where c.clase_id=?", id);
-    console.log(clase);
+    //console.log(clase);
     return clase;
   }
 
@@ -24,7 +24,7 @@ export class ClaseModel {
 
   static async writeWeek({ input }) {
     try {
-      console.log(input);
+      //console.log(input);
       const a = await db.query("INSERT INTO clases set ?", [input]);
       return a;
     } catch (error) {
@@ -35,7 +35,7 @@ export class ClaseModel {
 
   static async create({ input }) {
     try {
-      console.log(input);
+      //console.log(input);
       const a = await db.query("INSERT INTO clases set ?", [input]);
       return a;
     } catch (error) {
