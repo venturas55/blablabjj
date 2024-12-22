@@ -7,59 +7,61 @@
           <h3>Bienvenid@ {{item.usuario}} </h3>
 
           {{>avatar size="l" url=item.pictureURL}}
-          <input type="hidden" name="id" value="{{item.id}}" />
 
-          <form action="/usuarios/edit/{{item.id}}" method="POST">
-            <div class="form-group">
+          <form action="/usuarios/edit/{{item.id}}" method="POST" class="">
+            <input type="hidden" name="id" value="{{item.id}}" />
+            <div class="my-2">
               <label for="nombre">Nombre</label>
               <input type="text" value="{{item.nombre}}" name="nombre" class="form-control" />
             </div>
-            <div class="form-group">
+            <div class="my-2">
               <label for="apellidos">Apellidos</label>
               <input type="text" value="{{item.apellidos}}" name="apellidos" class="form-control" />
             </div>
-            <div class="form-group">
+            <div class="my-2">
               <label for="usuario">Usuario</label>
               <input type="text" value="{{item.usuario}}" name="usuario" class="form-control" />
             </div>
-            <div class="form-group">
+            <div class="my-2">
               <label for="email">eMail</label>
               <input type="text" value="{{item.email}}" name="email" class="form-control" />
             </div>
-            <div class="form-group">
+            <div class="my-2">
               <label for="telefono">Telefono</label>
               <input type="text" value="{{item.telefono}}" name="telefono" class="form-control" />
             </div>
-            <div class="form-group">
+            <div class="my-2">
               <label for="cinturon">Cinturon</label>
-              <select id="cinturon" name="cinturon" class="mt-3">
+              <select class="form-select" id="cinturon" name="cinturon" class="mt-3">
                 {{#each cinturones}}
-                <option value="{{this.value}}" {{#when this.value 'eq' ../item.cinturon }} selected {{/when}}> {{this.nombre}}</option>
+                <option value="{{this.value}}" {{#when this.value 'eq' ../item.cinturon }} selected {{/when}}>
+                  {{this.nombre}}</option>
                 {{/each}}
               </select>
 
               <label for="grado">Grados</label>
-              <select id="numeros" name="grado">
+              <select class="form-select my-2" id="numeros" name="grado">
                 {{#each grados}}
-                <option value="{{this.value}}" {{#when this.value 'eq' ../item.grado }} selected {{/when}}> {{this.nombre}}</option>
+                <option value="{{this.value}}" {{#when this.value 'eq' ../item.grado }} selected {{/when}}>
+                  {{this.nombre}}</option>
                 {{/each}}
               </select>
             </div>
 
-            <div class="form-group">
+            <div class="my-2">
               <label for="peso">Peso</label>
               <input type="number" value="{{item.peso}}" name="peso" class="form-control" />
             </div>
 
-            <div class="form-group">
-              <label for="fecha_nacimiento">Fecha nacimiento {{formatearEn item.fecha_nacimiento}}</label>
+            <div class="my-2">
+              <label for="fecha_nacimiento">Fecha nacimiento</label>
               <input type="date" value="{{formatearEn item.fecha_nacimiento}}" name="fecha_nacimiento"
                 class="form-control" required />
             </div>
 
-            <div class="form-group">
-              <label for="nacionalidad">Selecciona tu país: {{item.nacionalidad }}</label>
-              <select id="pais" name="nacionalidad">
+            <div class="my-2">
+              <label for="nacionalidad">Selecciona tu país: </label>
+              <select class="form-select" id="pais" name="nacionalidad">
                 <option value="">--Seleccionar-- </option>
                 {{#each paises}}
                 <option value="{{this.id}}" {{#when this.id 'eq' ../item.nacionalidad }} selected {{/when}}>
@@ -69,18 +71,54 @@
 
               </select>
             </div>
-            <div class="form-group">
+            <div class="my-2">
               <label for="nif">NIF</label>
               <input type="text" value="{{item.nif}}" name="nif" class="form-control" />
             </div>
+
+            <div class="my-2">
+              <label for="genero">Género:</label>
+              <select class="form-select" id="genero" name="genero">
+                <option value="">Selecciona una opción</option>
+                <option value="Masculino" {{#when item.genero 'eq' "Masculino" }} selected {{/when}}>Masculino</option>
+                <option value="Femenino" {{#when item.genero 'eq' 'Femenino' }} selected {{/when}}>Femenino</option>
+                <option value="Nobinario" {{#when item.genero 'eq' "Nobinario" }} selected {{/when}}>No binario</option>
+                <option value="NoQuiereDecir" {{#when item.genero 'eq' "NoQuiereDecir" }} selected {{/when}}>Prefiero no decirlo</option>
+                <option value="Otro" {{#when item.genero 'eq' "Otro" }} selected {{/when}}>Otro</option>
+              </select>
+            </div>
+
+
+            {{#when user.privilegio 'eq' "master"}}
+            <div class="my-2">
+              <label for="grado">Privilegio</label>
+              <select class="form-select" id="privilegio" name="privilegio">
+
+                <option value="master" {{#when user.privilegio 'eq' "master" }} selected {{/when}}> Master</option>
+                <option value="admin" {{#when user.privilegio 'eq' "admin" }} selected {{/when}}> Profesor</option>
+                <option value="" {{#when user.privilegio 'eq' "master" }} selected {{/when}}> Alumno</option>
+
+              </select>
+            </div>
+            {{/when}}
+            <button class="btn btn-primary m-2"> Guardar cambios </button>
+          </form>
+          <div class="my-2">
+            <a href="/usuarios/get/{{item.id}}" class="btn btn-danger m-2"> Cancelar </a>
+          </div>
+          <a href="/usuarios/editpass/{{item.id}}" class="btn btn-danger m-2"> Cambiar Contraseña </a>
         </div>
-        <button class="btn btn-primary m-4"> Guardar cambios </button>
-        </form>
-        <div class="form-group">
-          <a href="/usuarios/get/{{item.id}}" class="btn btn-danger m-4"> Cancelar </a>
-        </div>
-        <a href="/usuarios/editpass/{{item.id}}" class="btn btn-danger m-4"> Cambiar Contraseña </a>
       </div>
     </div>
   </div>
 </div>
+
+<style>
+  .card-body {
+    background-color: rgb(208, 207, 206);
+  }
+
+  form label {
+    font-size: 18px;
+  }
+</style>

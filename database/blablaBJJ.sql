@@ -68,6 +68,7 @@ CREATE TABLE `usuarios` (
   `privilegio` varchar(30) DEFAULT NULL,
   `pictureURL` varchar(200) DEFAULT NULL,
   `instructor` boolean NOT NULL DEFAULT 0,
+  `genero` varchar(50) default NULL,
   FOREIGN KEY (nacionalidad) REFERENCES nacionalidades(id),
   FOREIGN KEY (pais_telefono) REFERENCES nacionalidades(id)
 ) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'tabla de usuarios';

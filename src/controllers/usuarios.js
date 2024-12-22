@@ -101,6 +101,8 @@ export class UsuarioController {
                 grado,
                 fecha_nacimiento,
                 nif,
+                privilegio,
+                genero
 
             } = req.body;
 
@@ -120,6 +122,8 @@ export class UsuarioController {
                 grado,
                 fecha_nacimiento,
                 nif,
+                privilegio,
+                genero
             };
             console.log(newItem);
             const result = await UsuarioModel.update({ input: newItem })
@@ -130,7 +134,7 @@ export class UsuarioController {
             res.redirect("/usuarios/get/" + id);
         } catch (error) {
             console.error(error.code);
-            //req.flash("error", "Hubo algun error");
+            req.flash("error", "Hubo algun error");
             res.redirect("/error");
         }
 

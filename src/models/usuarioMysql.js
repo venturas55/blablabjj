@@ -1,7 +1,7 @@
 import { createRequire } from 'node:module'
 const require = createRequire(import.meta.url)
 import db from "../database.js"; //db hace referencia a la BBDD
-const usersQuery = "SELECT u.id,u.usuario,u.contrasena,u.email,u.telefono,u.nif,u.pais_telefono,u.nombre,u.apellidos,u.cinturon,u.grado,u.fecha_nacimiento,u.peso,u.nacionalidad,u.privilegio,u.pictureURL,u.instructor,n.codigo_iso,n.nombre as nombre_pais FROM usuarios u LEFT JOIN nacionalidades n ON u.nacionalidad = n.id"
+const usersQuery = "SELECT u.id,u.usuario,u.contrasena,u.email,u.telefono,u.nif,u.pais_telefono,u.nombre,u.apellidos,u.cinturon,u.grado,u.fecha_nacimiento,u.peso,u.nacionalidad,u.privilegio,u.pictureURL,u.instructor,u.genero,n.codigo_iso,n.nombre as nombre_pais FROM usuarios u LEFT JOIN nacionalidades n ON u.nacionalidad = n.id"
 
 export const readJSON = (path) => require(path)
 
