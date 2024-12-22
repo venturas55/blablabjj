@@ -21,7 +21,4 @@ membresiasRouter.get('/cancel', funciones.isAuthenticated,MembresiaController.ge
 
 membresiasRouter.post('/create-portal-session', funciones.isAuthenticated, MembresiaController.createPortal);
 
-// This is your Stripe CLI webhook secret for testing your endpoint locally.
 membresiasRouter.post('/webhook', funciones.isAuthenticated, express.raw({ type: 'application/json' }), MembresiaController.webhook);
-
-

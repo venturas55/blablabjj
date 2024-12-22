@@ -19,9 +19,6 @@ clasesRouter.get("/ver/:id", ClaseController.getClase);
 clasesRouter.get("/add", funciones.isAuthenticated, ClaseController.getCreate);
 clasesRouter.post("/add", funciones.isAuthenticated, ClaseController.create);
 
-clasesRouter.get("/addClassWeek", funciones.isAuthenticated,funciones.isMaster, async (req, res) => {
-
-});
 clasesRouter.get("/addClassWeek", funciones.isAuthenticated, ClaseController.getAddClassWeek);
 /* clasesRouter.post("/addClassWeek", funciones.isAuthenticated, ClaseController.addClassWeek); */
 

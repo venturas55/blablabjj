@@ -50,7 +50,18 @@ export class WeekController {
         res.render("week/plantilla", { clase });
     }
 
-    static async createClass(req, res) {
+    static async getCreate(req, res) {
+         try {
+           const usuarios = await db.query(" select * from usuarios");
+           const actividades = await db.query(" select * from actividades");
+           res.render('week/add', { usuarios, actividades, dias });
+         } catch (error) {
+           console.error(error);
+           req.flash("error", "Hubo algun error al intentar añadir la clase " + error);
+           res.redirect("/week/list");
+         }
+    }
+    static async create(req, res) {
         const result = validateClase(req.body);
 
         if (!result.success) {
@@ -129,6 +140,15 @@ export class WeekController {
         res.redirect("/week/list");
     }
 
+    static async getUpdate(req, res){
+        const { id } = req.params;
+        const usuarios = await db.query(" select * from usuarios");
+        const actividades = await db.query(" select * from actividades");
+        const item = await db.query("SELECT * FROM semana c LEFT JOIN actividades a ON c.actividad_id = a.actividad_id WHERE c.clase_id=?", [id,]);
+        res.render("week/edit", { item: item[0], actividades, usuarios,dias });
+
+
+    }
     static async update(req, res) {
      /*    const result = validatePartialClase(req.body)
 

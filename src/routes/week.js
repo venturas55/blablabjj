@@ -16,22 +16,9 @@ weekRouter.get("/list/:id", WeekController.getById);
 weekRouter.get("/edit",WeekController.getAll2modify);
 
 //CREATE
-weekRouter.get("/add", funciones.isAuthenticated, funciones.isMaster,async (req, res) => {
-  try {
-    const usuarios = await db.query(" select * from usuarios");
-    const actividades = await db.query(" select * from actividades");
-    res.render('week/add', { usuarios, actividades, dias });
-  } catch (error) {
-    console.error(error);
-    req.flash("error", "Hubo algun error al intentar añadir la clase " + error);
-    res.redirect("/week/list");
-  }
-});
+weekRouter.get("/add", funciones.isAuthenticated, funciones.isMaster,WeekController.getCreate);
+weekRouter.post("/addClass", funciones.isAuthenticated,funciones.isMaster, WeekController.create);
 
-weekRouter.post("/addClass", funciones.isAuthenticated,funciones.isMaster, WeekController.createClass);
-
-/* weekRouter.post("/week", funciones.isAuthenticated, WeekController.createWeek);
-weekRouter.post("/duplicate", funciones.isAuthenticated, WeekController.duplicateWeek);*/
 weekRouter.post("/clone", funciones.isAuthenticated,funciones.isMaster, WeekController.cloneWeek); 
 
 
@@ -39,12 +26,5 @@ weekRouter.post("/clone", funciones.isAuthenticated,funciones.isMaster, WeekCont
 weekRouter.get("/delete/:id", funciones.isAuthenticated,funciones.isMaster, WeekController.delete);
 
 //UPDATE
-weekRouter.get("/editClass/:id", funciones.isAuthenticated, async (req, res) => {
-  const { id } = req.params;
-  const usuarios = await db.query(" select * from usuarios");
-  const actividades = await db.query(" select * from actividades");
-  const item = await db.query("SELECT * FROM semana c LEFT JOIN actividades a ON c.actividad_id = a.actividad_id WHERE c.clase_id=?", [id,]);
-  res.render("week/edit", { item: item[0], actividades, usuarios,dias });
-});
-
+weekRouter.get("/editClass/:id", funciones.isAuthenticated, WeekController.getUpdate);
 weekRouter.post("/edit/:id", funciones.isAuthenticated, WeekController.update);
