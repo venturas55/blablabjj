@@ -10,7 +10,6 @@ import passport from 'passport';
 import { database } from './config.js';
 import handlebars from './lib/handlebars.js';
 import cors from 'cors';
-app.use(cors());
 //const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
@@ -33,6 +32,8 @@ import { planesRouter } from './routes/planes.js';
 const app = express();
 app.disable('x-powered-by'); //Deshabilitar el hjeader X-powered-by: Express
 //import './lib/passport.js'; //para que se entere de la autentificacion que se ha creado 
+app.use(cors());
+
 
 //Settings
 app.set('port', process.env.PORT || 4000);
