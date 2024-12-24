@@ -25,7 +25,7 @@ apiRouter.get("/api/paises", async (req, res) => {
 });
 
 apiRouter.get("/api/clases", async (req, res) => {
-  const clases = await CalendarioModel.getAll(input);
+  const clases = await CalendarioModel.getAll();
   //Se añade la info de los asistentes de cada clase
   for (let i = 0; i < clases.length; i++) {
     clases[i].asistentes = [];
