@@ -58,7 +58,7 @@ app.use(morgan('dev'));
 app.use(urlencoded({ extended: false })); //aceptar los datos desde los formularios sin aceptar imagenes ni nada raro
 app.use('/membresia/webhook', express.raw({ type: 'application/json' }));
 app.use(json()); //Para enviar y recibir jsons.
-app.use(corsMiddleware()); //Cors middle
+//app.use(corsMiddleware()); //Cors middle
 app.use(passport.initialize()); //iniciar passport
 app.use(passport.session());    //para que sepa donde guardar y como manejar los datos
 
