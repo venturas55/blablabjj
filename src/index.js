@@ -9,11 +9,12 @@ import MySQLstore from 'express-mysql-session'; // para poder guardar la sesion 
 import passport from 'passport';
 import { database } from './config.js';
 import handlebars from './lib/handlebars.js';
-
+import cors from 'cors';
+app.use(cors());
 //const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
-import { corsMiddleware } from './middlewares/cors.js';
+//import { corsMiddleware } from './middlewares/cors.js';
 
 import { indexRouter } from './routes/index.js';
 import { actividadesRouter } from './routes/actividades.js';
