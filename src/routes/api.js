@@ -6,7 +6,7 @@ const require = createRequire(import.meta.url);
 import db from "../database.js"; //db hace referencia a la BBDD
 import { ClaseModel } from "../models/claseMysql.js";
 import { UsuarioModel } from "../models/usuarioMysql.js";
-import { CalendarioModel } from "../models/usuarioMysql.js";
+import { CalendarioModel } from "../models/calendarioMysql.js";
 import { AsistenciaModel } from "../models/asistenciaMysql.js";
 import funciones from "../lib/funciones.js";
 
