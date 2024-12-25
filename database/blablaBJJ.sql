@@ -215,8 +215,8 @@ CREATE TABLE membresias (
   subscription VARCHAR(255),
   correo VARCHAR(255),
   titular VARCHAR(100),
+  price_id VARCHAR(100),
   hasAccess boolean,
-  -- Nombre del titular de la tarjeta
   FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 ) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'datos membresias stripe';
 
