@@ -28,7 +28,6 @@ apiRouter.get("/api/clases", async (req, res) => {
   const clases = await CalendarioModel.getAll();
   //Se añade la info de los asistentes de cada clase
   for (let i = 0; i < clases.length; i++) {
-    clases[i].asistentes = [];
     var asistentes = await AsistenciaModel.getByClaseId({
       id: clases[i].clase_id,
     });
@@ -41,8 +40,8 @@ apiRouter.get("/api/clases/:id", async (req, res) => {
   const { id } = req.params;
   /* const usuarios = await UsuarioModel.getAll();
     const actividades = await ActividadModel.getAll(); */
+  const [clase] = await ClaseModel.getById({ id: id });
   const asistentes = await AsistenciaModel.getByClaseId({ id: id });
-  const clase = await ClaseModel.getById({ id: id });
   clase.asistentes = asistentes;
   res.json(clase); // Enviar los datos como JSON
 });
