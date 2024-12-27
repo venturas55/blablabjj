@@ -1,7 +1,6 @@
 import { createPool } from 'mysql2';
 import { promisify } from 'util';
 import { database } from './config.js'; //traigo el database desde el archivo
-import { stringify } from 'querystring';
 const pool = createPool(database);
 
 pool.getConnection((err, connection) => {
@@ -19,6 +18,7 @@ pool.getConnection((err, connection) => {
         if (err.code === 'ER_ACCESS_DENIED_ERROR') {
             console.error('ACCESO denegado\n' + err);
         }
+        console.error('ACCESO denegado\n' + err); 
     } else if (connection) {
         connection.release(); //con esto empieza la conexion
         console.log('DB is Connected');

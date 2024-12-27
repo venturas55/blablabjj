@@ -8,8 +8,9 @@ import { ClaseModel } from "../models/claseMysql.js";
 import { UsuarioModel } from "../models/usuarioMysql.js";
 import { CalendarioModel } from "../models/calendarioMysql.js";
 import { AsistenciaModel } from "../models/asistenciaMysql.js";
-import funciones from "../lib/funciones.js";
-
+import * as path from 'path';  
+import * as url from 'url';
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 export const apiRouter = Router();
 
 apiRouter.get("/api/paises", async (req, res) => {
@@ -36,7 +37,7 @@ apiRouter.get("/api/clases", async (req, res) => {
   res.json(clases); // Enviar los datos como JSON
 });
 
-apiRouter.get("/api/clases/:id", async (req, res) => {
+apiRouter.get("/api/clase/:id", async (req, res) => {
   const { id } = req.params;
   /* const usuarios = await UsuarioModel.getAll();
     const actividades = await ActividadModel.getAll(); */
@@ -51,12 +52,21 @@ apiRouter.get("/api/usuarios", async (req, res) => {
   res.json(usuarios); // Enviar los datos como JSON
 });
 
-apiRouter.get("/api/usuarios/:id", async (req, res) => {
+apiRouter.get("/api/usuario/:id", async (req, res) => {
   const { id } = req.params;
   const [usuario] = await UsuarioModel.getById({ id });
   const asistencias = await AsistenciaModel.getByUserId({ user_id: id });
   usuario.asistencias = asistencias;
   res.json(usuario); // Enviar los datos como JSON
+});
+
+apiRouter.get("/api/usuario/foto/:id", async (req, res) => {
+  const { id } = req.params;
+  const [usuario] = await UsuarioModel.getById({ id });
+  console.log(usuario);
+  const photoPath = path.join(__dirname, '..','public','img', 'profiles', `${usuario.pictureURL}`);
+  console.log(photoPath);
+  res.sendFile(photoPath);
 });
 
 apiRouter.get("/api/clases", async (req, res) => {
