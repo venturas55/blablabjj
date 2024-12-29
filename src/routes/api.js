@@ -1,5 +1,5 @@
 import { Router } from "express";
-import "passport";
+import passport from "passport";
 
 import { createRequire } from "node:module";
 const require = createRequire(import.meta.url);
@@ -8,7 +8,6 @@ import { ClaseModel } from "../models/claseMysql.js";
 import { UsuarioModel } from "../models/usuarioMysql.js";
 import { CalendarioModel } from "../models/calendarioMysql.js";
 import { AsistenciaModel } from "../models/asistenciaMysql.js";
-import funciones from "../lib/funciones.js";
 
 export const apiRouter = Router();
 
@@ -51,20 +50,34 @@ apiRouter.get("/api/usuarios", async (req, res) => {
   res.json(usuarios); // Enviar los datos como JSON
 });
 
-apiRouter.get("/api/usuarios/:id", async (req, res) => {
-  const { id } = req.params;
-  const [usuario] = await UsuarioModel.getById({ id });
-  const asistencias = await AsistenciaModel.getByUserId({ user_id: id });
-  usuario.asistencias = asistencias;
-  res.json(usuario); // Enviar los datos como JSON
-});
+apiRouter.get(
+  "/api/usuarios/:id",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    const { id } = req.params;
+    const [usuario] = await UsuarioModel.getById({ id });
+    const asistencias = await AsistenciaModel.getByUserId({ user_id: id });
+    usuario.asistencias = asistencias;
+    res.json(usuario); // Enviar los datos como JSON
+  }
+);
 
-apiRouter.get("/api/clases", async (req, res) => {
-  const clases = await ClaseModel.getAll();
-  res.json(clases); // Enviar los datos como JSON
-});
-
-apiRouter.get("/api/clases", async (req, res) => {
-  const clases = await ClaseModel.getAll();
-  res.json(clases); // Enviar los datos como JSON
+apiRouter.post("/api/login", (req, res, next) => {
+  console.log("POST /api/login");
+  console.log(req);
+  passport.authenticate(
+    "local.signin",
+    { session: false },
+    (err, user, info) => {
+      if (err) return next(err);
+      if (!user) return res.status(401).json({ message: info.message });
+      // Genera un token JWT
+      const token = jwt.sign(
+        { id: user.id, email: user.email },
+        "brounaclavesecretisimaawe",
+        { expiresIn: "1h" }
+      );
+      res.json({ token, user });
+    }
+  )(req, res, next);
 });
