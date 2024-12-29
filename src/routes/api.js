@@ -8,6 +8,7 @@ import { ClaseModel } from "../models/claseMysql.js";
 import { UsuarioModel } from "../models/usuarioMysql.js";
 import { CalendarioModel } from "../models/calendarioMysql.js";
 import { AsistenciaModel } from "../models/asistenciaMysql.js";
+import funciones from "../lib/funciones.js";
 
 export const apiRouter = Router();
 
@@ -35,7 +36,7 @@ apiRouter.get("/api/clases", async (req, res) => {
   res.json(clases); // Enviar los datos como JSON
 });
 
-apiRouter.get("/api/clases/:id", async (req, res) => {
+apiRouter.get("/api/clase/:id", async (req, res) => {
   const { id } = req.params;
   /* const usuarios = await UsuarioModel.getAll();
     const actividades = await ActividadModel.getAll(); */
@@ -50,17 +51,13 @@ apiRouter.get("/api/usuarios", async (req, res) => {
   res.json(usuarios); // Enviar los datos como JSON
 });
 
-apiRouter.get(
-  "/api/usuarios/:id",
-  passport.authenticate("jwt", { session: false }),
-  async (req, res) => {
-    const { id } = req.params;
-    const [usuario] = await UsuarioModel.getById({ id });
-    const asistencias = await AsistenciaModel.getByUserId({ user_id: id });
-    usuario.asistencias = asistencias;
-    res.json(usuario); // Enviar los datos como JSON
-  }
-);
+apiRouter.get("/api/usuarios/:id", async (req, res) => {
+  const { id } = req.params;
+  const [usuario] = await UsuarioModel.getById({ id });
+  const asistencias = await AsistenciaModel.getByUserId({ user_id: id });
+  usuario.asistencias = asistencias;
+  res.json(usuario); // Enviar los datos como JSON
+});
 
 apiRouter.post("/api/login", (req, res, next) => {
   console.log("POST /api/login");

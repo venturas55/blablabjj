@@ -15,5 +15,6 @@ export const database = {
     user: DB_USER,
     password: DB_PASS,
     database: DB_NAME,
+    port: DB_PORT
     //masterPass: '2a$10$.6weXYERL6XMB7nb0xcMTus/Qbi4aotItCWLs3QyBDk7cup4oCOo.',
 }
