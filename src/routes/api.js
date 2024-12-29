@@ -71,8 +71,8 @@ apiRouter.get("/api/usuario/foto/:id", async (req, res) => {
 });
 
 apiRouter.post("/api/login", (req, res, next) => {
-  console.log("POST /api/login");
-  console.log(req.user);
+  console.log("Que va POST /api/login");
+  console.log("usuario" + JSON.stringify(req));
   passport.authenticate(
     "local.signin",
     { session: false },
@@ -89,3 +89,12 @@ apiRouter.post("/api/login", (req, res, next) => {
     }
   )(req, res, next);
 });
+
+// Ruta protegida
+apiRouter.get(
+  '/api/protected',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    res.json({ message: `Hola ${req.user.email}, tienes acceso.` });
+  }
+);
