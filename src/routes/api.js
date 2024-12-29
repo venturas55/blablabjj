@@ -71,15 +71,16 @@ apiRouter.get("/api/usuario/foto/:id", async (req, res) => {
 });
 
 apiRouter.post("/api/login", (req, res, next) => {
-  console.log("Que va POST /api/login");
   console.log(req.body);
 
   passport.authenticate(
     "local.signin",
     { session: false },
     (err, user, info) => {
+      console.log("Que va POST /api/login");
+      console.log(user)
       if (err) return next(err);
-      if (!user) return res.status(401).json({ message: info.message });
+      if (!user) return res.status(401).json({ message: info });
       // Genera un token JWT
       const token = jwt.sign(
         { usuario: user.usuario, contrasena: user.contrasena },
