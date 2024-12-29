@@ -51,12 +51,21 @@ apiRouter.get("/api/usuarios", async (req, res) => {
   res.json(usuarios); // Enviar los datos como JSON
 });
 
-apiRouter.get("/api/usuarios/:id", async (req, res) => {
+apiRouter.get("/api/usuarios/:id", passport.authenticate('jwt', { session: false }),async (req, res) => {
   const { id } = req.params;
   const [usuario] = await UsuarioModel.getById({ id });
   const asistencias = await AsistenciaModel.getByUserId({ user_id: id });
   usuario.asistencias = asistencias;
   res.json(usuario); // Enviar los datos como JSON
+});
+
+apiRouter.get("/api/usuario/foto/:id", async (req, res) => {
+  const { id } = req.params;
+  const [usuario] = await UsuarioModel.getById({ id });
+  console.log(usuario);
+  const photoPath = path.join(__dirname, '..','public','img', 'profiles', `${usuario.pictureURL}`);
+  console.log(photoPath);
+  res.sendFile(photoPath);
 });
 
 apiRouter.post("/api/login", (req, res, next) => {
