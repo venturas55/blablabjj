@@ -8,7 +8,9 @@ import { ClaseModel } from "../models/claseMysql.js";
 import { UsuarioModel } from "../models/usuarioMysql.js";
 import { CalendarioModel } from "../models/calendarioMysql.js";
 import { AsistenciaModel } from "../models/asistenciaMysql.js";
-import funciones from "../lib/funciones.js";
+import * as path from 'path';  
+import * as url from 'url';
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 export const apiRouter = Router();
 
