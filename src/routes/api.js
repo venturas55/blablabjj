@@ -88,7 +88,7 @@ apiRouter.post("/api/login", (req, res, next) => {
         "brounaclavesecretisimaawe",
         { expiresIn: "1h" }
       );
-      res.json({ token, user: { id: user.id, email: user.email, usuario: user.usuario } });
+      res.json({ token, user });
     }
   )(req, res, next);
 });
