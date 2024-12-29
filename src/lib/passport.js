@@ -10,7 +10,7 @@ passport.use(
     {
       //name del formulario
       usernameField: "usuario",
-      passwordField: "password",
+      passwordField: "contrasena",
       passReqToCallback: true,
     },
     async (req, username, password, done) => {
@@ -44,7 +44,7 @@ passport.use(
   new LocalStrategy(
     {
       usernameField: "usuario",
-      passwordField: "password",
+      passwordField: "contrasena",
       passReqToCallback: true,
     },
     async (req, username, password, done) => {

@@ -81,11 +81,11 @@ apiRouter.post("/api/login", (req, res, next) => {
       if (!user) return res.status(401).json({ message: info.message });
       // Genera un token JWT
       const token = jwt.sign(
-        { id: user.id, email: user.email },
+        { usuario: user.usuario, contrasena: user.contrasena },
         "brounaclavesecretisimaawe",
         { expiresIn: "1h" }
       );
-      res.json({ token, user });
+      res.json({ token, user: { id: user.id, email: user.email, usuario: user.usuario } });
     }
   )(req, res, next);
 });
