@@ -72,8 +72,8 @@ apiRouter.get("/api/usuario/foto/:id", async (req, res) => {
 
 apiRouter.post("/api/login", (req, res, next) => {
   console.log("Que va POST /api/login");
-  console.log(req.params);
-  
+  console.log(req.body);
+
   passport.authenticate(
     "local.signin",
     { session: false },
