@@ -54,6 +54,14 @@ apiRouter.get("/api/usuarios", async (req, res) => {
   res.json(usuarios); // Enviar los datos como JSON
 });
 
+apiRouter.get("/api/usuario/:id",async (req, res) => {
+  const { id } = req.params;
+  const [usuario] = await UsuarioModel.getById({ id });
+  const asistencias = await AsistenciaModel.getByUserId({ user_id: id });
+  usuario.asistencias = asistencias;
+  res.json(usuario); // Enviar los datos como JSON
+});
+
 apiRouter.get("/api/usuarios/:id", passport.authenticate('jwt', { session: false }),async (req, res) => {
   const { id } = req.params;
   const [usuario] = await UsuarioModel.getById({ id });
@@ -70,6 +78,14 @@ apiRouter.get("/api/usuario/foto/:id", async (req, res) => {
   console.log(photoPath);
   res.sendFile(photoPath);
 });
+
+apiRouter.post('/api/signup', passport.authenticate('local.signup',{
+        successRedirect: '/',
+        failureRedirect: '/signup',
+        passReqToCallback: true,
+        failureFlash: true
+    })
+);
 
 apiRouter.post("/api/login", (req, res, next) => {
   console.log(req.body);

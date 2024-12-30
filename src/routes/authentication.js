@@ -1,8 +1,6 @@
 import { Router } from 'express';
 import passport from "passport";
-//import { authenticate } from 'passport';
 import funciones from '../lib/funciones.js';
-import le from '../lib/passport.js'; //se usa para importar los localstrategies
 
 export const authRouter = Router();
 
