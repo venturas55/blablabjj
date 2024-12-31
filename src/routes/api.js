@@ -101,13 +101,54 @@ apiRouter.post('/api/signup', passport.authenticate('local.signup',{
     })
 );
 
-apiRouter.post("/api/login", passport.authenticate("local.signin", (req, res) => {
+/* apiRouter.post("/api/login", passport.authenticate("local.signin", (req, res) => {
   res.json({
     success: true,
     message: 'Usuario autenticado',
     user: req.user // El usuario autenticado será enviado aquí
   });
 }));
+ */
+apiRouter.post("/api/login", (req, res, next) => {
+  passport.authenticate("local.signin", (err, user, info) => {
+    if (err) {
+      return res.status(500).json({
+        success: false,
+        message: "Error en el servidor",
+        error: err,
+      });
+    }
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: "Credenciales incorrectas",
+      });
+    }
+
+    // Establecer req.user usando req.login
+    req.login(user, { session: false }, (loginErr) => {
+      if (loginErr) {
+        return res.status(500).json({
+          success: false,
+          message: "Error al iniciar sesión",
+        });
+      }
+
+      // Generar un token JWT
+ /*      const jwt = require("jsonwebtoken");
+      const token = jwt.sign({ id: user.id }, "brounaclavesecretisimaawe", {
+        expiresIn: "1h",
+      }); */
+
+      return res.json({
+        success: true,
+        message: "Usuario autenticado",
+        user: { id: user.id, usuario: user.usuario, email: user.email }, // Datos esenciales del usuario
+        //token, // El token JWT
+      });
+    });
+  })(req, res, next); // Invoca el middleware con los parámetros correctos
+});
 
 apiRouter.post('/api/logout', (req, res) => {
   req.logout((err) => {
