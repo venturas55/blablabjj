@@ -86,6 +86,7 @@ passport.use(
 
 // Configuración de la estrategia JWT
 passport.use(
+  "jwt",
   new JwtStrategy(
     {
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
