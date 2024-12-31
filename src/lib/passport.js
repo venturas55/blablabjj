@@ -17,6 +17,7 @@ passport.use(
       const rows = await db.query("SELECT * FROM usuarios WHERE usuario= ?", [
         username,
       ]);
+      console.log("rows: ", rows);
 
       if (rows.length > 0) {
         const user = rows[0];
@@ -24,8 +25,11 @@ passport.use(
           password,
           user.contrasena
         );
-        if (validPassword)
+        if (validPassword){
+          console.log("USER: ",user);
           done(null, user, req.flash("success", "Welcome " + user.usuario));
+
+        }
         else
           done(
             null,
