@@ -1,6 +1,6 @@
 import { Router } from "express";
-import passport from "passport";
-import mypassport from '../lib/passport.js'; //para que se entere de la autentificacion que se ha creado 
+//import passport from "passport";
+import passport from '../lib/passport.js'; //para que se entere de la autentificacion que se ha creado 
 import { Strategy as LocalStrategy } from "passport-local";
 import funciones from "../lib/funciones.js";
 
@@ -17,7 +17,7 @@ import * as url from 'url';
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 import jwt from 'jsonwebtoken';
 
-passport.use(
+p/* assport.use(
   "local.signin",
   new LocalStrategy(
     {
@@ -50,7 +50,7 @@ passport.use(
       }
     }
   )
-);
+); */
 
 export const apiRouter = Router();
 
