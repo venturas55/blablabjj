@@ -1,6 +1,8 @@
 import { Router } from "express";
 import passport from "passport";
+import mypassport from './lib/passport.js'; //para que se entere de la autentificacion que se ha creado 
 import { Strategy as LocalStrategy } from "passport-local";
+import funciones from "../lib/funciones.js";
 
 import { createRequire } from "node:module";
 const require = createRequire(import.meta.url);
