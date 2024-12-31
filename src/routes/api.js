@@ -136,16 +136,15 @@ apiRouter.post("/api/login", (req, res, next) => {
       }
 
       // Generar un token JWT
- /*      const jwt = require("jsonwebtoken");
       const token = jwt.sign({ id: user.id }, "brounaclavesecretisimaawe", {
         expiresIn: "1h",
-      }); */
+      });
 
       return res.json({
         success: true,
         message: "Usuario autenticado",
-        user: { id: user.id, usuario: user.usuario, email: user.email }, // Datos esenciales del usuario
-        //token, // El token JWT
+        user: { id: user.id, usuario: user.usuario, email: user.email,cinturon:user.cinturon,grado:user.grado }, // Datos esenciales del usuario
+        token, // El token JWT
       });
     });
   })(req, res, next); // Invoca el middleware con los parámetros correctos
