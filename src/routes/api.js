@@ -98,13 +98,13 @@ apiRouter.post('/api/signup', passport.authenticate('local.signup',{
     })
 );
 
-apiRouter.post("/api/login", passport.authenticate('local.signin'), (req, res) => {
+apiRouter.post("/api/login", passport.authenticate('local.signin', (req, res) => {
   res.json({
     success: true,
     message: 'Usuario autenticado',
     user: req.user // El usuario autenticado será enviado aquí
   });
-});
+}));
 
 apiRouter.post('/api/logout', (req, res) => {
   req.logout((err) => {
