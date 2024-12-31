@@ -98,26 +98,19 @@ apiRouter.post('/api/signup', passport.authenticate('local.signup',{
     })
 );
 
-apiRouter.post("/api/login", (req, res, next) => {
-  console.log(req.body);
+apiRouter.post("/api/login", passport.authenticate('local.signin'), (req, res) => {
+  res.json({
+    success: true,
+    message: 'Usuario autenticado',
+    user: req.user // El usuario autenticado será enviado aquí
+  });
+});
 
-  passport.authenticate(
-    "local.signin",
-    { session: false },
-    (err, user, info) => {
-      console.log("Que va POST /api/login");
-      console.log(user)
-      if (err) return next(err);
-      if (!user) return res.status(401).json({ message: info });
-      // Genera un token JWT
-      const token = jwt.sign(
-        { usuario: user.usuario, contrasena: user.contrasena },
-        "brounaclavesecretisimaawe",
-        { expiresIn: "1h" }
-      );
-      res.json({ token, user });
-    }
-  )(req, res, next);
+app.post('/api/logout', (req, res) => {
+  req.logout((err) => {
+    if (err) return next(err);
+    res.json({ success: true, message: 'Sesión cerrada con éxito' });
+  });
 });
 
 // Ruta protegida
