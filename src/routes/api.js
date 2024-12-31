@@ -17,7 +17,7 @@ import * as url from 'url';
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 import jwt from 'jsonwebtoken';
 
-p/* assport.use(
+/* passport.use(
   "local.signin",
   new LocalStrategy(
     {
