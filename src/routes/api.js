@@ -8,6 +8,7 @@ import { ClaseModel } from "../models/claseMysql.js";
 import { UsuarioModel } from "../models/usuarioMysql.js";
 import { CalendarioModel } from "../models/calendarioMysql.js";
 import { AsistenciaModel } from "../models/asistenciaMysql.js";
+import { MembresiaModel } from "../models/membresiaMysql.js";
 import * as path from 'path';  
 import * as url from 'url';
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
@@ -37,6 +38,16 @@ apiRouter.get("/api/clases", async (req, res) => {
     clases[i].asistentes = asistentes;
   }
   res.json(clases); // Enviar los datos como JSON
+});
+
+apiRouter.get("/api/asistencias", async (req, res) => {
+  const asistencias = await AsistenciaModel.getAll();
+    res.json(asistencias); // Enviar los datos como JSON
+});
+
+apiRouter.get("/api/membresias", async (req, res) => {
+  const membresias = await MembresiaModel.getAll();
+    res.json(membresias); // Enviar los datos como JSON
 });
 
 apiRouter.get("/api/clase/:id", async (req, res) => {
