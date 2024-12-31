@@ -71,6 +71,7 @@ apiRouter.get("/api/usuarios", async (req, res) => {
 apiRouter.get("/api/usuario/:id",async (req, res) => {
   const { id } = req.params;
   const [usuario] = await UsuarioModel.getById({ id });
+  console.log("user ",usuario);
   const asistencias = await AsistenciaModel.getByUserId({ user_id: id });
   usuario.asistencias = asistencias;
   res.json(usuario); // Enviar los datos como JSON
@@ -87,7 +88,7 @@ apiRouter.get("/api/usuarios/:id", passport.authenticate('jwt', { session: false
 apiRouter.get("/api/usuario/foto/:id", async (req, res) => {
   const { id } = req.params;
   const [usuario] = await UsuarioModel.getById({ id });
-  console.log("user",usuario);
+  console.log("user foto ",usuario);
   const photoPath = path.join(__dirname, '..','public','img', 'profiles', `${usuario.pictureURL}`);
   console.log(photoPath);
   res.sendFile(photoPath);
