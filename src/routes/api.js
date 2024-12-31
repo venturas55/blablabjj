@@ -14,6 +14,41 @@ import * as url from 'url';
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 import jwt from 'jsonwebtoken';
 
+passport.use(
+  "local.signin",
+  new LocalStrategy(
+    {
+      //name del formulario
+      usernameField: "usuario",
+      passwordField: "contrasena",
+      passReqToCallback: true,
+    },
+    async (req, username, password, done) => {
+      const rows = await db.query("SELECT * FROM usuarios WHERE usuario= ?", [
+        username,
+      ]);
+
+      if (rows.length > 0) {
+        const user = rows[0];
+        const validPassword = await funciones.verifyPassword(
+          password,
+          user.contrasena
+        );
+        if (validPassword)
+          done(null, user, req.flash("success", "Welcome " + user.usuario));
+        else
+          done(
+            null,
+            false,
+            req.flash("danger", "El password introducido es incorrecto")
+          );
+      } else {
+        return done(null, false, req.flash("danger", "Ese usuario no existe"));
+      }
+    }
+  )
+);
+
 export const apiRouter = Router();
 
 apiRouter.get("/api/paises", async (req, res) => {
