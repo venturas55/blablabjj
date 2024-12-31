@@ -106,7 +106,7 @@ apiRouter.post("/api/login", passport.authenticate('local.signin'), (req, res) =
   });
 });
 
-app.post('/api/logout', (req, res) => {
+apiRouter.post('/api/logout', (req, res) => {
   req.logout((err) => {
     if (err) return next(err);
     res.json({ success: true, message: 'Sesión cerrada con éxito' });
