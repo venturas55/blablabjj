@@ -19,6 +19,7 @@ export class UsuarioModel {
 
 
   static async getById({ id }) {
+    console.log("Mysql: ",id)
     const usuario = await db.query(usersQuery+" where u.id=?", id);
     return usuario;
   }

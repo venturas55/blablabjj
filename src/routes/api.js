@@ -87,7 +87,7 @@ apiRouter.get("/api/usuarios/:id", passport.authenticate('jwt', { session: false
 apiRouter.get("/api/usuario/foto/:id", async (req, res) => {
   const { id } = req.params;
   const [usuario] = await UsuarioModel.getById({ id });
-  console.log(usuario);
+  console.log("user",usuario);
   const photoPath = path.join(__dirname, '..','public','img', 'profiles', `${usuario.pictureURL}`);
   console.log(photoPath);
   res.sendFile(photoPath);
