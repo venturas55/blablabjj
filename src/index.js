@@ -5,7 +5,7 @@ import * as url from 'url';
 import * as path from 'path';    //Para manejar directorios, basicamente unirlos 
 import flash from 'connect-flash';  //Para mostar mensajes
 import session from 'express-session'; //Lo necesita el flash tb
-
+import passport from './lib/passport.js'; //para que se entere de la autentificacion que se ha creado 
 import MySQLstore from 'express-mysql-session'; // para poder guardar la sesion en la sql
 //import passport from 'passport';
 import { database } from './config.js';
