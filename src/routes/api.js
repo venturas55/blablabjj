@@ -1,5 +1,6 @@
 import { Router } from "express";
 import passport from "passport";
+import { Strategy as LocalStrategy } from "passport-local";
 
 import { createRequire } from "node:module";
 const require = createRequire(import.meta.url);
