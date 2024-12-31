@@ -5,8 +5,9 @@ import * as url from 'url';
 import * as path from 'path';    //Para manejar directorios, basicamente unirlos 
 import flash from 'connect-flash';  //Para mostar mensajes
 import session from 'express-session'; //Lo necesita el flash tb
+import passport from './lib/passport.js'; //para que se entere de la autentificacion que se ha creado 
 import MySQLstore from 'express-mysql-session'; // para poder guardar la sesion en la sql
-import passport from 'passport';
+//import passport from 'passport';
 import { database } from './config.js';
 import handlebars from './lib/handlebars.js';
 import cors from 'cors';
@@ -31,7 +32,6 @@ import { planesRouter } from './routes/planes.js';
 //Initialization
 const app = express();
 app.disable('x-powered-by'); //Deshabilitar el hjeader X-powered-by: Express
-//import './lib/passport.js'; //para que se entere de la autentificacion que se ha creado 
 app.use(cors());
 
 
