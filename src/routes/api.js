@@ -1,6 +1,6 @@
 import { Router } from "express";
 //import passport from "passport";
-import passport from '../lib/passport.js'; //para que se entere de la autentificacion que se ha creado 
+import passport from "../lib/passport.js"; //para que se entere de la autentificacion que se ha creado
 import { Strategy as LocalStrategy } from "passport-local";
 import funciones from "../lib/funciones.js";
 
@@ -12,10 +12,10 @@ import { UsuarioModel } from "../models/usuarioMysql.js";
 import { CalendarioModel } from "../models/calendarioMysql.js";
 import { AsistenciaModel } from "../models/asistenciaMysql.js";
 import { MembresiaModel } from "../models/membresiaMysql.js";
-import * as path from 'path';  
-import * as url from 'url';
-const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
-import jwt from 'jsonwebtoken';
+import * as path from "path";
+import * as url from "url";
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
+import jwt from "jsonwebtoken";
 
 export const apiRouter = Router();
 
@@ -31,6 +31,19 @@ apiRouter.get("/api/paises", async (req, res) => {
   });
 });
 
+apiRouter.get("/api/clases/list", async (req, res) => {
+  const clases = await ClaseModel.getAll();
+  res.json(clases); 
+});
+apiRouter.get("/api/actividades/list", async (req, res) => {
+  const actividades = await ActividadModel.getAll();
+  res.json(actividades); 
+});
+apiRouter.get("/api/actividades/:id", async (req, res) => {
+  const { id } = req.params;
+  const [actividad] = await ActividadModel.getById({ id });
+  res.json(actividad); 
+});
 apiRouter.get("/api/clases", async (req, res) => {
   const clases = await CalendarioModel.getAll();
   //Se añade la info de los asistentes de cada clase
@@ -40,17 +53,17 @@ apiRouter.get("/api/clases", async (req, res) => {
     });
     clases[i].asistentes = asistentes;
   }
-  res.json(clases); // Enviar los datos como JSON
+  res.json(clases); 
 });
 
 apiRouter.get("/api/asistencias", async (req, res) => {
   const asistencias = await AsistenciaModel.getAll();
-    res.json(asistencias); // Enviar los datos como JSON
+  res.json(asistencias); 
 });
 
 apiRouter.get("/api/membresias", async (req, res) => {
   const membresias = await MembresiaModel.getAll();
-    res.json(membresias); // Enviar los datos como JSON
+  res.json(membresias); 
 });
 
 apiRouter.get("/api/clase/:id", async (req, res) => {
@@ -68,38 +81,51 @@ apiRouter.get("/api/usuarios", async (req, res) => {
   res.json(usuarios); // Enviar los datos como JSON
 });
 
-apiRouter.get("/api/usuario/:id",async (req, res) => {
+apiRouter.get("/api/usuario/:id", async (req, res) => {
   const { id } = req.params;
   const [usuario] = await UsuarioModel.getById({ id });
-  console.log("user ",usuario);
+  console.log("user ", usuario);
   const asistencias = await AsistenciaModel.getByUserId({ user_id: id });
   usuario.asistencias = asistencias;
   res.json(usuario); // Enviar los datos como JSON
 });
 
-apiRouter.get("/api/usuarios/:id", passport.authenticate('jwt', { session: false }),async (req, res) => {
-  const { id } = req.params;
-  const [usuario] = await UsuarioModel.getById({ id });
-  const asistencias = await AsistenciaModel.getByUserId({ user_id: id });
-  usuario.asistencias = asistencias;
-  res.json(usuario); // Enviar los datos como JSON
-});
+apiRouter.get(
+  "/api/usuarios/:id",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    const { id } = req.params;
+    const [usuario] = await UsuarioModel.getById({ id });
+    const asistencias = await AsistenciaModel.getByUserId({ user_id: id });
+    usuario.asistencias = asistencias;
+    res.json(usuario); // Enviar los datos como JSON
+  }
+);
 
 apiRouter.get("/api/usuario/foto/:id", async (req, res) => {
   const { id } = req.params;
   const [usuario] = await UsuarioModel.getById({ id });
-  console.log("user foto ",usuario);
-  const photoPath = path.join(__dirname, '..','public','img', 'profiles', `${usuario.pictureURL}`);
+  console.log("user foto ", usuario);
+  const photoPath = path.join(
+    __dirname,
+    "..",
+    "public",
+    "img",
+    "profiles",
+    `${usuario.pictureURL}`
+  );
   console.log(photoPath);
   res.sendFile(photoPath);
 });
 
-apiRouter.post('/api/signup', passport.authenticate('local.signup',{
-        successRedirect: '/',
-        failureRedirect: '/signup',
-        passReqToCallback: true,
-        failureFlash: true
-    })
+apiRouter.post(
+  "/api/signup",
+  passport.authenticate("local.signup", {
+    successRedirect: "/",
+    failureRedirect: "/signup",
+    passReqToCallback: true,
+    failureFlash: true,
+  })
 );
 
 /* apiRouter.post("/api/login", passport.authenticate("local.signin", (req, res) => {
@@ -143,24 +169,30 @@ apiRouter.post("/api/login", (req, res, next) => {
       return res.json({
         success: true,
         message: "Usuario autenticado",
-        user: { id: user.id, usuario: user.usuario, email: user.email,cinturon:user.cinturon,grado:user.grado }, // Datos esenciales del usuario
+        user: {
+          id: user.id,
+          usuario: user.usuario,
+          email: user.email,
+          cinturon: user.cinturon,
+          grado: user.grado,
+        }, // Datos esenciales del usuario
         token, // El token JWT
       });
     });
   })(req, res, next); // Invoca el middleware con los parámetros correctos
 });
 
-apiRouter.post('/api/logout', (req, res) => {
+apiRouter.post("/api/logout", (req, res) => {
   req.logout((err) => {
     if (err) return next(err);
-    res.json({ success: true, message: 'Sesión cerrada con éxito' });
+    res.json({ success: true, message: "Sesión cerrada con éxito" });
   });
 });
 
 // Ruta protegida
 apiRouter.get(
-  '/api/protected',
-  passport.authenticate('jwt', { session: false }),
+  "/api/protected",
+  passport.authenticate("jwt", { session: false }),
   (req, res) => {
     res.json({ message: `Hola ${req.user.email}, tienes acceso.` });
   }
