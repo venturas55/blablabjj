@@ -12,6 +12,7 @@ import { UsuarioModel } from "../models/usuarioMysql.js";
 import { CalendarioModel } from "../models/calendarioMysql.js";
 import { AsistenciaModel } from "../models/asistenciaMysql.js";
 import { MembresiaModel } from "../models/membresiaMysql.js";
+import { ActividadModel } from "../models/actividadMysql.js";
 import * as path from "path";
 import * as url from "url";
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
