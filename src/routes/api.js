@@ -46,28 +46,20 @@ apiRouter.get("/api/actividades/:id", async (req, res) => {
   res.json(actividad); 
 });
 apiRouter.post("/api/actividades/edit", async (req, res, next) => {
- 
   const { actividad_id,nombre,descripcion } = req.body;
-  console.log("ID: ",actividad_id)
-  console.log(req.body);
   const newItem = {
     actividad_id,
     nombre,
     descripcion,
 };
   try {
-
-      console.log(newItem);
-      console.log(req.file);
       const result = await ActividadModel.update({ input: newItem })
       if (result === false) {
           return res.status(404).json({ message: 'Actividad not found' })
       }
-      //req.flash("success", "Actividad modificada correctamente");
       res.json(result); 
   } catch (error) {
       console.error(error.code);
-      //req.flash("error", "Hubo algun error");
       res.json("error"); 
   }
 
