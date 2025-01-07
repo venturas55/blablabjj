@@ -51,7 +51,7 @@ apiRouter.post("/api/actividades/edit", async (req, res, next) => {
   console.log("ID: ",actividad_id)
   console.log(req.body);
   const newItem = {
-    actividad_id: id,
+    actividad_id,
     nombre,
     descripcion,
     pictureURL,
