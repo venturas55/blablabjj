@@ -45,6 +45,35 @@ apiRouter.get("/api/actividades/:id", async (req, res) => {
   const [actividad] = await ActividadModel.getById({ id });
   res.json(actividad); 
 });
+apiRouter.post("/api/actividades/edit", async (req, res, next) => {
+ 
+  const { actividad_id,nombre,descripcion } = req.body;
+  console.log("ID: ",actividad_id)
+  console.log(req.body);
+  const newItem = {
+    actividad_id: id,
+    nombre,
+    descripcion,
+    pictureURL,
+};
+  try {
+
+      console.log(newItem);
+      console.log(req.file);
+      const result = await ActividadModel.update({ input: newItem })
+      if (result === false) {
+          return res.status(404).json({ message: 'Actividad not found' })
+      }
+      //req.flash("success", "Actividad modificada correctamente");
+      res.json(result); 
+  } catch (error) {
+      console.error(error.code);
+      //req.flash("error", "Hubo algun error");
+      res.json("error"); 
+  }
+
+});
+
 apiRouter.get("/api/clases", async (req, res) => {
   const clases = await CalendarioModel.getAll();
   //Se añade la info de los asistentes de cada clase
