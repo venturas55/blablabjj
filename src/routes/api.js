@@ -54,7 +54,6 @@ apiRouter.post("/api/actividades/edit", async (req, res, next) => {
     actividad_id,
     nombre,
     descripcion,
-    pictureURL,
 };
   try {
 
