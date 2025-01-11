@@ -26,22 +26,16 @@ export class UsuarioModel {
       console.log("UsuarioModel.getById - Params:", params);
 
       // Execute the query and get results
-      const results = await db.query(query, params);
-      console.log("UsuarioModel.getById - Raw results:", results);
+      const [rows] = await db.query(query, params);
+      console.log("UsuarioModel.getById - Raw results:", rows);
 
-      // mysql2 with promisify returns [rows, fields]
-      if (Array.isArray(results) && results.length > 0) {
-        // If it's a single row, return it
-        if (results.length === 1) {
-          console.log("UsuarioModel.getById - Single result found:", results[0]);
-          return results[0];
-        }
-        // If it's multiple rows (shouldn't happen with ID), return first one
-        console.log("UsuarioModel.getById - Multiple results found, using first:", results[0]);
-        return results[0];
+      // Return the first user if found
+      if (Array.isArray(rows) && rows.length > 0) {
+        console.log("UsuarioModel.getById - User found:", rows[0]);
+        return rows[0];
       }
       
-      console.log("UsuarioModel.getById - No results found");
+      console.log("UsuarioModel.getById - No user found");
       return null;
     } catch (error) {
       console.error("UsuarioModel.getById - Error:", error);

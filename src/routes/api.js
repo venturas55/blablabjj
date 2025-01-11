@@ -116,23 +116,23 @@ apiRouter.get(
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
-      console.log('Protected Route - User:', req.user);
-      console.log('Requested User ID:', req.params.id);
+      console.log('Profile Route - User:', req.user);
+      console.log('Profile Route - Requested ID:', req.params.id);
       
       const { id } = req.params;
       
       // Get user without destructuring
       const usuario = await UsuarioModel.getById({ id });
-      console.log('Protected Route - Usuario result:', usuario);
+      console.log('Profile Route - Usuario result:', usuario);
       
       if (!usuario) {
-        console.log('Protected Route - No user found');
+        console.log('Profile Route - No user found');
         return res.status(404).json({ message: 'Usuario no encontrado' });
       }
 
       // Get asistencias
       const asistencias = await AsistenciaModel.getByUserId({ user_id: id });
-      console.log('Protected Route - Asistencias count:', asistencias?.length || 0);
+      console.log('Profile Route - Asistencias count:', asistencias?.length || 0);
       
       // Combine the data
       const responseData = {
@@ -140,10 +140,10 @@ apiRouter.get(
         asistencias: asistencias || []
       };
       
-      console.log('Protected Route - Sending response');
+      console.log('Profile Route - Sending response');
       res.json(responseData);
     } catch (error) {
-      console.error('Protected Route - Error:', error);
+      console.error('Profile Route - Error:', error);
       res.status(500).json({ 
         message: 'Error interno del servidor',
         error: error.message 
