@@ -50,20 +50,26 @@ export class UsuarioModel {
         [id]
       );
       
+      // Log raw results for debugging
+      console.log("UsuarioModel.getById - Raw query result:", rows);
+      
+      // Safe access to results
+      const found = Array.isArray(rows) && rows.length > 0;
+      const user = found ? rows[0] : null;
+      
       console.log("UsuarioModel.getById - Query result:", {
-        found: rows && rows.length > 0,
-        user: rows?.[0] ? {
-          id: rows[0].id,
-          usuario: rows[0].usuario
+        found,
+        user: user ? {
+          id: user.id,
+          usuario: user.usuario
         } : null
       });
 
-      if (!rows || rows.length === 0) {
+      if (!found) {
         console.log("UsuarioModel.getById - No user found");
         return null;
       }
 
-      const user = rows[0];
       console.log("UsuarioModel.getById - User found:", {
         id: user.id,
         usuario: user.usuario

@@ -117,16 +117,29 @@ passport.use(
       try {
         console.log("JWT Strategy - Payload:", payload);
         
+        if (!payload || typeof payload.id !== 'number') {
+          console.log("JWT Strategy - Invalid payload:", payload);
+          return done(null, false, { message: "Token inválido" });
+        }
+        
         const user = await UsuarioModel.getById({ id: payload.id });
-        console.log("JWT Strategy - User lookup result:", {
-          found: !!user,
-          id: user?.id,
-          usuario: user?.usuario
-        });
+        
+        // Safe access to user properties
+        const userInfo = user ? {
+          found: true,
+          id: user.id,
+          usuario: user.usuario
+        } : {
+          found: false,
+          id: payload.id,
+          usuario: null
+        };
+        
+        console.log("JWT Strategy - User lookup result:", userInfo);
 
         if (!user) {
           console.log("JWT Strategy - No user found with ID:", payload.id);
-          return done(null, false);
+          return done(null, false, { message: "Usuario no encontrado" });
         }
 
         console.log("JWT Strategy - User authenticated:", user.id);
