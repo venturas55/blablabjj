@@ -17,17 +17,21 @@ passport.use(
       try {
         console.log("Local Strategy - Login attempt for usuario:", usuario);
         
-        const [users] = await db.query("SELECT * FROM usuarios WHERE usuario = ?", [
-          usuario,
-        ]);
+        const rows = await db.query("SELECT * FROM usuarios WHERE usuario = ?", [usuario]);
+        console.log("Local Strategy - Query result:", rows);
         
-        if (!users || users.length === 0) {
+        if (!rows || !Array.isArray(rows) || rows.length === 0 || !rows[0].length) {
           console.log("Local Strategy - No user found with usuario:", usuario);
           return done(null, false, { message: "Usuario no encontrado" });
         }
         
-        const user = users[0];
+        const user = rows[0][0];
         console.log("Local Strategy - Found user:", { id: user.id, usuario: user.usuario });
+        
+        if (!user.contrasena) {
+          console.log("Local Strategy - User has no password");
+          return done(null, false, { message: "Error en las credenciales" });
+        }
         
         const validPassword = await funciones.verifyPassword(
           contrasena,
