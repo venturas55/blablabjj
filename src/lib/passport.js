@@ -101,16 +101,20 @@ passport.use(
       try {
         console.log('JWT Strategy - Payload:', jwtPayload);
         
-        const users = await UsuarioModel.getById({ id: jwtPayload.id });
-        console.log('JWT Strategy - Query result:', users);
+        const user = await UsuarioModel.getById({ id: jwtPayload.id });
+        console.log('JWT Strategy - Query result:', user);
         
-        if (!users || users.length === 0) {
+        if (!user) {
           console.log('JWT Strategy - No user found with ID:', jwtPayload.id);
           return done(null, false);
         }
         
-        const user = users[0];
-        console.log('JWT Strategy - User found:', user);
+        console.log('JWT Strategy - User found:', {
+          id: user.id,
+          usuario: user.usuario,
+          email: user.email,
+          privilegio: user.privilegio
+        });
         return done(null, user);
       } catch (error) {
         console.error('JWT Strategy Error:', error);
