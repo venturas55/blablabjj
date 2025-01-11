@@ -36,9 +36,16 @@ apiRouter.get("/api/clases/list", async (req, res) => {
   const clases = await ClaseModel.getAll();
   res.json(clases); 
 });
-apiRouter.get("/api/actividades/list", async (req, res) => {
-  const actividades = await ActividadModel.getAll();
-  res.json(actividades); 
+apiRouter.get("/api/actividades/list", 
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const actividades = await ActividadModel.getAll();
+      res.json(actividades);
+    } catch (error) {
+      console.error("Error fetching actividades:", error);
+      res.status(500).json({ message: "Error al obtener actividades" });
+    }
 });
 apiRouter.get("/api/actividades/:id", async (req, res) => {
   const { id } = req.params;
