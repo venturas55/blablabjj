@@ -122,6 +122,7 @@ passport.use(
     async (payload, done) => {
       try {
         console.log("JWT Strategy - Payload:", payload);
+        console.log("JWT Strategy - Headers:", JSON.stringify(ExtractJwt.fromAuthHeaderAsBearerToken(), null, 2));
         
         if (!payload || typeof payload.id !== 'number') {
           console.log("JWT Strategy - Invalid payload:", payload);
