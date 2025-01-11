@@ -5,24 +5,7 @@ import db from "../database.js"; //db hace referencia a la BBDD
 // Base query for users
 const usersQuery = `
   SELECT 
-    u.id,
-    u.usuario,
-    u.contrasena,
-    u.email,
-    u.telefono,
-    u.nif,
-    u.pais_telefono,
-    u.nombre,
-    u.apellidos,
-    u.cinturon,
-    u.grado,
-    u.fecha_nacimiento,
-    u.peso,
-    u.nacionalidad,
-    u.privilegio,
-    u.pictureURL,
-    u.instructor,
-    u.genero,
+    u.*,
     n.codigo_iso,
     n.nombre as nombre_pais 
   FROM usuarios u 
@@ -44,14 +27,26 @@ export class UsuarioModel {
   static async getById({ id }) {
     console.log("UsuarioModel.getById - Input ID:", id);
     try {
-      // Try direct query with prepared statement
+      // First try a simple query
+      const [basicRows] = await db.query(
+        "SELECT * FROM usuarios WHERE id = ?",
+        [id]
+      );
+      
+      console.log("UsuarioModel.getById - Basic query result:", basicRows);
+      
+      if (!Array.isArray(basicRows) || basicRows.length === 0) {
+        console.log("UsuarioModel.getById - No user found in basic query");
+        return null;
+      }
+
+      // If we found the user, get the full data
       const [rows] = await db.query(
         usersQuery + " WHERE u.id = ?",
         [id]
       );
       
-      // Log raw results for debugging
-      console.log("UsuarioModel.getById - Raw query result:", rows);
+      console.log("UsuarioModel.getById - Full query result:", rows);
       
       // Safe access to results
       const found = Array.isArray(rows) && rows.length > 0;
@@ -66,8 +61,9 @@ export class UsuarioModel {
       });
 
       if (!found) {
-        console.log("UsuarioModel.getById - No user found");
-        return null;
+        console.log("UsuarioModel.getById - No user found in full query");
+        // Return basic user data if full query fails
+        return basicRows[0];
       }
 
       console.log("UsuarioModel.getById - User found:", {
