@@ -103,12 +103,26 @@ apiRouter.get("/api/usuarios", async (req, res) => {
 });
 
 apiRouter.get("/api/usuario/:id", async (req, res) => {
-  const { id } = req.params;
-  const [usuario] = await UsuarioModel.getById({ id });
-  console.log("user ", usuario);
-  const asistencias = await AsistenciaModel.getByUserId({ user_id: id });
-  usuario.asistencias = asistencias;
-  res.json(usuario); // Enviar los datos como JSON
+  try {
+    const { id } = req.params;
+    console.log("API Route - Getting user with ID:", id);
+    
+    const usuario = await UsuarioModel.getById({ id });
+    console.log("API Route - User found:", usuario ? { id: usuario.id, usuario: usuario.usuario } : null);
+    
+    if (!usuario) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+    
+    const asistencias = await AsistenciaModel.getByUserId({ user_id: id });
+    usuario.asistencias = asistencias;
+    
+    console.log("API Route - Sending response with asistencias count:", asistencias?.length || 0);
+    res.json(usuario);
+  } catch (error) {
+    console.error("API Route - Error:", error);
+    res.status(500).json({ message: "Error interno del servidor" });
+  }
 });
 
 apiRouter.get(

@@ -23,9 +23,9 @@ export class UsuarioModel {
   static async getById({ id }) {
     console.log("UsuarioModel.getById - Input ID:", id);
     try {
-      // First try a simple query
+      // Use the full user query with joins
       const [rows] = await db.query(
-        "SELECT * FROM usuarios WHERE id = ?",
+        `${usersQuery} WHERE u.id = ?`,
         [id]
       );
       
@@ -38,8 +38,7 @@ export class UsuarioModel {
         rowCount: rows?.length,
         user: user ? {
           id: user.id,
-          usuario: user.usuario,
-          contrasena: user.contrasena ? '[exists]' : '[missing]'
+          usuario: user.usuario
         } : null
       });
 
@@ -48,11 +47,7 @@ export class UsuarioModel {
         return null;
       }
 
-      console.log("UsuarioModel.getById - User found:", {
-        id: user.id,
-        usuario: user.usuario
-      });
-
+      console.log("UsuarioModel.getById - User found:", { id: user.id, usuario: user.usuario });
       return user;
     } catch (error) {
       console.error("UsuarioModel.getById - Error:", error);
