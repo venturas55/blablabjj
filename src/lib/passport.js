@@ -17,23 +17,29 @@ passport.use(
       try {
         console.log("Local Strategy - Login attempt for usuario:", usuario);
         
-        const rows = await db.query("SELECT * FROM usuarios WHERE usuario = ?", [usuario]);
-        console.log("Local Strategy - Raw query result:", rows);
+        // Get user from database
+        const [rows] = await db.query(
+          "SELECT * FROM usuarios WHERE usuario = ?",
+          [usuario]
+        );
         
-        // The first element is the array of rows
-        if (!rows || !Array.isArray(rows) || rows.length === 0) {
+        // With mysql2/promise, rows is the array of results
+        const user = rows && rows.length > 0 ? rows[0] : null;
+        
+        console.log("Local Strategy - Database result:", {
+          found: !!user,
+          user: user ? {
+            id: user.id,
+            usuario: user.usuario,
+            hashedPassword: user.contrasena ? '[exists]' : '[missing]'
+          } : null
+        });
+
+        if (!user) {
           console.log("Local Strategy - No user found with usuario:", usuario);
           return done(null, false, { message: "Usuario no encontrado" });
         }
-        
-        // Get the first user from the results
-        const user = rows[0];
-        console.log("Local Strategy - Found user:", { 
-          id: user.id, 
-          usuario: user.usuario,
-          hashedPassword: user.contrasena ? "exists" : "missing"
-        });
-        
+
         if (!user.contrasena) {
           console.log("Local Strategy - User has no password");
           return done(null, false, { message: "Error en las credenciales" });

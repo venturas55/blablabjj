@@ -29,12 +29,13 @@ export class UsuarioModel {
         [id]
       );
       
-      // Safe access to results
+      // With mysql2/promise, rows is already the array of results
       const found = Array.isArray(rows) && rows.length > 0;
       const user = found ? rows[0] : null;
       
       console.log("UsuarioModel.getById - Query result:", {
         found,
+        rowCount: rows?.length,
         user: user ? {
           id: user.id,
           usuario: user.usuario,
@@ -42,10 +43,15 @@ export class UsuarioModel {
         } : null
       });
 
-      if (!found) {
+      if (!found || !user) {
         console.log("UsuarioModel.getById - No user found");
         return null;
       }
+
+      console.log("UsuarioModel.getById - User found:", {
+        id: user.id,
+        usuario: user.usuario
+      });
 
       return user;
     } catch (error) {
