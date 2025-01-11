@@ -9,36 +9,41 @@ passport.use(
   "local.signin",
   new LocalStrategy(
     {
-      //name del formulario
-      usernameField: "usuario",
+      usernameField: "email",
       passwordField: "contrasena",
       passReqToCallback: true,
     },
-    async (req, username, password, done) => {
-      const rows = await db.query("SELECT * FROM usuarios WHERE usuario= ?", [
-        username,
-      ]);
-      console.log("rows: ", rows);
-
-      if (rows.length > 0) {
-        const user = rows[0];
-        const validPassword = await funciones.verifyPassword(
-          password,
+    async (req, email, contrasena, done) => {
+      try {
+        console.log("Local Strategy - Login attempt for email:", email);
+        
+        const [users] = await db.query("SELECT * FROM usuarios WHERE email = ?", [
+          email,
+        ]);
+        
+        if (!users || users.length === 0) {
+          console.log("Local Strategy - No user found with email:", email);
+          return done(null, false, { message: "Usuario no encontrado" });
+        }
+        
+        const user = users[0];
+        console.log("Local Strategy - Found user:", { id: user.id, email: user.email });
+        
+        const validPassword = await funciones.matchPassword(
+          contrasena,
           user.contrasena
         );
-        if (validPassword){
-          console.log("USER: ",user);
-          done(null, user, req.flash("success", "Welcome " + user.usuario));
-
+        
+        if (!validPassword) {
+          console.log("Local Strategy - Invalid password for user:", user.id);
+          return done(null, false, { message: "Contraseña incorrecta" });
         }
-        else
-          done(
-            null,
-            false,
-            req.flash("danger", "El password introducido es incorrecto")
-          );
-      } else {
-        return done(null, false, req.flash("danger", "Ese usuario no existe"));
+        
+        console.log("Local Strategy - Login successful for user:", user.id);
+        done(null, user);
+      } catch (error) {
+        console.error("Local Strategy - Error:", error);
+        done(error);
       }
     }
   )
@@ -101,6 +106,11 @@ passport.use(
       try {
         console.log('JWT Strategy - Payload:', jwtPayload);
         
+        if (!jwtPayload || typeof jwtPayload.id !== 'number') {
+          console.log('JWT Strategy - Invalid payload or ID:', jwtPayload);
+          return done(null, false);
+        }
+        
         const user = await UsuarioModel.getById({ id: jwtPayload.id });
         console.log('JWT Strategy - Query result:', user);
         
@@ -124,14 +134,22 @@ passport.use(
   )
 );
 
-//comprobar esto
+// Serialize user for the session
 passport.serializeUser((user, done) => {
+  console.log("Serializing user:", user.id);
   done(null, user.id);
 });
 
+// Deserialize user from the session
 passport.deserializeUser(async (id, done) => {
-  const [user] = await db.query("SELECT * FROM usuarios WHERE id= ?", [id]);
-  done(null, user);
+  try {
+    console.log("Deserializing user:", id);
+    const user = await UsuarioModel.getById({ id });
+    done(null, user);
+  } catch (error) {
+    console.error("Deserialize Error:", error);
+    done(error, null);
+  }
 });
 
 export default passport;

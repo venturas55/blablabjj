@@ -1,41 +1,75 @@
 import { createRequire } from 'node:module'
 const require = createRequire(import.meta.url)
 import db from "../database.js"; //db hace referencia a la BBDD
-const usersQuery = "SELECT u.id,u.usuario,u.contrasena,u.email,u.telefono,u.nif,u.pais_telefono,u.nombre,u.apellidos,u.cinturon,u.grado,u.fecha_nacimiento,u.peso,u.nacionalidad,u.privilegio,u.pictureURL,u.instructor,u.genero,n.codigo_iso,n.nombre as nombre_pais FROM usuarios u LEFT JOIN nacionalidades n ON u.nacionalidad = n.id"
+
+// Base query for users
+const usersQuery = `
+  SELECT 
+    u.id,
+    u.usuario,
+    u.contrasena,
+    u.email,
+    u.telefono,
+    u.nif,
+    u.pais_telefono,
+    u.nombre,
+    u.apellidos,
+    u.cinturon,
+    u.grado,
+    u.fecha_nacimiento,
+    u.peso,
+    u.nacionalidad,
+    u.privilegio,
+    u.pictureURL,
+    u.instructor,
+    u.genero,
+    n.codigo_iso,
+    n.nombre as nombre_pais 
+  FROM usuarios u 
+  LEFT JOIN nacionalidades n ON u.nacionalidad = n.id`;
 
 export const readJSON = (path) => require(path)
 
 export class UsuarioModel {
   static async getAll() {
-    const usuarios = await db.query(usersQuery);
+    const [usuarios] = await db.query(usersQuery);
     return usuarios;
   }
 
   static async getAllInstructores() {
-    const instructores = await db.query(usersQuery+' where u.instructor=true');
+    const [instructores] = await db.query(usersQuery + ' WHERE u.instructor = true');
     return instructores;
   }
 
   static async getById({ id }) {
     console.log("UsuarioModel.getById - Input ID:", id);
     try {
-      // Log the exact query being executed
-      const query = usersQuery + " where u.id = ?";
-      const params = [id];
-      console.log("UsuarioModel.getById - Query:", query);
-      console.log("UsuarioModel.getById - Params:", params);
+      // First try a direct query to see what's in the database
+      const checkQuery = "SELECT * FROM usuarios WHERE id = ?";
+      const [checkRows] = await db.query(checkQuery, [id]);
+      console.log("UsuarioModel.getById - Database check:", {
+        query: checkQuery,
+        params: [id],
+        results: checkRows
+      });
 
-      // Execute the query and get results
-      const [rows] = await db.query(query, params);
-      console.log("UsuarioModel.getById - Raw results:", rows);
+      // If we found a user, do the full query
+      if (checkRows && checkRows.length > 0) {
+        const query = usersQuery + " WHERE u.id = ?";
+        const [rows] = await db.query(query, [id]);
+        console.log("UsuarioModel.getById - Full query results:", {
+          query: query,
+          params: [id],
+          results: rows
+        });
 
-      // Return the first user if found
-      if (Array.isArray(rows) && rows.length > 0) {
-        console.log("UsuarioModel.getById - User found:", rows[0]);
-        return rows[0];
+        if (rows && rows.length > 0) {
+          console.log("UsuarioModel.getById - User found:", rows[0]);
+          return rows[0];
+        }
       }
       
-      console.log("UsuarioModel.getById - No user found");
+      console.log("UsuarioModel.getById - No user found in database");
       return null;
     } catch (error) {
       console.error("UsuarioModel.getById - Error:", error);
@@ -45,30 +79,36 @@ export class UsuarioModel {
 
   static async create({ input }) {
     try {
-      const result = await db.query("INSERT INTO usuarios set ?", [input]);
+      console.log("UsuarioModel.create - Input:", input);
+      const [result] = await db.query("INSERT INTO usuarios SET ?", [input]);
+      console.log("UsuarioModel.create - Result:", result);
       return result;
     } catch (error) {
-      console.error(error.code);
+      console.error("UsuarioModel.create - Error:", error);
       return false;
     }
   }
 
   static async delete({ input }) {
     try {
-      const result = await db.query("DELETE FROM usuarios WHERE id=?", [input]);
+      console.log("UsuarioModel.delete - Input:", input);
+      const [result] = await db.query("DELETE FROM usuarios WHERE id = ?", [input]);
+      console.log("UsuarioModel.delete - Result:", result);
       return result;
     } catch (error) {
-      console.error(error.code);
+      console.error("UsuarioModel.delete - Error:", error);
       return error;
     }
   }
 
   static async update({ input }) {
     try {
-      const result = await db.query("UPDATE usuarios set ? WHERE id = ?", [input, input.id]);
+      console.log("UsuarioModel.update - Input:", input);
+      const [result] = await db.query("UPDATE usuarios SET ? WHERE id = ?", [input, input.id]);
+      console.log("UsuarioModel.update - Result:", result);
       return result;
     } catch (error) {
-      console.error(error.code + error.message);
+      console.error("UsuarioModel.update - Error:", error);
       return error;
     }
   }
