@@ -9,7 +9,7 @@ passport.use(
   "local.signin",
   new LocalStrategy(
     {
-      usernameField: "email",
+      usernameField: "usuario",
       passwordField: "contrasena",
       passReqToCallback: true,
     },
