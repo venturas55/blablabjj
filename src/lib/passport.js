@@ -113,33 +113,27 @@ passport.use(
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       secretOrKey: "brounaclavesecretisimaawe",
     },
-    async (jwtPayload, done) => {
+    async (payload, done) => {
       try {
-        console.log('JWT Strategy - Payload:', jwtPayload);
+        console.log("JWT Strategy - Payload:", payload);
         
-        if (!jwtPayload || typeof jwtPayload.id !== 'number') {
-          console.log('JWT Strategy - Invalid payload or ID:', jwtPayload);
-          return done(null, false);
-        }
-        
-        const user = await UsuarioModel.getById({ id: jwtPayload.id });
-        console.log('JWT Strategy - Query result:', user);
-        
-        if (!user) {
-          console.log('JWT Strategy - No user found with ID:', jwtPayload.id);
-          return done(null, false);
-        }
-        
-        console.log('JWT Strategy - User found:', {
-          id: user.id,
-          usuario: user.usuario,
-          email: user.email,
-          privilegio: user.privilegio
+        const user = await UsuarioModel.getById({ id: payload.id });
+        console.log("JWT Strategy - User lookup result:", {
+          found: !!user,
+          id: user?.id,
+          usuario: user?.usuario
         });
-        return done(null, user);
+
+        if (!user) {
+          console.log("JWT Strategy - No user found with ID:", payload.id);
+          return done(null, false);
+        }
+
+        console.log("JWT Strategy - User authenticated:", user.id);
+        done(null, user);
       } catch (error) {
-        console.error('JWT Strategy Error:', error);
-        return done(error, false);
+        console.error("JWT Strategy - Error:", error);
+        done(error, false);
       }
     }
   )

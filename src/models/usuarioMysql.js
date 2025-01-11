@@ -44,33 +44,32 @@ export class UsuarioModel {
   static async getById({ id }) {
     console.log("UsuarioModel.getById - Input ID:", id);
     try {
-      // First try a direct query to see what's in the database
-      const checkQuery = "SELECT * FROM usuarios WHERE id = ?";
-      const [checkRows] = await db.query(checkQuery, [id]);
-      console.log("UsuarioModel.getById - Database check:", {
-        query: checkQuery,
-        params: [id],
-        results: checkRows
+      // Try direct query with prepared statement
+      const [rows] = await db.query(
+        usersQuery + " WHERE u.id = ?",
+        [id]
+      );
+      
+      console.log("UsuarioModel.getById - Query result:", {
+        found: rows && rows.length > 0,
+        user: rows?.[0] ? {
+          id: rows[0].id,
+          usuario: rows[0].usuario
+        } : null
       });
 
-      // If we found a user, do the full query
-      if (checkRows && checkRows.length > 0) {
-        const query = usersQuery + " WHERE u.id = ?";
-        const [rows] = await db.query(query, [id]);
-        console.log("UsuarioModel.getById - Full query results:", {
-          query: query,
-          params: [id],
-          results: rows
-        });
-
-        if (rows && rows.length > 0) {
-          console.log("UsuarioModel.getById - User found:", rows[0]);
-          return rows[0];
-        }
+      if (!rows || rows.length === 0) {
+        console.log("UsuarioModel.getById - No user found");
+        return null;
       }
-      
-      console.log("UsuarioModel.getById - No user found in database");
-      return null;
+
+      const user = rows[0];
+      console.log("UsuarioModel.getById - User found:", {
+        id: user.id,
+        usuario: user.usuario
+      });
+
+      return user;
     } catch (error) {
       console.error("UsuarioModel.getById - Error:", error);
       throw error;
