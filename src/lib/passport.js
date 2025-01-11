@@ -3,6 +3,7 @@ import { Strategy as LocalStrategy } from "passport-local";
 import db from "../database.js";
 import funciones from "../lib/funciones.js";
 import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
+import { UsuarioModel } from '../models/usuarioMysql.js'; 
 
 passport.use(
   "local.signin",
@@ -94,22 +95,22 @@ passport.use(
   new JwtStrategy(
     {
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: "brounaclavesecretisimaawe", // Usa una clave secreta segura
+      secretOrKey: "brounaclavesecretisimaawe",
     },
     async (jwtPayload, done) => {
       try {
-        console.log('JWT Payload:', jwtPayload);
-        const [users] = await db.query("SELECT * FROM usuarios WHERE id = ?", [
-          jwtPayload.id,
-        ]);
+        console.log('JWT Strategy - Payload:', jwtPayload);
+        
+        const users = await UsuarioModel.getById({ id: jwtPayload.id });
+        console.log('JWT Strategy - Query result:', users);
         
         if (!users || users.length === 0) {
-          console.log('No user found with ID:', jwtPayload.id);
+          console.log('JWT Strategy - No user found with ID:', jwtPayload.id);
           return done(null, false);
         }
         
         const user = users[0];
-        console.log('User found:', user);
+        console.log('JWT Strategy - User found:', user);
         return done(null, user);
       } catch (error) {
         console.error('JWT Strategy Error:', error);

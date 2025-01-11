@@ -19,9 +19,15 @@ export class UsuarioModel {
 
 
   static async getById({ id }) {
-    console.log("Mysql: ",id)
-    const usuario = await db.query(usersQuery+" where u.id=?", id);
-    return usuario;
+    console.log("UsuarioModel.getById - ID:", id);
+    try {
+      const [rows] = await db.query(usersQuery + " where u.id = ?", [id]);
+      console.log("UsuarioModel.getById - Query result:", rows);
+      return rows;
+    } catch (error) {
+      console.error("UsuarioModel.getById - Error:", error);
+      throw error;
+    }
   }
 
   static async create({ input }) {
