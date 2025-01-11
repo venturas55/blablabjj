@@ -77,6 +77,46 @@ export class UsuarioModel {
     }
   }
 
+  static async getByUsername({ usuario }) {
+    console.log("UsuarioModel.getByUsername - Input username:", usuario);
+    try {
+      // First try a direct query to see what's in the database
+      const checkQuery = "SELECT * FROM usuarios WHERE usuario = ?";
+      const [checkRows] = await db.query(checkQuery, [usuario]);
+      console.log("UsuarioModel.getByUsername - Database check:", {
+        query: checkQuery,
+        params: [usuario],
+        results: checkRows?.length || 0
+      });
+
+      // If we found a user, do the full query
+      if (checkRows && checkRows.length > 0) {
+        const query = usersQuery + " WHERE u.usuario = ?";
+        const [rows] = await db.query(query, [usuario]);
+        console.log("UsuarioModel.getByUsername - Full query results:", {
+          query: query,
+          params: [usuario],
+          results: rows?.length || 0
+        });
+
+        if (rows && rows.length > 0) {
+          console.log("UsuarioModel.getByUsername - User found:", {
+            id: rows[0].id,
+            usuario: rows[0].usuario,
+            hasPassword: !!rows[0].contrasena
+          });
+          return rows[0];
+        }
+      }
+      
+      console.log("UsuarioModel.getByUsername - No user found in database");
+      return null;
+    } catch (error) {
+      console.error("UsuarioModel.getByUsername - Error:", error);
+      throw error;
+    }
+  }
+
   static async create({ input }) {
     try {
       console.log("UsuarioModel.create - Input:", input);
