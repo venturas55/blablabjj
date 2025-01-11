@@ -115,11 +115,35 @@ apiRouter.get(
   "/api/usuarios/:id",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    const { id } = req.params;
-    const [usuario] = await UsuarioModel.getById({ id });
-    const asistencias = await AsistenciaModel.getByUserId({ user_id: id });
-    usuario.asistencias = asistencias;
-    res.json(usuario); // Enviar los datos como JSON
+    try {
+      console.log('Protected Route - User:', req.user);
+      console.log('Requested User ID:', req.params.id);
+      
+      const { id } = req.params;
+      const [usuario] = await UsuarioModel.getById({ id });
+      const asistencias = await AsistenciaModel.getByUserId({ user_id: id });
+      
+      if (!usuario) {
+        return res.status(404).json({ message: 'Usuario no encontrado' });
+      }
+      
+      usuario.asistencias = asistencias;
+      res.json(usuario);
+    } catch (error) {
+      console.error('Error in protected route:', error);
+      res.status(500).json({ message: 'Error interno del servidor' });
+    }
+  }
+);
+
+apiRouter.get(
+  "/api/auth-test",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    res.json({ 
+      message: "Autenticación exitosa",
+      user: req.user
+    });
   }
 );
 

@@ -98,18 +98,22 @@ passport.use(
     },
     async (jwtPayload, done) => {
       try {
+        console.log('JWT Payload:', jwtPayload);
         const [users] = await db.query("SELECT * FROM usuarios WHERE id = ?", [
           jwtPayload.id,
         ]);
-        const user = users[0];
-
-        if (user) {
-          return done(null, user);
-        } else {
+        
+        if (!users || users.length === 0) {
+          console.log('No user found with ID:', jwtPayload.id);
           return done(null, false);
         }
-      } catch (err) {
-        return done(err, false);
+        
+        const user = users[0];
+        console.log('User found:', user);
+        return done(null, user);
+      } catch (error) {
+        console.error('JWT Strategy Error:', error);
+        return done(error, false);
       }
     }
   )
