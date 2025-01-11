@@ -1,6 +1,7 @@
 import { createPool } from 'mysql2';
 import { promisify } from 'util';
-import { database } from './config.js'; //traigo el database desde el archivo
+import { database } from './config.js';
+
 const pool = createPool(database);
 
 pool.getConnection((err, connection) => {
@@ -13,21 +14,17 @@ pool.getConnection((err, connection) => {
         }
         if (err.code === 'ECONNREFUSED') {
             console.error('database conexion fue rechazada');
-            return 'ECONNREFUSED';
         }
         if (err.code === 'ER_ACCESS_DENIED_ERROR') {
             console.error('ACCESO denegado\n' + err);
         }
-        console.error('ACCESO denegado\n' + err); 
+        console.error('Error de conexión:', err);
     } else if (connection) {
-        connection.release(); //con esto empieza la conexion
+        connection.release();
         console.log('DB is Connected');
     }
-    return;
 });
 
-//promisify pool queries. Convierte codigo de callbacks a codigo de promesas
-pool.query = promisify(pool.query); //cada vez que haga una consulta, se podrán usar promesas.
+pool.query = promisify(pool.query);
 
 export default pool;
-

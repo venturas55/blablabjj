@@ -17,23 +17,17 @@ passport.use(
       try {
         console.log("Local Strategy - Login attempt for usuario:", usuario);
         
-        const user = await UsuarioModel.getByUsername({ usuario });
+        const [users] = await db.query("SELECT * FROM usuarios WHERE usuario = ?", [
+          usuario,
+        ]);
         
-        if (!user) {
+        if (!users || users.length === 0) {
           console.log("Local Strategy - No user found with usuario:", usuario);
           return done(null, false, { message: "Usuario no encontrado" });
         }
         
-        console.log("Local Strategy - Found user:", { 
-          id: user.id, 
-          usuario: user.usuario,
-          hasPassword: !!user.contrasena 
-        });
-        
-        if (!user.contrasena) {
-          console.log("Local Strategy - User has no password set");
-          return done(null, false, { message: "Error en las credenciales" });
-        }
+        const user = users[0];
+        console.log("Local Strategy - Found user:", { id: user.id, usuario: user.usuario });
         
         const validPassword = await funciones.verifyPassword(
           contrasena,
