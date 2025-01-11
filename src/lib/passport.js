@@ -17,26 +17,17 @@ passport.use(
       try {
         console.log("Local Strategy - Login attempt for usuario:", usuario);
         
-        // First do a simple query to check what's in the database
-        const checkQuery = "SELECT id, usuario FROM usuarios";
-        const allUsers = await db.query(checkQuery);
-        console.log("Local Strategy - All users in database:", allUsers?.[0]);
-        
-        // Now try to find our specific user
-        const query = "SELECT * FROM usuarios WHERE usuario = ?";
-        console.log("Local Strategy - Running query:", query, "with params:", [usuario]);
-        
-        const rows = await db.query(query, [usuario]);
+        const rows = await db.query("SELECT * FROM usuarios WHERE usuario = ?", [usuario]);
         console.log("Local Strategy - Raw query result:", rows);
-        console.log("Local Strategy - First row:", rows?.[0]);
-        console.log("Local Strategy - First user:", rows?.[0]?.[0]);
         
-        if (!rows || !Array.isArray(rows) || rows.length === 0 || !rows[0].length) {
+        // The first element is the array of rows
+        if (!rows || !Array.isArray(rows) || rows.length === 0) {
           console.log("Local Strategy - No user found with usuario:", usuario);
           return done(null, false, { message: "Usuario no encontrado" });
         }
         
-        const user = rows[0][0];
+        // Get the first user from the results
+        const user = rows[0];
         console.log("Local Strategy - Found user:", { 
           id: user.id, 
           usuario: user.usuario,
