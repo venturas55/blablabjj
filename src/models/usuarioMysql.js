@@ -1,6 +1,4 @@
-import { createRequire } from 'node:module'
-const require = createRequire(import.meta.url)
-import db from "../database.js"; //db hace referencia a la BBDD
+import db from '../database.js';
 
 // Base query for users
 const usersQuery = `
@@ -10,8 +8,6 @@ const usersQuery = `
     n.nombre as nombre_pais 
   FROM usuarios u 
   LEFT JOIN nacionalidades n ON u.nacionalidad = n.id`;
-
-export const readJSON = (path) => require(path)
 
 export class UsuarioModel {
   static async getAll() {
@@ -28,25 +24,10 @@ export class UsuarioModel {
     console.log("UsuarioModel.getById - Input ID:", id);
     try {
       // First try a simple query
-      const [basicRows] = await db.query(
+      const [rows] = await db.query(
         "SELECT * FROM usuarios WHERE id = ?",
         [id]
       );
-      
-      console.log("UsuarioModel.getById - Basic query result:", basicRows);
-      
-      if (!Array.isArray(basicRows) || basicRows.length === 0) {
-        console.log("UsuarioModel.getById - No user found in basic query");
-        return null;
-      }
-
-      // If we found the user, get the full data
-      const [rows] = await db.query(
-        usersQuery + " WHERE u.id = ?",
-        [id]
-      );
-      
-      console.log("UsuarioModel.getById - Full query result:", rows);
       
       // Safe access to results
       const found = Array.isArray(rows) && rows.length > 0;
@@ -56,20 +37,15 @@ export class UsuarioModel {
         found,
         user: user ? {
           id: user.id,
-          usuario: user.usuario
+          usuario: user.usuario,
+          contrasena: user.contrasena ? '[exists]' : '[missing]'
         } : null
       });
 
       if (!found) {
-        console.log("UsuarioModel.getById - No user found in full query");
-        // Return basic user data if full query fails
-        return basicRows[0];
+        console.log("UsuarioModel.getById - No user found");
+        return null;
       }
-
-      console.log("UsuarioModel.getById - User found:", {
-        id: user.id,
-        usuario: user.usuario
-      });
 
       return user;
     } catch (error) {
