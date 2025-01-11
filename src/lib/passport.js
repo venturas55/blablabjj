@@ -13,23 +13,23 @@ passport.use(
       passwordField: "contrasena",
       passReqToCallback: true,
     },
-    async (req, email, contrasena, done) => {
+    async (req, usuario, contrasena, done) => {
       try {
-        console.log("Local Strategy - Login attempt for email:", email);
+        console.log("Local Strategy - Login attempt for usuario:", usuario);
         
-        const [users] = await db.query("SELECT * FROM usuarios WHERE email = ?", [
-          email,
+        const [users] = await db.query("SELECT * FROM usuarios WHERE usuario = ?", [
+          usuario,
         ]);
         
         if (!users || users.length === 0) {
-          console.log("Local Strategy - No user found with email:", email);
+          console.log("Local Strategy - No user found with usuario:", usuario);
           return done(null, false, { message: "Usuario no encontrado" });
         }
         
         const user = users[0];
-        console.log("Local Strategy - Found user:", { id: user.id, email: user.email });
+        console.log("Local Strategy - Found user:", { id: user.id, usuario: user.usuario });
         
-        const validPassword = await funciones.matchPassword(
+        const validPassword = await funciones.verifyPassword(
           contrasena,
           user.contrasena
         );
