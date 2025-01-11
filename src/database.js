@@ -1,18 +1,20 @@
 import mysql from 'mysql2/promise'
-import { DB_HOST, DB_USER, DB_PASSWORD, DB_NAME } from './config.js'
+import { database } from './config.js'
 
 console.log("Database Config:", {
-  host: DB_HOST,
-  user: DB_USER,
-  database: DB_NAME,
+  host: database.host,
+  user: database.user,
+  database: database.database,
+  port: database.port
   // Don't log password
 });
 
 const pool = mysql.createPool({
-  host: DB_HOST,
-  user: DB_USER,
-  password: DB_PASSWORD,
-  database: DB_NAME,
+  host: database.host,
+  user: database.user,
+  password: database.password,
+  database: database.database,
+  port: database.port,
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
