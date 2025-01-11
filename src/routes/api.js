@@ -120,18 +120,34 @@ apiRouter.get(
       console.log('Requested User ID:', req.params.id);
       
       const { id } = req.params;
-      const [usuario] = await UsuarioModel.getById({ id });
-      const asistencias = await AsistenciaModel.getByUserId({ user_id: id });
+      
+      // Get user without destructuring
+      const usuario = await UsuarioModel.getById({ id });
+      console.log('Protected Route - Usuario result:', usuario);
       
       if (!usuario) {
+        console.log('Protected Route - No user found');
         return res.status(404).json({ message: 'Usuario no encontrado' });
       }
+
+      // Get asistencias
+      const asistencias = await AsistenciaModel.getByUserId({ user_id: id });
+      console.log('Protected Route - Asistencias count:', asistencias?.length || 0);
       
-      usuario.asistencias = asistencias;
-      res.json(usuario);
+      // Combine the data
+      const responseData = {
+        ...usuario,
+        asistencias: asistencias || []
+      };
+      
+      console.log('Protected Route - Sending response');
+      res.json(responseData);
     } catch (error) {
-      console.error('Error in protected route:', error);
-      res.status(500).json({ message: 'Error interno del servidor' });
+      console.error('Protected Route - Error:', error);
+      res.status(500).json({ 
+        message: 'Error interno del servidor',
+        error: error.message 
+      });
     }
   }
 );
