@@ -5,10 +5,9 @@ import * as url from 'url';
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 import { MembresiaModel } from "../models/membresiaMysql.js";
 import { ExtraModel } from "../models/extraMysql.js";
+import {config} from "../config.js";
 import Stripe from 'stripe';
-const stripe = new Stripe(process.env.STRIPE_PRIV || 'PRIVATE KEY');
-
-
+const stripe = new Stripe(config.STRIPE_PRIV);
 import { validateMembresia, validatePartialMembresia } from '../schemas/validaciones.js';
 
 // Función para obtener las suscripciones con el nombre del plan
@@ -56,7 +55,7 @@ export class MembresiaController {
         if (q) {
             const customerId = q.customer_id; // Reemplaza con el ID de cliente de tu base de datos
             subscriptionswithplans = await getCustomerSubscriptionsWithPlan(customerId);
-            console.log(subscriptionswithplans);
+            //console.log(subscriptionswithplans);
         }
         res.render('membresia/landing', { subscriptionswithplans }); // Renderiza la vista
     }
@@ -66,7 +65,7 @@ export class MembresiaController {
         let subscriptions = await stripe.subscriptions.list({
         });
 
-        console.log(subscriptions);
+        //console.log(subscriptions);
         const balance = await stripe.balance.retrieve();
 
         const balanceTransactions = await stripe.balanceTransactions.list();
@@ -120,35 +119,34 @@ export class MembresiaController {
         let priceId;
         switch (plan.toLowerCase()) {
             case 'bjjfemenino':
-                priceId = 'price_1QW5uBKIeHEOMKlDTuF8QGpf';
+                priceId = 'price_1QgW8hKIeHEOMKlDVy7PvULN';
                 break;
             case 'kids35':
-                priceId = 'price_1QWIPAKIeHEOMKlDj3sm7vqf';
+                priceId = 'price_1QgW9FKIeHEOMKlDc1yHqaNh';
                 break;
             case 'kids69':
-                priceId = 'price_1QWIPVKIeHEOMKlDPB5JGReN';
+                priceId = 'price_1QgWArKIeHEOMKlDpUnPnqu4';
                 break;
             case 'kids913':
-                priceId = 'price_1QWIPnKIeHEOMKlD3PgMiAms';
+                priceId = 'price_1QgWBHKIeHEOMKlDhA7qccCH';
                 break;
             case 'mma':
-                priceId = 'price_1QWIQ1KIeHEOMKlDdKtPM12x';
+                priceId = 'price_1QgWBYKIeHEOMKlDtZp14UlC';
                 break;
             case 'nogi':
-                priceId = 'price_1QWIQCKIeHEOMKlDpJMin5Ip';
+                priceId = 'price_1QgWBpKIeHEOMKlDek6lZDkb';
                 break;
             case 'bjjadultos':
-                priceId = 'price_1QW5wcKIeHEOMKlDZ5HUPw8j';
+                priceId = 'price_1QgWC8KIeHEOMKlDf9QnmdHy';
                 break;
             case 'ilimitado':
-                priceId = 'price_1QWIQKKIeHEOMKlD3rBE6Goe';
+                priceId = 'price_1QgWCPKIeHEOMKlDZ2tM79Jg';
                 break;
 
             default:
                 return res.send("Suscription plan not found");
         }
         //console.log(priceId);
-        //console.log(`${process.env.BASE_URL}:${process.env.PORT}/membresia/success?session_id={CHECKOUT_SESSION_ID}`);
         const session = await stripe.checkout.sessions.create({
             billing_address_collection: 'auto',
             line_items: [
@@ -162,8 +160,8 @@ export class MembresiaController {
             mode: 'subscription',
 
             //TODO: estos links tendrían que ser más dinamicos
-            success_url: `${process.env.BASE_URL}:${process.env.PORT}/membresia/success?session_id={CHECKOUT_SESSION_ID}`,
-            cancel_url: `${process.env.BASE_URL}:${process.env.PORT}/membresia/cancel`,
+            success_url: `${config.BASE_URL}:${config.PORT}/membresia/success?session_id={CHECKOUT_SESSION_ID}`,
+            cancel_url: `${config.BASE_URL}:${config.PORT}/membresia/cancel`,
         });
 
         res.redirect(session.url)//+"?prefilled_email="+req.user.email);
@@ -193,7 +191,7 @@ export class MembresiaController {
 
     static async postCancel(req, res) {
         const { id } = req.params
-        console.log(req.params);
+        //console.log(req.params);
 
         const subscription = await stripe.subscriptions.update
             (
@@ -215,14 +213,15 @@ export class MembresiaController {
     }
 
     static async createPortal(req, res) {
+        //console.log("Creating portal: " + req.user.id)
         const [q] = await MembresiaModel.getMembresiaByUserId(req.user.id);
         //const checkoutSession = await stripe.checkout.sessions.retrieve(q.session_id);
-        //console.log(q.customer_id);
+        //console.log("Membresia: ",q[0]);
         //console.log(checkoutSession.customer);
         const portalSession = await stripe.billingPortal.sessions.create({
-            customer: q.customer_id,
-            return_url: `${process.env.BASE_URL}:${process.env.PORT}/membresia/landing`,
-            //return_url: `${process.env.BASE_URL}:${process.env.PORT}/usuarios/get/${q.usuario_id}`,
+            customer: q[0].customer_id,
+            return_url: `${config.BASE_URL}:${config.PORT}/membresia/landing`,
+            //return_url: `${config.BASE_URL}:${config.PORT}/usuarios/get/${q.usuario_id}`,
         });
         res.redirect(303, portalSession.url + "?prefilled_email=" + req.user.email);
 
@@ -235,7 +234,7 @@ export class MembresiaController {
 
         let event;
         try {
-            event = stripe.webhooks.constructEvent(req.body, signat, process.env.STRIPE_WEBHOOK_SECRET_KEY);
+            event = stripe.webhooks.constructEvent(req.body, signat, config.STRIPE_WEBHOOK_SECRET_KEY);
         } catch (err) {
             return res.status(400).send(`Webhook Error: ${err.message}`);
 

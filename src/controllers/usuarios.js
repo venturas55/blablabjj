@@ -46,9 +46,10 @@ export class UsuarioController {
     }
     static async getById(req, res) {
         const { id } = req.params;
-        const [usuario] = await UsuarioModel.getById({ id });
+        console.log("id: " + id);
+        const usuario = await UsuarioModel.getById({ id });
         const asistencias = await AsistenciaModel.getByUserId({ user_id: id });
-        console.log(asistencias);
+        //console.log(asistencias);
         res.render("usuarios/plantilla", { usuario, asistencias });
     }
 
@@ -67,15 +68,15 @@ export class UsuarioController {
     static async getUpdate(req, res) {
         const { id } = req.user;
         const item = await UsuarioModel.getById({ id });
-        const paises = await ExtraModel.getAllPaises();
+        const [paises] = await ExtraModel.getAllPaises();
 
-        res.render("profile/edit", { item: item[0], paises, grados, cinturones });
+        res.render("profile/edit", { item, paises, grados, cinturones });
     }
     static async getUpdateId(req, res) {
         const { id } = req.params;
         const item = await UsuarioModel.getById({ id });
-        const paises = await ExtraModel.getAllPaises();
-        res.render("profile/edit", { item: item[0], paises, grados, cinturones });
+        const [paises] = await ExtraModel.getAllPaises();
+        res.render("profile/edit", { item, paises, grados, cinturones });
     }
 
     static async update(req, res) {

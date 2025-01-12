@@ -8,18 +8,18 @@ export const readJSON = (path) => require(path)
 
 export class ActividadModel {
   static async getAll() {
-    const actividades = await db.query('SELECT * from actividades');
+    const [actividades] = await db.query('SELECT * from actividades');
     return actividades;
   }
 
   static async getById({ id }) {
-    const actividad = await db.query("SELECT * FROM actividades where actividad_id=?", id);
+    const [actividad] = await db.query("SELECT * FROM actividades where actividad_id=?", id);
     return actividad;
   }
 
   static async create({ input }) {
     try {
-      const a = await db.query("INSERT INTO actividades set ?", [input]);
+      const [a] = await db.query("INSERT INTO actividades set ?", [input]);
       return a;
     } catch (error) {
       console.error(error.code);

@@ -21,7 +21,6 @@ export class UsuarioModel {
   }
 
   static async getById({ id }) {
-    console.log("UsuarioModel.getById - Input ID:", id);
     try {
       // Use the full user query with joins
       const [rows] = await db.query(
@@ -33,21 +32,36 @@ export class UsuarioModel {
       const found = Array.isArray(rows) && rows.length > 0;
       const user = found ? rows[0] : null;
       
-      console.log("UsuarioModel.getById - Query result:", {
-        found,
-        rowCount: rows?.length,
-        user: user ? {
-          id: user.id,
-          usuario: user.usuario
-        } : null
-      });
-
       if (!found || !user) {
         console.log("UsuarioModel.getById - No user found");
         return null;
       }
 
-      console.log("UsuarioModel.getById - User found:", { id: user.id, usuario: user.usuario });
+      //console.log("UsuarioModel.getById - User found:", { id: user.id, usuario: user.usuario });
+      return user;
+    } catch (error) {
+      console.error("UsuarioModel.getById - Error:", error);
+      throw error;
+    }
+  }
+
+  static async getByGoogleId({ id }) {
+    try {
+      const [rows] = await db.query(
+        `${usersQuery} WHERE u.google_id = ?`,
+        [id]
+      );
+      
+      // With mysql2/promise, rows is already the array of results
+      const found = Array.isArray(rows) && rows.length > 0;
+      const user = found ? rows[0] : null;
+      
+      if (!found || !user) {
+        console.log("UsuarioModel.getById - No user found");
+        return null;
+      }
+
+      console.log("UsuarioModel.getById - User found:", { google_id: user.google_id, usuario: user.usuario });
       return user;
     } catch (error) {
       console.error("UsuarioModel.getById - Error:", error);
@@ -56,7 +70,7 @@ export class UsuarioModel {
   }
 
   static async getByUsername({ usuario }) {
-    console.log("UsuarioModel.getByUsername - Input username:", usuario);
+    //console.log("UsuarioModel.getByUsername - Input username:", usuario);
     try {
       const query = usersQuery + " WHERE u.usuario = ?";
       const [rows] = await db.query(query, [usuario]);
@@ -79,7 +93,7 @@ export class UsuarioModel {
     }
   }
 
-  static async create({ input }) {
+  static async create( input ) {
     try {
       console.log("UsuarioModel.create - Input:", input);
       const [result] = await db.query("INSERT INTO usuarios SET ?", [input]);

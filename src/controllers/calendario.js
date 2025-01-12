@@ -11,31 +11,51 @@ import { validateCalendario, validatePartialCalendario } from '../schemas/valida
 export class CalendarioController {
     static async getAll(req, res) {
         let input = "";
-        const clases = await CalendarioModel.getAll(input);
-
-        //Se añade la info de los asistentes de cada clase
-        for (let i = 0; i < clases.length; i++) {
-            var asistentes = await AsistenciaModel.getByClaseId({ id: clases[i].clase_id });
-            clases[i].asistentes = asistentes;
-
-        };
-
-        /* // Ordenar las clases por fecha
-
-      const clasesOrdenadas = clases.sort((a, b) => new Date(a.fecha_hora) - new Date(b.fecha_hora));
-
-      // Agrupar las clases por día de la semana (Lunes=1, ..., Domingo=7)
-      const clasesPorDia = [[], [], [], [], [], [], []]; // Array para los 7 días
-      clasesOrdenadas.forEach((clase) => {
-          const diaSemana = moment(clase.fecha_hora).isoWeekday(); // Lunes=1, Domingo=7
-          clasesPorDia[diaSemana - 1].push(clase);
-      });
-
-      // Opcional: Asegurar que cada día también esté ordenado (redundante si ya está ordenado antes del agrupamiento)
-      clasesPorDia.forEach((dia) => {
-          dia.sort((a, b) => new Date(b.fecha_hora) - new Date(a.fecha_hora)); // Orden ascendente por hora
-      });
-*/
+        const [rows] = await CalendarioModel.getAll(input);
+        const clases = rows.reduce((acc, row) => {
+            const clase = acc.find(c => c.clase_id === row.clase_id);
+            if (clase) {
+                clase.asistencias.push({
+                    asistencia_id: row.asistencia_id,
+                    usuario_id: row.usuario_id,
+                    nombre: row.usuario_nombre,
+                    apellidos: row.usuario_apellidos,
+                    email: row.usuario_email,
+                    telefono: row.usuario_telefono,
+                    pictureURL: row.usuario_pictureURL,
+                    cinturon: row.cinturon,
+                    grado: row.grado
+                });
+            } else {
+                acc.push({
+                    clase_id: row.clase_id,
+                    creador_id: row.creador_id,
+                    actividad_id: row.actividad_id,
+                    instructor_id: row.instructor_id,
+                    duracion: row.duracion,
+                    fecha_hora: row.fecha_hora,
+                    salario_propuesto: row.salario_propuesto,
+                    created_at: row.created_at,
+                    nombre_actividad: row.nombre_actividad,
+                    nombre_instructor: row.nombre_instructor,
+                    apellidos_instructor: row.apellidos_instructor,
+                    email_instructor: row.email_instructor,
+                    pictureURL_instructor: row.pictureURL_instructor,
+                    asistencias: row.asistencia_id ? [{
+                        asistencia_id: row.asistencia_id,
+                        usuario_id: row.usuario_id,
+                        nombre: row.usuario_nombre,
+                        apellidos: row.usuario_apellidos,
+                        email: row.usuario_email,
+                        telefono: row.usuario_telefono,
+                        pictureURL_usuario: row.usuario_pictureURL,
+                        cinturon: row.cinturon,
+                        grado: row.grado
+                    }] : []
+                });
+            }
+            return acc;
+        }, []);
 
         //======= PARA EL CALENDARIOS =================================
 
@@ -52,7 +72,7 @@ export class CalendarioController {
             });
             day.add(1, 'day');
         }
-        //======= FIN PARA EL CALENDARIOS =================================
+        //======= FIN PARA EL CALENDARIO =================================
 
 
         res.render("calendario/list", { layout: 'withcalendar', clases, mes: currentDate.format('MMMM'), anio: currentDate.format('YYYY'), dias });

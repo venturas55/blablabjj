@@ -53,12 +53,14 @@
                   <h5 class="card-title">{{clase_id}} {{nombre_actividad}}</h5>
                   <p class="card-text">{{formatearSp fecha_hora}} a las {{formatearHoras fecha_hora}}</p>
                   <p> {{duracion}}min</p>
+                    {{#when ../user.privilegio 'eq' "master"}}
                   <a href="/clases/edit/{{clase_id}}" class="text-warning"><i class="fa-solid fa-pen"></i>Edit</a>
                   <a href="/clases/delete/{{clase_id}}" class="text-warning"><i class="fa-solid fa-trash"></i>Del</a>
+                    {{/when }}
                   <div class="d-flex justify-content-around ">
                 </a>
 
-                {{#each this.asistentes}}
+                {{#each this.asistencias}}
                 {{>avatar size="xs" url=this.pictureURL_usuario asistencia=this.asistencia}}
                 {{/each}}
               </div>

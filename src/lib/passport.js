@@ -15,7 +15,7 @@ passport.use(
     },
     async (req, usuario, contrasena, done) => {
       try {
-        console.log("Local Strategy - Login attempt for usuario:", usuario);
+        //console.log("Local Strategy - Login attempt for usuario:", usuario);
         
         // Get user from database
         const [rows] = await db.query(
@@ -26,14 +26,14 @@ passport.use(
         // With mysql2/promise, rows is the array of results
         const user = rows && rows.length > 0 ? rows[0] : null;
         
-        console.log("Local Strategy - Database result:", {
+      /*   console.log("Local Strategy - Database result:", {
           found: !!user,
           user: user ? {
             id: user.id,
             usuario: user.usuario,
             hashedPassword: user.contrasena ? '[exists]' : '[missing]'
           } : null
-        });
+        }); */
 
         if (!user) {
           console.log("Local Strategy - No user found with usuario:", usuario);
@@ -90,8 +90,6 @@ passport.use(
         newUser.usuario
       );
       if (yaExiste[0]) {
-        console.log(yaExiste[0].usuario);
-        console.log("Ya existe");
         return done(
           null,
           false,
@@ -104,7 +102,6 @@ passport.use(
         console.log("No existe");
         const result = await db.query("INSERT INTO usuarios SET ?", [newUser]);
         newUser.id = result.insertId;
-        console.log(result);
         return done(null, newUser);
       }
     }
@@ -121,8 +118,8 @@ passport.use(
     },
     async (payload, done) => {
       try {
-        console.log("JWT Strategy - Payload:", payload);
-        console.log("JWT Strategy - Headers:", JSON.stringify(ExtractJwt.fromAuthHeaderAsBearerToken(), null, 2));
+        //console.log("JWT Strategy - Payload:", payload);
+        //console.log("JWT Strategy - Headers:", JSON.stringify(ExtractJwt.fromAuthHeaderAsBearerToken(), null, 2));
         
         if (!payload || typeof payload.id !== 'number') {
           console.log("JWT Strategy - Invalid payload:", payload);
@@ -142,7 +139,7 @@ passport.use(
           usuario: null
         };
         
-        console.log("JWT Strategy - User lookup result:", userInfo);
+        //console.log("JWT Strategy - User lookup result:", userInfo);
 
         if (!user) {
           console.log("JWT Strategy - No user found with ID:", payload.id);
@@ -161,14 +158,14 @@ passport.use(
 
 // Serialize user for the session
 passport.serializeUser((user, done) => {
-  console.log("Serializing user:", user.id);
+  //console.log("Serializing user:", user.id);
   done(null, user.id);
 });
 
 // Deserialize user from the session
 passport.deserializeUser(async (id, done) => {
   try {
-    console.log("Deserializing user:", id);
+    //console.log("Deserializing user:", id);
     const user = await UsuarioModel.getById({ id });
     done(null, user);
   } catch (error) {

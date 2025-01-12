@@ -6,14 +6,13 @@ import * as path from 'path';    //Para manejar directorios, basicamente unirlos
 import flash from 'connect-flash';  //Para mostar mensajes
 import session from 'express-session'; //Lo necesita el flash tb
 import passport from './lib/passport.js'; //para que se entere de la autentificacion que se ha creado 
-import MySQLstore from 'express-mysql-session'; // para poder guardar la sesion en la sql
+import MySQLStore from 'express-mysql-session'; // para poder guardar la sesion en la sql
 //import passport from 'passport';
-import { database } from './config.js';
+import { config } from './config.js';
 import handlebars from './lib/handlebars.js';
 import cors from 'cors';
 //const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
-
 //import { corsMiddleware } from './middlewares/cors.js';
 
 import { indexRouter } from './routes/index.js';
@@ -36,7 +35,7 @@ app.use(cors());
 
 
 //Settings
-app.set('port', process.env.PORT || 4000);
+app.set('port', config.PORT);
 app.set('views', path.join(__dirname, 'views'));
 app.engine('.hbs', engine({  //con esto se configura el app.engine
     defaultLayout: 'main',
@@ -48,11 +47,12 @@ app.engine('.hbs', engine({  //con esto se configura el app.engine
 app.set('view engine', '.hbs'); //Para utilizar el app.engine
 
 //Middlewares
+const mysqlStore = new MySQLStore(config.database);
 app.use(session({
     secret: 'mysesion',
     resave: false,
     saveUninitialized: false,
-    store: new MySQLstore(database)
+    store: mysqlStore
 }))
 app.use(flash());       // Para poder usar el middleware de enviar mensajes popups
 app.use(morgan('dev'));

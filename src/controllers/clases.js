@@ -14,7 +14,7 @@ export class ClaseController {
 
     static async getAll(req, res) {
         //const usuarios = await UsuarioModel.getAll();
-        const clases = await ClaseModel.getAll();
+        const [clases] = await ClaseModel.getAll();
         res.render("clases/list", { clases });
     }
 
@@ -29,9 +29,11 @@ export class ClaseController {
         /* const usuarios = await UsuarioModel.getAll();
         const actividades = await ActividadModel.getAll(); */
         const asistentes = await AsistenciaModel.getByClaseId({ id: id });
-        const clase = await ClaseModel.getById({ id: id })
+        const [clase] = await ClaseModel.getById({ id: id })
+        console.log(clase);
+        console.log(asistentes);
         var yomismo;
-        asistentes.forEach(asistente => {
+        asistentes?.forEach(asistente => {
             if (asistente.usuario_id == req.user.id) {
                 asistente.asiste = true;
                 yomismo = asistente;
@@ -63,8 +65,8 @@ export class ClaseController {
 
     static async getCreate(req, res) {
         try {
-            const usuarios = await db.query(" select * from usuarios");
-            const actividades = await db.query(" select * from actividades");
+            const [usuarios] = await db.query(" select * from usuarios");
+            const [actividades] = await db.query(" select * from actividades");
             res.render('clases/add', { usuarios, actividades });
         } catch (error) {
             console.error(error);
@@ -109,6 +111,9 @@ export class ClaseController {
         if (result === false) {
             return res.status(404).json({ message: 'clases not found' })
         }
+        //TODO: remove also any asistencia with clase_id
+        const result2 = await AsistenciaModel.delete({ clase_id: id })
+
 
         req.flash("success", "clases borrado correctamente");
         res.redirect("/clases/list");

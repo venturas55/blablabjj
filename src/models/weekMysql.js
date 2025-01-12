@@ -10,7 +10,7 @@ const sqlSemana = "SELECT * FROM semana c LEFT JOIN actividades a ON c.actividad
 export class WeekModel {
   static async getAll() {
     try {
-      const clases = await db.query(sqlClasesQuery);
+      const [clases] = await db.query(sqlClasesQuery);
       return clases;
     } catch (error) {
       console.error('Error al clonar las semanas:', error);

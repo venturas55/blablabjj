@@ -1,13 +1,7 @@
 import mysql from 'mysql2/promise'
-import { database } from './config.js'
+import { config } from './config.js'
+const database = config.database;
 
-console.log("Database Config:", {
-  host: database.host,
-  user: database.user,
-  database: database.database,
-  port: database.port
-  // Don't log password
-});
 
 const pool = mysql.createPool({
   host: database.host,
@@ -33,16 +27,16 @@ pool.getConnection()
 // Wrap query to add logging
 const originalQuery = pool.query.bind(pool);
 pool.query = async function (...args) {
-  console.log("Database Query:", {
+/*   console.log("Database Query:", {
     sql: args[0],
     params: args[1] || []
-  });
+  }); */
   try {
     const result = await originalQuery(...args);
-    console.log("Query Result:", {
+    /* console.log("Query Result:", {
       success: true,
       rowCount: result[0]?.length || 0
-    });
+    }); */
     return result;
   } catch (error) {
     console.error("Query Error:", error);

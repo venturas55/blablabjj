@@ -3,6 +3,41 @@ const require = createRequire(import.meta.url)
 import db from "../database.js"; //db hace referencia a la BBDD
 const SQLquery = "select * from clases";
 const sqlSelectQueryActivity = "SELECT c.clase_id,c.creador_id,c.actividad_id,c.instructor_id,c.duracion,c.fecha_hora,c.salario_propuesto,c.created_at,ui.nombre as nombre_instructor,ui.apellidos as apellidos_instructor,ui.email as email_instructor,ui.telefono as telefono_instructor,ui.pictureURL as pictureURL_instructor,uc.nombre as nombre_creador,uc.apellidos as apellidos_creador,uc.email as email_creador,uc.telefono as telefono_creador,uc.pictureURL as pictureURL_creador,a.nombre as nombre_actividad, a.descripcion as descripcion_actividad, a.pictureURL as pictureURL_actividad from clases c LEFT JOIN usuarios ui ON c.instructor_id = ui.id LEFT JOIN usuarios uc ON c.creador_id=uc.id LEFT JOIN actividades a ON c.actividad_id=a.actividad_id"
+const queryAll = `SELECT 
+                c.clase_id,
+                c.creador_id,
+                c.actividad_id,
+                c.instructor_id,
+                c.duracion,
+                c.fecha_hora,
+                c.salario_propuesto,
+                c.created_at,
+                a.asistencia_id,
+                a.usuario_id,
+                u.nombre AS usuario_nombre,
+                u.apellidos AS usuario_apellidos,
+                u.email AS usuario_email,
+                u.telefono AS usuario_telefono,
+                u.pictureURL AS usuario_pictureURL,
+                a.cinturon,
+                a.grado,
+                act.nombre AS nombre_actividad,
+                act.descripcion AS descripcion_actividad,
+                ui.nombre as nombre_instructor,
+                ui.apellidos AS apellidos_instructor,
+                ui.email AS email_instructor,
+                ui.telefono AS telefono_instructor,
+                ui.pictureURL AS pictureURL_instructor
+            FROM 
+                clases c
+            LEFT JOIN 
+                asistencias a ON c.clase_id = a.clase_id
+            LEFT JOIN 
+                usuarios u ON a.usuario_id = u.id
+                    LEFT JOIN 
+                usuarios ui ON c.instructor_id = ui.id
+                  LEFT JOIN 
+                actividades act ON c.actividad_id = act.actividad_id`;
 
 
 export const readJSON = (path) => require(path)
@@ -12,7 +47,7 @@ export class CalendarioModel {
 
   static async getAll() {
     //Calendario tiene que ser un listado de las clases con toda la info y con los asistentes de cada clase.
-    const calendario = await db.query(sqlSelectQueryActivity);
+    const calendario = await db.query(queryAll);
     return calendario;
   }
 

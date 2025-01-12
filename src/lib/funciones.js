@@ -1,7 +1,6 @@
 import bcrypt from 'bcryptjs';
 import { join } from 'path';
 import { statSync, readdir } from 'fs';
-import mysqldump from 'mysqldump';
 import { stringify } from 'querystring';
 import { MembresiaModel } from "../models/membresiaMysql.js";
 import { ClaseModel } from '../models/claseMysql.js';
@@ -130,14 +129,17 @@ helpers.verifyPassword = async (password, hashedPassword) => {
 
 helpers.esSocio = async (req, res, next) => {
     try {
+        //console.log("Req.user: ",req.user);
         var [membresia] = await MembresiaModel.getMembresiaByUserId(req.user.id);
-        var sessionId = membresia.session_id;
-        console.log(sessionId);
+        //console.log("Membresia: ",membresia[0]);
+
+        var sessionId = membresia[0].session_id;
         const session = await stripe.checkout.sessions.retrieve(sessionId, { expand: ['line_items.data.price'] });
+        console.log("session: ",session);
         const contratado = session.line_items.data[0].description.toLowerCase();;
         const { clase_id } = req.params;
         const [clase] = await ClaseModel.getById({ id: clase_id });
-        const peticion = clase.nombre_actividad.toLowerCase();
+        const peticion = clase[0].nombre_actividad.toLowerCase();
         console.log(contratado + " entrando a " + peticion);
 
         if (contratado == 'ilimitado')
@@ -272,7 +274,7 @@ helpers.insertarLog = async (usuario, accion, observacion) => {
 
 }
 
-helpers.dumpearSQL = () => {
+/* helpers.dumpearSQL = () => {
     // dump the result straight to a file
     console.log("===============================");
     console.log(config.connectionConfig);
@@ -287,5 +289,5 @@ helpers.dumpearSQL = () => {
         dumpToFile: './src/public/dumpSQL/dumpSAN' + Date.now() + '.sql',
     });
 }
-
+ */
 export default helpers;

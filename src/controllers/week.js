@@ -16,11 +16,14 @@ export class WeekController {
         const usuarios = await UsuarioModel.getAll();
         const clases = await WeekModel.getAll();
         const actividades = await ActividadModel.getAll();
+        //console.log("clases: ",clases);
         // Ordenar las clases por fecha
         const clasesOrdenadas = clases.sort((a, b) => (a.dia) - (b.dia));
         // Agrupar las clases por día de la semana (Lunes=1, ..., Domingo=7)
         const clasesPorDia = [[], [], [], [], [], [], []]; // Array para los 7 días
+        //console.log("clasesOrdenadas: ",clasesOrdenadas[5]);
         clasesOrdenadas.forEach((clase) => {
+            //console.log("clase.dia: ",clase);
             clasesPorDia[clase.dia - 1].push(clase);
         });
 

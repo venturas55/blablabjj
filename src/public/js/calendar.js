@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             cell.textContent = currentDay.getDate();
-            cell.dataset.date = currentDay.toLocaleDateString(); // ISO para identificar el día
+            cell.dataset.date = currentDay.toLocaleDateString("es-ES"); // ISO para identificar el día
             calendarContainer.appendChild(cell);
 
             currentDay.setDate(currentDay.getDate() + 1);
@@ -73,7 +73,6 @@ document.addEventListener("DOMContentLoaded", () => {
         calendarCells.forEach((cell) => {
             cell.addEventListener("click", () => {
                 const selectedDate = cell.dataset.date; // Obtener la fecha seleccionada
-
                 // Simular carga de clases para la semana seleccionada
                 loadClassesForDay(selectedDate);
             });
@@ -82,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Simular carga de clases para la semana
     function loadClassesForDay(selectedDate) {
-        //console.log(selectedDate);
+        console.log(selectedDate);
         var clases = selectedDate.split("/");
         var clase = "dia" + clases[0] + clases[1] + clases[2];
 

@@ -31,6 +31,7 @@ CREATE TABLE `usuarios` (
   `usuario` varchar(50) NOT NULL,
   `contrasena` varchar(250) NOT NULL,
   `email` varchar(200) UNIQUE NOT NULL,
+  `google_id` varchar(255),
   `telefono` varchar(10) UNIQUE,
   `nif` varchar(10),
   `pais_telefono` INT DEFAULT 164,
@@ -69,6 +70,7 @@ CREATE TABLE `usuarios` (
   `pictureURL` varchar(200) DEFAULT NULL,
   `instructor` boolean NOT NULL DEFAULT 0,
   `genero` varchar(50) default NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (nacionalidad) REFERENCES nacionalidades(id),
   FOREIGN KEY (pais_telefono) REFERENCES nacionalidades(id)
 ) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'tabla de usuarios';

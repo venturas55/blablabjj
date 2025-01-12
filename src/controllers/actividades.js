@@ -27,7 +27,7 @@ export class ActividadController {
     }
 
     static async getCreate(req, res) {
-        res.render("actividades/list", {  });
+        res.render("actividades/add", {  });
     }
 
     static async create(req, res) {

@@ -11,7 +11,7 @@ import { UsuarioController } from '../controllers/usuarios.js'
 
 export const usuariosRouter = Router();
 
-const storage = multer.diskStorage({
+/* const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const { user } = req.body;
     if (typeof user === 'undefined') { //es una foto de icono
@@ -44,7 +44,7 @@ const uploadFoto = multer({
     }
     return cb(("Error: Archivo debe ser una imagen valida jpeg,jpg,png,bmp o gif"));
   }
-}).single('imagen');
+}).single('imagen'); */
 
 //GESTION DEL CRUD
 

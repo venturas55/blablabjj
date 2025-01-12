@@ -1,20 +1,51 @@
-import dotenv  from 'dotenv';    
-dotenv.config();
-
-const PORT = process.env.PORT || 4000;
-const DB_HOST = process.env.DB_HOST || 'localhost';
-const DB_USER = process.env.DB_USER || 'usuario';
-const DB_PASS = process.env.DB_PASS || 'contrasena';
-const DB_NAME = process.env.DB_NAME || 'dbname';
-//const DB_MP = process.env.DB_MP || '2a$10$.6weXYERL6XMB7nb0xcMTus/Qbi4aotItCWLs3QyBDk7cup4oCOo.';
-const DB_PORT = process.env.DB_PORT || 3306;
+import 'dotenv/config'
 
 
-export const database = {
-    host: DB_HOST,
-    user: DB_USER,
-    password: DB_PASS,
-    database: DB_NAME,
-    port: DB_PORT
-    //masterPass: '2a$10$.6weXYERL6XMB7nb0xcMTus/Qbi4aotItCWLs3QyBDk7cup4oCOo.',
-}
+const {
+    PORT = 4000,
+    DB_HOST = "localhost",
+    DB_USER = "usuario",
+    DB_PASS = "contrasena",
+    DB_NAME = "dbname",
+    DB_PORT = 3306,
+    EMAIL_ACCOUNT = "email@adress.es",
+    EMAIL_PASS = "your pass",
+    NODE_DOCKER_PORT = 5002,
+    MYSQL_LOCAL_PORT = 3307,
+    MYSQL_DOCKER_PORT = 3306,
+    GOOGLE_CLIENT_ID = "cliente id",
+    GOOGLE_CLIENT_SECRET = "cliente google",
+    GOOGLE_CALLBACK_URL = "http://localhost:4000/auth/google/callback",
+    STRIPE_PRIV = "privatekey from stripe",
+    STRIPE_WEBHOOK_SECRET_KEY = "secretkey from stripe",
+    BASE_URL = "localhost"
+  } = process.env;
+
+const database = {
+  host: DB_HOST,
+  user: DB_USER,
+  password: DB_PASS,
+  database: DB_NAME,
+  port: DB_PORT
+};
+
+export const config = {
+  database,
+  PORT,
+  DB_HOST,
+  DB_USER,
+  DB_PASS,
+  DB_NAME,
+  DB_PORT,
+  EMAIL_ACCOUNT,
+  EMAIL_PASS,
+  NODE_DOCKER_PORT,
+  MYSQL_LOCAL_PORT,
+  MYSQL_DOCKER_PORT,
+  GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET,
+  GOOGLE_CALLBACK_URL,
+  STRIPE_PRIV,
+  STRIPE_WEBHOOK_SECRET_KEY,
+  BASE_URL
+};

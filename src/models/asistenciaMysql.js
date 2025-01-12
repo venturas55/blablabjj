@@ -45,9 +45,9 @@ export class AsistenciaModel {
 
   static async getByClaseId({ id }) {
     try {
-      console.log("AsistenciaModel.getByClaseId - Class ID:", id);
+      //console.log("AsistenciaModel.getByClaseId - Class ID:", id);
       const [rows] = await db.query(AsistenciasQuery + " where a.clase_id=?", [id]);
-      console.log("AsistenciaModel.getByClaseId - Results count:", rows?.length || 0);
+      //console.log("AsistenciaModel.getByClaseId - Results count:", rows?.length || 0);
       return rows;
     } catch (error) {
       console.error("AsistenciaModel.getByClaseId - Error:", error);
@@ -95,6 +95,18 @@ export class AsistenciaModel {
     try {
       console.log("AsistenciaModel.delete - Input:", input);
       const [result] = await db.query("DELETE FROM asistencias WHERE asistencia_id=?", [input]);
+      console.log("AsistenciaModel.delete - Result:", result);
+      return result;
+    } catch (error) {
+      console.error("AsistenciaModel.delete - Error:", error);
+      return error;
+    }
+  }
+
+  static async deleteByClaseId({ clase_id }) {
+    try {
+      console.log("AsistenciaModel.delete - Input:", clase_id);
+      const [result] = await db.query("DELETE FROM asistencias WHERE clase_id=?", [clase_id]);
       console.log("AsistenciaModel.delete - Result:", result);
       return result;
     } catch (error) {
