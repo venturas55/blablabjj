@@ -237,7 +237,10 @@ apiRouter.get(
 
 apiRouter.get("/api/usuario/foto/:id", async (req, res) => {
   const { id } = req.params;
-  const [usuario] = await UsuarioModel.getById({ id });
+  const usuario = await UsuarioModel.getById({ id });
+  if (!usuario) {
+    return res.status(404).json({ message: "User not found" });
+  }
   console.log("user foto ", usuario);
   const photoPath = path.join(
     __dirname,
@@ -247,7 +250,6 @@ apiRouter.get("/api/usuario/foto/:id", async (req, res) => {
     "profiles",
     `${usuario.pictureURL}`
   );
-  console.log(photoPath);
   res.sendFile(photoPath);
 });
 
