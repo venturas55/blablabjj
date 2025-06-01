@@ -152,6 +152,7 @@ apiRouter.get("/api/clase/:id", async (req, res) => {
   const [clase] = await ClaseModel.getById({ id: id });
   const asistentes = await AsistenciaModel.getByClaseId({ id: id });
   clase.asistentes = asistentes;
+  console.log(clase);
   res.json(clase); // Enviar los datos como JSON
 });
 
