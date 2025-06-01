@@ -342,6 +342,8 @@ apiRouter.post("/api/add/:clase_id", async (req, res, next) => {
     cinturon: req.body.cinturon,
     grado: req.body.grado
   };
+  console.log("clase_id: ",clase_id)
+console.log("item: ",item)
   try {
     const result = await AsistenciaModel.create({ input: item });
     if (result === false) {
@@ -354,3 +356,4 @@ apiRouter.post("/api/add/:clase_id", async (req, res, next) => {
   }
 
 });
+
