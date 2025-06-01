@@ -35,7 +35,6 @@ export class WeekModel {
     }
   }
 
-
   static async createClass({ input }) {
     try {
       console.log(input);
@@ -51,34 +50,41 @@ export class WeekModel {
   static async cloneWeek({ input }) {
     try {
       // Paso 1: Obtener la semana base (lunes a domingo)
-      const clasesSemana = await db.query('SELECT * FROM semana  ORDER BY dia,hora ASC');
-      /*      console.log("clasesSemana");
-           console.log(clasesSemana); */
+      //const clasesSemana = await db.query('SELECT * FROM semana  ORDER BY dia,hora ASC');
+      // Get the base week schedule
+      const [clasesSemana] = await db.query('SELECT clase_id, creador_id, actividad_id, instructor_id, duracion, dia, hora FROM semana ORDER BY dia,hora ASC');
+      console.log("clasesSemana");
+      console.log(clasesSemana);
 
-      if (clasesSemana.length === 0) {
+      if (!clasesSemana || clasesSemana.length === 0) {
         console.log('No hay clases en la semana base.');
         return;
       }
 
-      // Paso 2: Calcular las semanas futuras
-      const ahora = moment(); // Fecha actual
-      const lunesSiguiente = ahora.clone().startOf('isoWeek').add(7, 'days'); // Lunes siguiente
-      const fechaFin = lunesSiguiente.clone().add(3, 'months').endOf('month'); // Fin de los próximos dos meses
+      // Calculate future weeks
+      const ahora = moment(); // Current date
+      const lunesSiguiente = ahora.clone().startOf('isoWeek').add(7, 'days'); // Next Monday
+      const fechaFin = lunesSiguiente.clone().add(3, 'months').endOf('month'); // End of the next 3 months
       const semanasFuturas = [];
       let semanaActual = lunesSiguiente.clone();
       while (semanaActual.isBefore(fechaFin)) {
         semanasFuturas.push(semanaActual.clone()); // Agregar el lunes de esta semana
         semanaActual.add(1, 'week'); // Avanzar al lunes de la siguiente semana
       }
+      console.log("semanasFuturas");
+      console.log(semanasFuturas);
 
       // Paso 3: Insertar las clases para cada semana futura
       for (const semana of semanasFuturas) {
         // Crear las fechas y horas de las clases para cada semana futura
         const inserts = clasesSemana.map((clase) => {
+          console.log("clase", clase)
           const diaOffset = clase.dia - 1; // Día de la semana (0=lunes, 1=martes, ..., 6=domingo)
           const fechaClase = semana.clone().add(diaOffset, 'days').set({
             hour: moment(clase.hora, 'HH:mm').hour(),
             minute: moment(clase.hora, 'HH:mm').minute(),
+            /*          hour: parseInt(clase.hora.split(':')[0]),
+                     minute: parseInt(clase.hora.split(':')[1]) */
           });
 
           return {
@@ -87,7 +93,7 @@ export class WeekModel {
             instructor_id: clase.instructor_id,
             duracion: clase.duracion,
             fecha_hora: fechaClase.format('YYYY-MM-DD HH:mm:ss'),
-            salario_propuesto: 0.0, // Asignar un valor por defecto o basado en tu lógica
+            //salario_propuesto: 0.0, // Asignar un valor por defecto o basado en tu lógica
           };
         });
 
@@ -105,6 +111,7 @@ export class WeekModel {
           const fechaHoraB = new Date(b[4]); // Convertir fecha_hora a objeto Date
           return fechaHoraA - fechaHoraB; // Comparar las fechas
         });
+
         db.query('INSERT INTO clases (creador_id, actividad_id, instructor_id, duracion, fecha_hora) VALUES ?', [values]);
       }
       console.log('Clases clonadas con éxito para los próximos 3 meses.');
