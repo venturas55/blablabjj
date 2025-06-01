@@ -338,12 +338,11 @@ apiRouter.post("/api/add/:clase_id", async (req, res, next) => {
   const { clase_id } = req.params
   const item = {
     clase_id,
-    usuario_id: req.body.id,
-    cinturon: req.body.cinturon,
-    grado: req.body.grado
+    usuario_id: req.body.usuario.id,
+    cinturon: req.body.usuario.cinturon,
+    grado: req.body.usuario.grado
   };
-  console.log("clase_id: ",clase_id)
-console.log("item: ",item)
+  console.log("req.body.usuario: ", req.body.usuario)
   try {
     const result = await AsistenciaModel.create({ input: item });
     if (result === false) {
