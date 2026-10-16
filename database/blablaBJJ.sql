@@ -161,6 +161,46 @@ CREATE TABLE asistencias (
   FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 ) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'Asistencias';
 
+CREATE TABLE promociones (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    user_id INT NOT NULL,
+
+    belt ENUM(
+        'Blanco',
+        'Gris',
+        'Amarillo',
+        'Naranja',
+        'Verde',
+        'Azul',
+        'Morado',
+        'Marrón',
+        'Negro'
+    ) NOT NULL,
+
+    stripes TINYINT UNSIGNED NOT NULL DEFAULT 0,
+
+    promotion_date DATE NOT NULL,
+
+    promoted_by INT NULL,
+
+    notes TEXT NULL,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_belt_history_user
+        FOREIGN KEY (user_id)
+        REFERENCES usuarios(id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_belt_history_promoted_by
+        FOREIGN KEY (promoted_by)
+        REFERENCES usuarios(id)
+        ON DELETE SET NULL,
+
+    INDEX idx_user_date (user_id, promotion_date)
+);
+
 CREATE TABLE conversaciones (
   conversacion_id INT PRIMARY KEY AUTO_INCREMENT,
   usuario1 INT,

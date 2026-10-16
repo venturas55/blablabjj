@@ -184,8 +184,7 @@ apiRouter.get("/api/usuario/:id", async (req, res) => {
   }
 });
 
-apiRouter.get(
-  "/api/usuarios/:id",
+apiRouter.get("/api/usuarios/:id",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
@@ -225,8 +224,7 @@ apiRouter.get(
   }
 );
 
-apiRouter.get(
-  "/api/auth-test",
+apiRouter.get("/api/auth-test",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     res.json({
@@ -254,8 +252,7 @@ apiRouter.get("/api/usuario/foto/:id", async (req, res) => {
   res.sendFile(photoPath);
 });
 
-apiRouter.post(
-  "/api/signup",
+apiRouter.post("/api/signup",
   passport.authenticate("local.signup", {
     successRedirect: "/",
     failureRedirect: "/signup",
@@ -326,8 +323,7 @@ apiRouter.post("/api/logout", (req, res) => {
 });
 
 // Ruta protegida
-apiRouter.get(
-  "/api/protected",
+apiRouter.get("/api/protected",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     res.json({ message: `Hola ${req.user.email}, tienes acceso.` });

@@ -46,6 +46,10 @@ const asistenciaSchema = z.object({
    
 });
 
+const promocionSchema = z.object({
+   
+});
+
 const calendarioSchema = z.object({
    
 });
@@ -70,6 +74,9 @@ export function validateAnuncio(object) {
 
 export function validateAsistencia(object) {
     return asistenciaSchema.safeParse(object);
+}
+export function validatePromocion(object) {
+    return promocionSchema.safeParse(object);
 }
 
 export function validateUsuario(object) {
@@ -108,6 +115,10 @@ export function validatePartialAnuncio(object) {
 
 export function validatePartialAsistencia(object) {
     return asistenciaSchema.partial().safeParse(object);
+}
+
+export function validatePartialPromocion(object) {
+    return promocionSchema.partial().safeParse(object);
 }
 
 export function validatePartialUsuario(object) {

@@ -1,0 +1,172 @@
+<div class="container py-4">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <div class="card shadow-sm">
+
+                <div class="card-header">
+                    <h3 class="mb-0">
+                        Nueva promoción
+                    </h3>
+                </div>
+
+                <div class="card-body">
+
+                    <div class="alert alert-secondary">
+
+                        <h5 class="mb-1">{{usuario.nombre}} {{usuario.apellidos}}</h5>
+
+                        <div>
+                            <strong>Cinturón actual:</strong>
+                            {{usuario.belt}}
+                            {{#if usuario.stripes}}
+                                - {{usuario.stripes}} grado(s)
+                            {{/if}}
+                        </div>
+
+                    </div>
+
+                    <form action="/admin/promotions/create" method="POST">
+
+                        <input
+                            type="hidden"
+                            name="user_id"
+                            value="{{usuario.id}}"
+                        >
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Cinturón
+                            </label>
+
+                            <select
+                                class="form-select"
+                                name="belt"
+                                required
+                            >
+
+                                <option value="">Selecciona...</option>
+
+                                <option value="Blanco">Blanco</option>
+                                <option value="Gris">Gris</option>
+                                <option value="Amarillo">Amarillo</option>
+                                <option value="Naranja">Naranja</option>
+                                <option value="Verde">Verde</option>
+                                <option value="Azul">Azul</option>
+                                <option value="Morado">Morado</option>
+                                <option value="Marrón">Marrón</option>
+                                <option value="Negro">Negro</option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Grados
+                            </label>
+
+                            <select
+                                class="form-select"
+                                name="stripes"
+                                required
+                            >
+
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Fecha de promoción
+                            </label>
+
+                            <input
+                                class="form-control"
+                                type="date"
+                                name="promotion_date"
+                                value="{{today}}"
+                                required
+                            >
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Instructor que otorga la promoción
+                            </label>
+
+                            <select
+                                class="form-select"
+                                name="promoted_by"
+                            >
+
+                                <option value="">Selecciona...</option>
+
+                                {{#each instructores}}
+
+                                    <option value="{{id}}">
+                                        {{nombre}} {{apellidos}}
+                                    </option>
+
+                                {{/each}}
+
+                            </select>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Observaciones
+                            </label>
+
+                            <textarea
+                                class="form-control"
+                                name="notes"
+                                rows="4"
+                            ></textarea>
+
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2">
+
+                            <a
+                                href="/admin/users/{{usuario.id}}"
+                                class="btn btn-secondary"
+                            >
+                                Cancelar
+                            </a>
+
+                            <button
+                                class="btn btn-primary"
+                                type="submit"
+                            >
+                                Guardar promoción
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

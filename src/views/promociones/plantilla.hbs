@@ -1,0 +1,200 @@
+<div class="container py-4">
+
+  <div class="row justify-content-center">
+
+    <div class="col-lg-8">
+
+      <!-- Cabecera -->
+
+      <div class="card shadow-sm mb-4">
+
+        <div class="card-body">
+
+          <div class="d-flex justify-content-between align-items-center">
+
+            <div>
+
+              <h3 class="mb-1">
+                {{usuario.nombre}}
+                {{usuario.apellidos}}
+              </h3>
+
+              <div class="text-muted">
+                Historial de promociones
+              </div>
+
+            </div>
+
+            <a
+              href="/admin/promotions/add/{{usuario.id}}"
+              class="btn btn-primary"
+            >
+              <i class="bi bi-plus-lg"></i>
+              Nueva promoción
+            </a>
+
+          </div>
+
+          <hr />
+
+          <div class="row text-center">
+
+            <div class="col">
+
+              <small class="text-muted">
+                Cinturón actual
+              </small>
+
+              <h5 class="mb-0">
+                {{usuario.belt}}
+              </h5>
+
+            </div>
+
+            <div class="col">
+
+              <small class="text-muted">
+                Grados
+              </small>
+              <h5 class="mb-0">
+                {{usuario.stripes}}
+              </h5>
+            </div>
+            <div class="col">
+              <small class="text-muted">
+                Promociones
+              </small>
+              <h5 class="mb-0">
+                {{history.length}}
+              </h5>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Timeline -->
+      <div class="card shadow-sm">
+        <div class="card-body">
+          {{#if history.length}}
+            <ul class="timeline list-unstyled">
+              {{#each history}}
+                <li class="timeline-item mb-4">
+                  <div class="d-flex">
+                    <div class="me-3">
+                      <div
+                        class="rounded-circle bg-primary"
+                        style="width:16px;height:16px;"
+                      ></div>
+
+                    </div>
+
+                    <div class="flex-grow-1">
+
+                      <div class="d-flex justify-content-between">
+
+                        <strong>
+
+                          {{belt}}
+
+                          {{#if stripes}}
+
+                            ·
+                            {{stripes}}
+                            grado(s)
+
+                          {{/if}}
+
+                        </strong>
+
+                        <small class="text-muted">
+                          {{formatDate promotion_date}}
+                        </small>
+
+                      </div>
+
+                      <div class="text-muted">
+
+                        Promovido por
+
+                        <strong>
+
+                          {{promoted_by_name}}
+
+                        </strong>
+
+                      </div>
+
+                      {{#if notes}}
+
+                        <div class="mt-2">
+
+                          {{notes}}
+
+                        </div>
+
+                      {{/if}}
+
+                      <div class="mt-3">
+
+                        <a
+                          href="/admin/promotions/edit/{{id}}"
+                          class="btn btn-sm btn-outline-primary"
+                        >
+                          Editar
+                        </a>
+
+                        <a
+                          href="/admin/promotions/delete/{{id}}"
+                          class="btn btn-sm btn-outline-danger"
+                          onclick="return confirm('¿Eliminar esta promoción?')"
+                        >
+                          Eliminar
+                        </a>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                </li>
+
+              {{/each}}
+
+            </ul>
+
+          {{else}}
+
+            <div class="text-center py-5">
+
+              <h5>
+                No existen promociones registradas
+              </h5>
+
+              <p class="text-muted">
+
+                Este alumno todavía no tiene historial de promociones.
+
+              </p>
+
+              <a
+                href="/admin/promotions/add/{{usuario.id}}"
+                class="btn btn-primary"
+              >
+                Registrar primera promoción
+              </a>
+
+            </div>
+
+          {{/if}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+
+  .timeline { position: relative; margin-left: 8px; } .timeline::before {
+  content: ""; position: absolute; left: 7px; top: 0; bottom: 0; width: 2px;
+  background: #dee2e6; } .timeline-item { position: relative; }
+
+</style>

@@ -1,0 +1,495 @@
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <!-- Cabecera -->
+      <div class="card shadow-sm mb-4">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h3 class="mb-1">
+                {{usuario.nombre}}
+                {{usuario.apellidos}}
+              </h3>
+              <div class="text-muted">
+                Historial de promociones
+              </div>
+            </div>
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-bs-toggle="modal"
+              data-bs-target="#addModal"
+            >
+              Nueva promocion
+            </button>
+          </div>
+          <hr />
+          <div class="row text-center">
+            <div class="col">
+              <small class="text-muted">
+                Cinturón actual
+              </small>
+              <h5 class="mb-0">
+                {{usuario.belt}}
+              </h5>
+            </div>
+            <div class="col">
+              <small class="text-muted">
+                Grados
+              </small>
+              <h5 class="mb-0">
+                {{usuario.stripes}}
+              </h5>
+            </div>
+            <div class="col">
+              <small class="text-muted">
+                Promociones
+              </small>
+              <h5 class="mb-0">
+                {{history.length}}
+              </h5>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Timeline -->
+      <div class="card shadow-sm">
+        <div class="card-body">
+          {{#if promociones.length}}
+            <ul class="timeline list-unstyled">
+              {{#each promociones}}
+                <li class="timeline-item mb-4">
+                  <div class="d-flex">
+                    <div class="me-3">
+                      <div
+                        class="rounded-circle bg-primary"
+                        style="width:16px;height:16px;"
+                      ></div>
+                    </div>
+                    <div class="flex-grow-1">
+                      <div class="d-flex justify-content-between">
+                        <strong>
+                          {{belt}}
+                          {{#if stripes}}
+                            ·
+                            {{stripes}}
+                            grado(s)
+                          {{/if}}
+                        </strong>
+                        <small class="text-muted">
+                          {{formatearSp promotion_date}}
+                        </small>
+                      </div>
+                      <div class="text-muted">
+                        Promovido por
+                        <strong>
+                          {{promoted_by_name}}
+                        </strong>
+                      </div>
+                      {{#if notes}}
+                        <div class="mt-2">
+                          {{notes}}
+                        </div>
+                      {{/if}}
+                      <div class="mt-3">
+                        <button
+                          type="button"
+                          onclick="abreModalEdit({{this.id}})"
+                          class="btn btn-sm btn-outline-primary"
+                        >
+                          Editar
+                        </a>
+                        <a
+                          href="/promociones/delete/{{id}}"
+                          class="btn btn-sm btn-outline-danger"
+                          onclick="return confirm('¿Eliminar esta promoción?')"
+                        >
+                          Eliminar
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              {{/each}}
+            </ul>
+          {{else}}
+            <div class="text-center py-5">
+              <h5>
+                No existen promociones registradas
+              </h5>
+              <p class="text-muted">
+                Este alumno todavía no tiene historial de promociones.
+              </p>
+              <button
+                type="button"
+                class="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#addModal"
+              >
+                añadir promocion
+              </button>
+            </div>
+          {{/if}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="addModal"
+  tabindex="-1"
+  aria-labelledby="addModalLabel"
+  aria-hidden="true"
+>
+
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="container py-4">
+
+          <div class="row justify-content-center">
+
+            <div class="col-lg-8">
+
+              <div class="card shadow-sm">
+
+                <div class="card-header">
+                  <h3 class="mb-0">
+                    Nueva promoción
+                  </h3>
+                </div>
+
+                <div class="card-body">
+
+                  <div class="alert alert-secondary">
+
+                    <h5 class="mb-1">{{usuario.nombre}}
+                      {{usuario.apellidos}}</h5>
+
+                    <div>
+                      <strong>Cinturón actual:</strong>
+                      {{usuario.belt}}
+                      {{#if usuario.stripes}}
+                        -
+                        {{usuario.stripes}}
+                        grado(s)
+                      {{/if}}
+                    </div>
+                  </div>
+                  <form action="/promociones/add" method="POST">
+                    <input
+                      type="hidden"
+                      name="user_id"
+                      value="{{usuario.id}}"
+                    />
+                    <div class="mb-3">
+                      <label class="form-label">
+                        Cinturón
+                      </label>
+                      <select class="form-select" name="belt" required>
+                        <option value="">Selecciona...</option>
+                        <option value="Blanco">Blanco</option>
+                        <option value="Gris">Gris</option>
+                        <option value="Amarillo">Amarillo</option>
+                        <option value="Naranja">Naranja</option>
+                        <option value="Verde">Verde</option>
+                        <option value="Azul">Azul</option>
+                        <option value="Morado">Morado</option>
+                        <option value="Marrón">Marrón</option>
+                        <option value="Negro">Negro</option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">
+                        Grados
+                      </label>
+                      <select class="form-select" name="stripes" required>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">
+                        Fecha de promoción
+                      </label>
+                      <input
+                        class="form-control"
+                        type="date"
+                        name="promotion_date"
+                        value="{{today}}"
+                        required
+                      />
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">
+                        Instructor que otorga la promoción
+                      </label>
+                      <select class="form-select" name="promoted_by">
+                        <option value="">Selecciona...</option>
+                        {{#each instructores}}
+
+                          <option value="{{id}}">
+                            {{nombre}}
+                            {{apellidos}}
+                          </option>
+
+                        {{/each}}
+
+                      </select>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                      <label class="form-label">
+                        Observaciones
+                      </label>
+                      <textarea
+                        class="form-control"
+                        name="notes"
+                        rows="4"
+                      ></textarea>
+                    </div>
+                    <div class="d-flex justify-content-end gap-2">
+                      <a
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      >
+                      </a>
+                      <button class="btn btn-primary" type="submit">
+                        Guardar promoción
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+        >Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div
+  class="modal fade"
+  id="editModal"
+  tabindex="-1"
+  aria-labelledby="addModalLabel"
+  aria-hidden="true"
+>
+
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="container py-4">
+
+          <div class="row justify-content-center">
+
+            <div class="col-lg-8">
+
+              <div class="card shadow-sm">
+
+                <div class="card-header">
+                  <h3 class="mb-0">
+                    Nueva promoción
+                  </h3>
+                </div>
+
+                <div class="card-body">
+                  <form action="/promociones/edit" method="POST">
+
+                    <input
+                      type="hidden"
+                      name="user_id"
+                      value="{{usuario.id}}"
+                    />
+
+                    <div class="mb-3">
+
+                      <label class="form-label">
+                        Cinturón
+                      </label>
+
+                      <select class="form-select" name="belt" required>
+
+                        <option value="">Selecciona...</option>
+
+                        <option value="Blanco">Blanco</option>
+                        <option value="Gris">Gris</option>
+                        <option value="Amarillo">Amarillo</option>
+                        <option value="Naranja">Naranja</option>
+                        <option value="Verde">Verde</option>
+                        <option value="Azul">Azul</option>
+                        <option value="Morado">Morado</option>
+                        <option value="Marrón">Marrón</option>
+                        <option value="Negro">Negro</option>
+
+                      </select>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                      <label class="form-label">
+                        Grados
+                      </label>
+
+                      <select class="form-select" name="stripes" required>
+
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+
+                      </select>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                      <label class="form-label">
+                        Fecha de promoción
+                      </label>
+
+                      <input
+                        class="form-control"
+                        type="date"
+                        name="promotion_date"
+                        value="{{today}}"
+                        required
+                      />
+
+                    </div>
+
+                    <div class="mb-3">
+
+                      <label class="form-label">
+                        Instructor que otorga la promoción
+                      </label>
+
+                      <select class="form-select" name="promoted_by">
+
+                        <option value="">Selecciona...</option>
+
+                        {{#each instructores}}
+
+                          <option value="{{id}}">
+                            {{nombre}}
+                            {{apellidos}}
+                          </option>
+
+                        {{/each}}
+
+                      </select>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                      <label class="form-label">
+                        Observaciones
+                      </label>
+
+                      <textarea
+                        class="form-control"
+                        name="notes"
+                        rows="4" id="texto_observaciones"
+                      ></textarea>
+
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2">
+
+                      <a
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      >
+
+                      </a>
+                      <button class="btn btn-primary" type="submit">
+                        Guardar cambios
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+        >Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<style>
+
+  .timeline { position: relative; margin-left: 8px; } .timeline::before {
+  content: ""; position: absolute; left: 7px; top: 0; bottom: 0; width: 2px;
+  background: #dee2e6; } .timeline-item { position: relative; }
+
+</style>
+
+<script>
+  var myModal = document.getElementById('myModal') var myInput =
+  document.getElementById('myInput') myModal.addEventListener('shown.bs.modal',
+  function () { myInput.focus() })
+
+
+  function abreModalEdit(id) {
+    //console.log("Mantenimiento con id" + id);
+    var item = document.getElementById("editModal");
+    var ref = document.getElementById("belt");
+    var item = document.getElementById("stripes");
+    var ref = document.getElementById("promoted_by");
+    var obs = document.getElementById("texto_observaciones");
+    
+    ref.href += id;
+    item.style.display = 'block';
+}
+
+</script>
